@@ -1,0 +1,40 @@
+{
+ "common": {
+  "risk_aversion": 5.0,
+  "test_days": 21,
+  "train_days": 756,
+  "w_min": 0.0
+ },
+ "data": "legacy panels; rf and calendar v2",
+ "experiment": "D-v5",
+ "max_folds": null,
+ "rule": "turnover_aware",
+ "scip_time_limit": 30.0,
+ "seed": 2000,
+ "settings": {
+  "moex": {
+   "K": 8,
+   "rf": "ru_ruonia.parquet",
+   "tc_bps": 30.0,
+   "w_max": 0.2
+  },
+  "sp500": {
+   "K": 15,
+   "rf": "us_dtb3.parquet",
+   "tc_bps": 10.0,
+   "w_max": 0.1
+  }
+ },
+ "status": "exploratory (pre-G0); legacy data",
+ "strategies": [
+  "equal_weight",
+  "continuous_mvo",
+  "rounded_topk",
+  "scip_native",
+  "tabu",
+  "neal",
+  "swap_sa"
+ ],
+ "tabu_restarts": 5,
+ "turnover_scale": "legacy"
+}

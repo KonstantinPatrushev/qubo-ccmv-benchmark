@@ -1,0 +1,236 @@
+{
+ "experiment": "cif.experiments.e1_pilot",
+ "inputs": {},
+ "launch": {
+  "jobs": 16,
+  "shards": 92,
+  "timing": true
+ },
+ "mode": "full",
+ "name": "pilot_timing",
+ "params": {
+  "h_levels": [
+   0.15,
+   0.45
+  ],
+  "instances": [
+   {
+    "n": 16,
+    "pair_seeds": [
+     1000,
+     1001,
+     1002,
+     1003,
+     1004,
+     1005,
+     1006,
+     1007,
+     1008,
+     1009,
+     1010,
+     1011,
+     1012,
+     1013,
+     1014,
+     1015,
+     1016,
+     1017,
+     1018,
+     1019
+    ]
+   },
+   {
+    "n": 24,
+    "pair_seeds": [
+     1020,
+     1021,
+     1022,
+     1023,
+     1024,
+     1025,
+     1026,
+     1027,
+     1028,
+     1029,
+     1030,
+     1031,
+     1032,
+     1033,
+     1034,
+     1035,
+     1036,
+     1037,
+     1038,
+     1039
+    ]
+   }
+  ],
+  "lam": 5.0,
+  "ms": [
+   1,
+   5,
+   20,
+   50,
+   200
+  ],
+  "parts": [
+   "timing"
+  ],
+  "scip": {
+   "diag": "mineig",
+   "formulation": "perspective",
+   "mip_gap": 1e-06,
+   "seed": 0,
+   "time_limit_s": 600.0
+  },
+  "seed_role": "calibration",
+  "timing": {
+   "samplers": [
+    {
+     "grid": [
+      {
+       "count": 15,
+       "fixed": {
+        "num_sweeps": 1000
+       },
+       "n": 16,
+       "ratio": 1.26,
+       "scale": "num_reads",
+       "start": 400
+      },
+      {
+       "count": 15,
+       "fixed": {
+        "num_sweeps": 1000
+       },
+       "n": 24,
+       "ratio": 1.26,
+       "scale": "num_reads",
+       "start": 250
+      }
+     ],
+     "name": "sa",
+     "reference": {
+      "beta": "default",
+      "penalty": 100
+     }
+    },
+    {
+     "grid": [
+      {
+       "count": 16,
+       "fixed": {
+        "num_restarts": 0,
+        "tenure": 5
+       },
+       "n": 16,
+       "ratio": 1.26,
+       "scale": "num_reads",
+       "start": 60
+      },
+      {
+       "count": 16,
+       "fixed": {
+        "num_restarts": 0,
+        "tenure": 6
+       },
+       "n": 24,
+       "ratio": 1.26,
+       "scale": "num_reads",
+       "start": 60
+      }
+     ],
+     "name": "tabu",
+     "reference": {
+      "penalty": 100
+     }
+    },
+    {
+     "grid": [
+      {
+       "count": 15,
+       "fixed": {
+        "num_sweeps": 200
+       },
+       "n": 16,
+       "ratio": 1.26,
+       "scale": "num_reads",
+       "start": 500
+      },
+      {
+       "count": 15,
+       "fixed": {
+        "num_sweeps": 200
+       },
+       "n": 24,
+       "ratio": 1.26,
+       "scale": "num_reads",
+       "start": 300
+      }
+     ],
+     "name": "swap_sa",
+     "reference": {
+      "cold_ratio": 0.01
+     }
+    }
+   ],
+   "solver_seeds": [
+    10000,
+    10001,
+    10002
+   ],
+   "target_s": 1.0,
+   "tolerance": 0.2,
+   "warmup_calls": 1
+  },
+  "w_max": 1.0,
+  "w_min": 0.0
+ },
+ "seeds": [
+  1000,
+  1001,
+  1002,
+  1003,
+  1004,
+  1005,
+  1006,
+  1007,
+  1008,
+  1009,
+  1010,
+  1011,
+  1012,
+  1013,
+  1014,
+  1015,
+  1016,
+  1017,
+  1018,
+  1019,
+  1020,
+  1021,
+  1022,
+  1023,
+  1024,
+  1025,
+  1026,
+  1027,
+  1028,
+  1029,
+  1030,
+  1031,
+  1032,
+  1033,
+  1034,
+  1035,
+  1036,
+  1037,
+  1038,
+  1039,
+  10000,
+  10001,
+  10002
+ ],
+ "stream": "E1",
+ "threads": 1
+}

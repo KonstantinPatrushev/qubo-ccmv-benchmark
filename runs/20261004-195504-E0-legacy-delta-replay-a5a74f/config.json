@@ -1,0 +1,22 @@
+{
+ "code_variant": "replay of saved legacy-strategy weights with the corrected engine",
+ "common": {
+  "risk_aversion": 5.0,
+  "test_days": 21,
+  "train_days": 756,
+  "w_min": 0.0
+ },
+ "replay_of": "20261004-185703-E0-legacy-delta-6e82b7",
+ "settings": {
+  "moex": {
+   "K": 8,
+   "tc_bps": 30.0,
+   "w_max": 0.2
+  },
+  "sp500": {
+   "K": 15,
+   "tc_bps": 10.0,
+   "w_max": 0.1
+  }
+ }
+}

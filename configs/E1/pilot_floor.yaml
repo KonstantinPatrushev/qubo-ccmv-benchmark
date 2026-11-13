@@ -1,0 +1,56 @@
+# E1 pilot, part 1 of 2: the floor rule of H1a (ANALYSIS_PLAN §2 RQ1, H1a "m0 [пилот]"; §3 calibration
+# sets). CALIBRATION seeds only: 20 pairs `factor` per N, N = 16 (pair seeds 1000-1019) and N = 24
+# (1020-1039), both levels of h, K per pair = min(8, max(3, floor(min s_cont / 2))).
+#
+# For each of the 80 calibration instances the ceiling E_form(m) of the equal-weight surrogate is
+# computed exactly (certified optimum f* by SCIP, enumeration of all K-subsets, refinement of the best
+# m = 200 by surrogate energy). Rule (plan §2): m0 = 50 if at least 20 % of the 80 instances have
+# E_form(50) > tau = 1e-3, else m0 = 1. The decision is made by `python -m cif.experiments.e1_pilot
+# report`, not by this run: the rows hold the E_form values.
+#
+# No sampler is called here, so the run needs no solver seeds and its timing does not matter; it takes
+# about 80 x 1-2 s (SCIP, enumeration, 200 refinements) = 2-5 CPU-minutes. Run it BEFORE the timing
+# part, not alongside it (a different load profile); see configs/E1/README.md.
+stream: E1
+name: pilot_floor
+experiment: cif.experiments.e1_pilot
+seeds: [
+    1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012, 1013, 1014, 1015,
+    1016, 1017, 1018, 1019, 1020, 1021, 1022, 1023, 1024, 1025, 1026, 1027, 1028, 1029, 1030, 1031,
+    1032, 1033, 1034, 1035, 1036, 1037, 1038, 1039]
+inputs: {}                          # synthetic instances: no market data is read
+threads: 1                          # BLAS / OpenMP threads of a job (plan §6: one thread per solver)
+params:
+  seed_role: calibration
+  parts: [floor]
+  instances:
+    - n: 16
+      pair_seeds: [
+          1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012, 1013, 1014,
+          1015, 1016, 1017, 1018, 1019]
+    - n: 24
+      pair_seeds: [
+          1020, 1021, 1022, 1023, 1024, 1025, 1026, 1027, 1028, 1029, 1030, 1031, 1032, 1033, 1034,
+          1035, 1036, 1037, 1038, 1039]
+  h_levels: [0.15, 0.45]            # vol_dispersion of the pair
+  lam: 5.0
+  w_min: 0.0
+  w_max: 1.0
+  ms: [1, 5, 20, 50, 200]
+  scip:                             # certified optimum f* (plan §5): gap 1e-6 relative implies 1e-6 s*
+    formulation: perspective
+    diag: mineig
+    mip_gap: 1.0e-6
+    time_limit_s: 600.0
+    seed: 0
+  floor:
+    tau: 1.0e-3
+    m_floor: 50                     # m0 if the share is large enough
+    m_fallback: 1                   # m0 otherwise
+    min_share: 0.2
+smoke:                              # the machinery on one calibration pair per N, 4 cells
+  seeds: [1000, 1020]
+  params:
+    instances:
+      - {n: 16, pair_seeds: [1000]}
+      - {n: 24, pair_seeds: [1020]}

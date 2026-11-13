@@ -1,0 +1,111 @@
+# E1, RQ1: the CONFIRMATORY attribution grid (ANALYSIS_PLAN §2 RQ1, §3, §6, §7.1 H1a, §7.3) on TEST seeds.
+#
+#   80 pairs `factor` (N = 16: pair seeds 2000-2039, N = 24: 2040-2079), both levels h in {0.15, 0.45}
+#   (160 instances, K per pair = min(8, max(3, floor(min s_cont / 2)))), the nested grid of §7.3 and
+#   10 solver seeds 20000-20009:
+#     sa       penalty multiplier {1, 3, 10, 30, 100} x β range {default, objective}   10 configurations
+#     tabu     penalty multiplier {1, 3, 10, 30, 100}                                   5
+#     swap_sa  cold end of the schedule T_cold = cold_ratio x T_hot, {0.01, 0.2}        2
+#   27 200 cells, one sampler call (no outer loop) each. The call has the same work at every level of
+#   the nested factors (plan §6); its time is reported (solve_s).
+#
+# References (plan §12 B3): SA penalty 100 with the β range of dwave (1000 sweeps), tabu penalty 100 (reads
+# are its work unit, B1), swap-SA 200 sweeps with T_cold = 0.01 x T_hot. The work of a call is sized by the
+# pilot on the references; the samplers are contrasted at them (configs/E1/analysis.yaml); every other level
+# of the grid is described. The swap-SA level cold_ratio 0.2 (T_cold = 0.2 x T_hot) is EXPLORATORY (B3): it
+# is the 1 600 cells that the grid of 25 600 of the plan does not have, and its outputs are labelled so.
+#
+# NOT RUNNABLE BEFORE THE PILOT. The `pilot` block below holds what the pilot decides: m0 of the floor
+# rule (H1a) and the work of one call per sampler and N. It is null until
+#   python -m cif.experiments.e1_pilot make-config --report <pilot_report.json> --config configs/E1/attribution.yaml
+# fills it from a pilot report that is valid for §12 (the call refuses a null block: nothing runs on
+# guessed values). The same values go to §12 of the plan; commit the filled config before the run
+# (a confirmatory run needs a clean tree). Do not edit between the markers by hand.
+#
+# Sharding: `cell_order: interleaved` makes `--shard j --n-shards S` give each shard whole pairs when S
+# divides 80 (5, 8, 10, 16, 20, 40, 80). The instance-level oracle (certified optimum, enumeration of
+# all K-subsets, 200 refinements) is computed once per shard instead of once per cell. Run ONE process
+# per shard (--workers 1): the oracle cache is per process. See configs/E1/README.md.
+stream: E1
+name: attribution
+experiment: cif.experiments.e1_attribution
+seeds: [
+    2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015,
+    2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031,
+    2032, 2033, 2034, 2035, 2036, 2037, 2038, 2039, 2040, 2041, 2042, 2043, 2044, 2045, 2046, 2047,
+    2048, 2049, 2050, 2051, 2052, 2053, 2054, 2055, 2056, 2057, 2058, 2059, 2060, 2061, 2062, 2063,
+    2064, 2065, 2066, 2067, 2068, 2069, 2070, 2071, 2072, 2073, 2074, 2075, 2076, 2077, 2078, 2079,
+    20000, 20001, 20002, 20003, 20004, 20005, 20006, 20007, 20008, 20009]
+inputs: {}                          # synthetic instances: no market data is read
+threads: 1                          # BLAS / OpenMP threads of a job (plan §6: one thread per solver)
+launch: {timing: true, jobs: 16, shards: 16}    # 16 shards of 5 whole pairs; 16 jobs = half of the 32 physical cores (§12)
+params:
+  seed_role: test
+  cell_order: interleaved
+  instances:
+    - n: 16
+      pair_seeds: [
+          2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014,
+          2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029,
+          2030, 2031, 2032, 2033, 2034, 2035, 2036, 2037, 2038, 2039]
+    - n: 24
+      pair_seeds: [
+          2040, 2041, 2042, 2043, 2044, 2045, 2046, 2047, 2048, 2049, 2050, 2051, 2052, 2053, 2054,
+          2055, 2056, 2057, 2058, 2059, 2060, 2061, 2062, 2063, 2064, 2065, 2066, 2067, 2068, 2069,
+          2070, 2071, 2072, 2073, 2074, 2075, 2076, 2077, 2078, 2079]
+  h_levels: [0.15, 0.45]            # vol_dispersion of the pair (H1a)
+  lam: 5.0
+  w_min: 0.0
+  w_max: 1.0
+  ms: [1, 5, 20, 50, 200]
+  solver_seeds: [20000, 20001, 20002, 20003, 20004, 20005, 20006, 20007, 20008, 20009]
+  scip:                             # certified optimum f* (plan §5): gap 1e-6 relative implies 1e-6 s*
+    formulation: perspective
+    diag: mineig
+    mip_gap: 1.0e-6
+    time_limit_s: 600.0
+    seed: 0
+  samplers:                         # the nested factors of §7.3; the work of a call is in the pilot block
+    - {name: sa, penalty: [1, 3, 10, 30, 100], beta: [default, objective]}
+    - {name: tabu, penalty: [1, 3, 10, 30, 100]}
+    - {name: swap_sa, cold_ratio: [0.01, 0.2]}   # 0.01: the reference; 0.2: exploratory (§12 B3)
+  # >>> pilot (written by `python -m cif.experiments.e1_pilot make-config`; null until the pilot has run)
+  pilot:
+    source:
+      run_ids: [20261011-205903-E1-pilot_floor-9da201, 20261012-113427-E1-pilot_timing-e3f5db]
+      git_sha: [163aa3cf593225d5f5b3bf0795c47ea221b11afb, 2cff55cdf391f922d4e29d2d049253a4caaf7da7]
+      valid_for_section_12: true
+      report: pilot_report.json
+      report_sha256: 10228335aa2d9c2d2841fdbc49292f8afb700f1e1d41c3a945eab1ad7bf71290
+    m0: 1
+    work:
+      - {sampler: sa, n: 16, num_reads: 2017, num_sweeps: 1000}
+      - {sampler: sa, n: 24, num_reads: 1260, num_sweeps: 1000}
+      - {sampler: tabu, n: 16, num_reads: 381, num_restarts: 0, tenure: 5}
+      - {sampler: tabu, n: 24, num_reads: 381, num_restarts: 0, tenure: 6}
+      - {sampler: swap_sa, n: 16, num_reads: 2001, num_sweeps: 200}
+      - {sampler: swap_sa, n: 24, num_reads: 953, num_sweeps: 200}
+  # <<< pilot
+smoke:                              # the machinery on CALIBRATION seeds with a tiny hand-made pilot block
+  seeds: [1000, 1020, 10000]
+  params:
+    seed_role: calibration
+    cell_order: instance
+    instances:
+      - {n: 16, pair_seeds: [1000]}
+      - {n: 24, pair_seeds: [1020]}
+    solver_seeds: [10000]
+    samplers:
+      - {name: sa, penalty: [10], beta: [default, objective]}
+      - {name: tabu, penalty: [10]}
+      - {name: swap_sa, cold_ratio: [0.01, 0.2]}
+    pilot:
+      source: {note: "smoke: made by hand, not from a pilot", valid_for_section_12: false}
+      m0: 50
+      work:
+        - {sampler: sa, n: 16, num_reads: 200, num_sweeps: 100}
+        - {sampler: sa, n: 24, num_reads: 200, num_sweeps: 100}
+        - {sampler: tabu, n: 16, num_reads: 30, num_restarts: 0, tenure: 5}
+        - {sampler: tabu, n: 24, num_reads: 30, num_restarts: 0, tenure: 6}
+        - {sampler: swap_sa, n: 16, num_reads: 20, num_sweeps: 30}
+        - {sampler: swap_sa, n: 24, num_reads: 20, num_sweeps: 30}

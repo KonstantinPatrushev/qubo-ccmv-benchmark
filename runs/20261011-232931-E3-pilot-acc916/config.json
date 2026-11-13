@@ -1,0 +1,65 @@
+{
+ "analysis_config": "configs/E3/analysis.yaml",
+ "margins": {
+  "delta_sr": null,
+  "delta_var": null,
+  "sesoi": 0.0025
+ },
+ "pilot": {
+  "confirmatory_config": "configs/E3/ff49.yaml",
+  "min_binding_share": 0.7
+ },
+ "rows_sha256": "55dde6b60ffe3e1e7ef50088d3e1c7e68496d712aabf5baee3c8782a613f7bab",
+ "source": "pilot",
+ "source_config": "configs/E3/pilot.yaml",
+ "source_config_hash": "4b7586fe26e2",
+ "source_git_sha": "83a2c4c3c09c592c7c9dafbd59c8003330e6c826",
+ "source_run_id": "20261011-214722-E3-ff49_pilot-4b7586",
+ "stats": {
+  "alpha": 0.05,
+  "calibration": {
+   "grid": [
+    1,
+    5,
+    10,
+    21,
+    42,
+    63,
+    126
+   ],
+   "n_boot": 499,
+   "n_pseudo": 1000
+  },
+  "coverage_min": 0.9,
+  "delta_sr_alt": [
+   0.02,
+   0.05
+  ],
+  "fixed_blocks": [
+   21,
+   63
+  ],
+  "g_star_bp": 10.0,
+  "gamma": "lambda_f",
+  "h3c_solvers": [
+   "tabu",
+   "sa",
+   "ls"
+  ],
+  "n_boot": 4999,
+  "net_bootstrap": {
+   "n_boot": 4999
+  },
+  "net_passes": {
+   "cost_0": "gross",
+   "cost_10": "net",
+   "cost_30": "net30"
+  },
+  "seed": 20261011,
+  "sensitivity_passes": {
+   "lag1": "gross_lag1",
+   "term100": "gross_term100",
+   "term30": "gross_term30"
+  }
+ }
+}

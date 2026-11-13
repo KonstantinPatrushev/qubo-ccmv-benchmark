@@ -1,0 +1,95 @@
+{
+ "experiment": "cif.experiments.e2_benchmark",
+ "inputs": {
+  "eligibility_test": "configs/E2/pilot/eligibility_test.json",
+  "tuned": "configs/E2/pilot/tuned.json"
+ },
+ "launch": {
+  "jobs": 16,
+  "shards": 256,
+  "timing": true
+ },
+ "mode": "full",
+ "name": "bench_factor",
+ "params": {
+  "budget_s": 60.0,
+  "fixed": {
+   "fraction": 0.5,
+   "lam": 5.0
+  },
+  "instances": [
+   {
+    "cell": "C1",
+    "config_size": 100,
+    "eligible": {
+     "cell": "C1",
+     "report": "eligibility_test"
+    },
+    "family": "factor",
+    "n": 100
+   },
+   {
+    "cell": "C2",
+    "config_size": 200,
+    "eligible": {
+     "cell": "C2",
+     "report": "eligibility_test"
+    },
+    "family": "factor",
+    "n": 200
+   },
+   {
+    "cell": "C3",
+    "config_size": 400,
+    "eligible": {
+     "cell": "C3",
+     "report": "eligibility_test"
+    },
+    "family": "factor",
+    "n": 400
+   }
+  ],
+  "methods": {
+   "roles": [
+    "exact_rep",
+    "qubo_rep",
+    "ls",
+    "sa",
+    "tabu",
+    "swap_sa"
+   ],
+   "source": "tuned"
+  },
+  "overrun_tol_rel": 0.05,
+  "seed_role": "test",
+  "skip_nonbinding": true,
+  "solver": {
+   "abs_gap_rel": 1e-06,
+   "abs_gap_safety": 0.5,
+   "mip_gap": 1e-06,
+   "trajectory_tol": 1e-09
+  },
+  "solver_seeds": {
+   "exact": [
+    20000,
+    20001,
+    20002
+   ],
+   "heuristic": [
+    20000,
+    20001,
+    20002,
+    20003,
+    20004,
+    20005,
+    20006,
+    20007,
+    20008,
+    20009
+   ]
+  },
+  "stage": "bench",
+  "warm_up": true
+ },
+ "stream": "E2"
+}

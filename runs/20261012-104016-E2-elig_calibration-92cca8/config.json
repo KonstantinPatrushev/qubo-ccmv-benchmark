@@ -1,0 +1,155 @@
+{
+ "experiment": "cif.experiments.e2_benchmark",
+ "inputs": {
+  "c4_lambda": "configs/E2/pilot/c4_lambda.json",
+  "eligibility_calibration": "configs/E2/pilot/eligibility_calibration.json",
+  "sp500_pit": "data/processed/sp500_pit/provenance.json"
+ },
+ "launch": {
+  "jobs": 16,
+  "shards": 256,
+  "timing": true
+ },
+ "mode": "full",
+ "name": "elig_calibration",
+ "params": {
+  "budget_s": null,
+  "eligibility": {
+   "certificate": "full",
+   "margin": 0.001,
+   "tau": 0.001
+  },
+  "fixed": {
+   "boot_data_dir": "data/processed/sp500_pit",
+   "boot_n": 200,
+   "fraction": 0.5,
+   "lam": 5.0
+  },
+  "instances": [
+   {
+    "cell": "T100",
+    "config_size": 100,
+    "family": "factor",
+    "n": 100,
+    "scan": {
+     "cap": 200,
+     "head": [
+      1000,
+      1001,
+      1002,
+      1003,
+      1004,
+      1005,
+      1006,
+      1007
+     ],
+     "min_nontrivial": 8,
+     "state": "eligibility_calibration",
+     "target": 8,
+     "then_from": 1024
+    }
+   },
+   {
+    "cell": "T200",
+    "config_size": 200,
+    "family": "factor",
+    "n": 200,
+    "scan": {
+     "cap": 200,
+     "head": [
+      1008,
+      1009,
+      1010,
+      1011,
+      1012,
+      1013,
+      1014,
+      1015
+     ],
+     "min_nontrivial": 8,
+     "state": "eligibility_calibration",
+     "target": 8,
+     "then_from": 1024
+    }
+   },
+   {
+    "cell": "T400",
+    "config_size": 400,
+    "family": "factor",
+    "n": 400,
+    "scan": {
+     "cap": 200,
+     "head": [
+      1016,
+      1017,
+      1018,
+      1019,
+      1020,
+      1021,
+      1022,
+      1023
+     ],
+     "min_nontrivial": 8,
+     "state": "eligibility_calibration",
+     "target": 8,
+     "then_from": 1024
+    }
+   },
+   {
+    "cell": "CB200",
+    "config_size": 200,
+    "family": "boot",
+    "n": 200,
+    "scan": {
+     "cap": 200,
+     "head": [
+      1100,
+      1101,
+      1102,
+      1103,
+      1104,
+      1105,
+      1106,
+      1107,
+      1108,
+      1109
+     ],
+     "min_nontrivial": 8,
+     "state": "eligibility_calibration",
+     "target": 10,
+     "then_from": 1110
+    }
+   }
+  ],
+  "methods": {
+   "source": "reference",
+   "spec": {
+    "diag": "mineig",
+    "formulation": "perspective",
+    "id": "ref-scip-persp-mineig",
+    "name": "scip",
+    "usesymmetry": "default"
+   },
+   "time_limit_s": 7200.0
+  },
+  "seed_role": "calibration",
+  "skip_nonbinding": false,
+  "solver": {
+   "abs_gap_rel": 1e-06,
+   "abs_gap_safety": 0.5,
+   "mip_gap": 1e-06,
+   "trajectory_tol": 1e-09
+  },
+  "solver_seeds": {
+   "exact": [
+    10000
+   ],
+   "heuristic": [
+    10000
+   ]
+  },
+  "stage": "eligibility",
+  "warm_up": true
+ },
+ "stream": "E2"
+}

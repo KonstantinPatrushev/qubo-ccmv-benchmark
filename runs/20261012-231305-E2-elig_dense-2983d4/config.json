@@ -1,0 +1,83 @@
+{
+ "experiment": "cif.experiments.e2_benchmark",
+ "inputs": {
+  "eligibility_dense": "configs/E2/pilot/eligibility_dense.json"
+ },
+ "launch": {
+  "jobs": 16,
+  "shards": 256,
+  "timing": true
+ },
+ "mode": "full",
+ "name": "elig_dense",
+ "params": {
+  "budget_s": null,
+  "eligibility": {
+   "certificate": "full",
+   "margin": 0.001,
+   "tau": 0.001
+  },
+  "fixed": {
+   "fraction": 0.5,
+   "lam": 5.0
+  },
+  "instances": [
+   {
+    "cell": "D1_100",
+    "config_size": 100,
+    "family": "dense",
+    "n": 100,
+    "scan": {
+     "cap": 20,
+     "first": 2000,
+     "min_nontrivial": 20,
+     "state": "eligibility_dense",
+     "target": 20
+    }
+   },
+   {
+    "cell": "D1_200",
+    "config_size": 200,
+    "family": "dense",
+    "n": 200,
+    "scan": {
+     "cap": 20,
+     "first": 2000,
+     "min_nontrivial": 20,
+     "state": "eligibility_dense",
+     "target": 20
+    }
+   }
+  ],
+  "methods": {
+   "source": "reference",
+   "spec": {
+    "diag": "mineig",
+    "formulation": "perspective",
+    "id": "ref-scip-persp-mineig",
+    "name": "scip",
+    "usesymmetry": "default"
+   },
+   "time_limit_s": 600.0
+  },
+  "seed_role": "test",
+  "skip_nonbinding": false,
+  "solver": {
+   "abs_gap_rel": 1e-06,
+   "abs_gap_safety": 0.5,
+   "mip_gap": 1e-06,
+   "trajectory_tol": 1e-09
+  },
+  "solver_seeds": {
+   "exact": [
+    20000
+   ],
+   "heuristic": [
+    20000
+   ]
+  },
+  "stage": "eligibility",
+  "warm_up": true
+ },
+ "stream": "E2"
+}

@@ -1,0 +1,60 @@
+{
+ "experiment": "cif.experiments.e3_walkforward",
+ "inputs": {
+  "riskfree_v2": "data/processed/riskfree_v2/provenance.json",
+  "sp500_pit": "data/processed/sp500_pit/provenance.json"
+ },
+ "launch": {
+  "jobs": 16,
+  "shards": 155,
+  "timing": false
+ },
+ "mode": "full",
+ "name": "us_confirmatory",
+ "params": {
+  "arms": [
+   "MV"
+  ],
+  "kbest": {
+   "abs_gap_rel": 1e-06,
+   "boundary_check": true,
+   "card_mode": "eq",
+   "time_limit_s": 600.0,
+   "warm_start": true
+  },
+  "lambda_f": 20.0,
+  "lambdas": null,
+  "market": {
+   "data_dir": "data/processed/sp500_pit",
+   "liquidity_window": 252,
+   "n_universe": 100,
+   "name": "us",
+   "rf_path": "data/processed/riskfree_v2/us_dtb3.parquet",
+   "source": "sp500_pit",
+   "test_days": 21,
+   "train_days": 756,
+   "u": 0.1,
+   "variant": "base"
+  },
+  "n_ranks": 1,
+  "operators": null,
+  "optimum": {
+   "diag": "mineig",
+   "formulation": "perspective",
+   "mip_gap": 1e-06,
+   "time_limit_s": 7200.0
+  },
+  "period": {
+   "end": "2025-12-31",
+   "name": "confirmatory",
+   "start": "2013-01-04"
+  },
+  "seed_role": "test",
+  "solver_seed": 20000,
+  "solvers": null
+ },
+ "seeds": [
+  20000
+ ],
+ "stream": "E3"
+}

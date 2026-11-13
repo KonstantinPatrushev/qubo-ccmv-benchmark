@@ -1,0 +1,77 @@
+# E2, confirmatory step (ANALYSIS_PLAN §12 A1, A3): the SCREENING of the TEST instances of C1-C5 (D1: elig_dense.yaml).
+# Same stage and rule as elig_calibration.yaml, on test seeds (instances 2000-2999, solvers 20000-29999): the cells
+# C1-C3 (factor, N = 100 / 200 / 400, K = floor(s_cont / 2)) and C4 (boot, N = 200, lambda of the C4 rule) scan seeds
+# from 2000 in increasing order until n non-trivial instances (n = the n rule of the pilot, 20-40; every cell starts at
+# 2000: instances of different N or family at one seed are unrelated), at most 400 seeds per cell; C5 is the fixed set
+# of 125 ORLIB points (5 ports x 25 lambda, Σz = K = 10), all screened in one round (the 55 or so points where the
+# constraint does not bind give a `skipped` row at once: RQ2 is about binding instances). A cell with fewer than 20
+# non-trivial instances is descriptive and leaves the pooled estimates of H2 and H2b (as C4 does by the lambda rule,
+# N7); C5 enters them with at least 10 non-trivial binding points in at least 3 ports.
+# Rounds as in elig_calibration.yaml: the state is configs/E2/pilot/eligibility_test.json (stub, then the output of
+# `e2_pilot eligibility`), the targets come from configs/E2/pilot/n_rule.json. The report of the last round holds the
+# estimate of A3 (share of trivial instances with a Wilson interval, g_start in bp CE, t_cert on the trivial ones) and
+# is the input of every later test stage. Needs the pilot (n_rule.json, tuned reports are NOT needed here), a clean
+# tree and the public stamp of the plan; commit the state file after every round.
+#
+# python -m cif.experiments.launch run --config configs/E2/elig_test.yaml --cores 0-31 --pin --out-dir $OUT/...
+stream: E2
+name: elig_test
+experiment: cif.experiments.e2_benchmark
+inputs:
+  eligibility_test: configs/E2/pilot/eligibility_test.json
+  n_rule: configs/E2/pilot/n_rule.json
+  c4_lambda: configs/E2/pilot/c4_lambda.json
+  sp500_pit: data/processed/sp500_pit/provenance.json
+  orlib: data/raw/orlib/provenance.json
+launch: {timing: true, jobs: 16, shards: 256}
+params:
+  stage: eligibility
+  seed_role: test
+  budget_s: null
+  warm_up: true
+  skip_nonbinding: true
+  fixed:
+    lam: 5.0
+    fraction: 0.5
+    boot_data_dir: data/processed/sp500_pit
+    boot_n: 200
+    orlib_dir: data/raw/orlib
+    orlib_k: 10
+    orlib_w_min: 0.01
+    orlib_w_max: 1.0
+    orlib_m: 25
+  solver: {mip_gap: 1.0e-6, abs_gap_rel: 1.0e-6, abs_gap_safety: 0.5, trajectory_tol: 1.0e-9}
+  eligibility: {tau: 1.0e-3, certificate: full, margin: 1.0e-3}
+  solver_seeds: {exact: [20000], heuristic: [20000]}
+  instances:
+    - {cell: C1, family: factor, n: 100, config_size: 100,
+       scan: {first: 2000, cap: 400, target_from: n_rule, min_nontrivial: 20, state: eligibility_test}}
+    - {cell: C2, family: factor, n: 200, config_size: 200,
+       scan: {first: 2000, cap: 400, target_from: n_rule, min_nontrivial: 20, state: eligibility_test}}
+    - {cell: C3, family: factor, n: 400, config_size: 400,
+       scan: {first: 2000, cap: 400, target_from: n_rule, min_nontrivial: 20, state: eligibility_test}}
+    - {cell: C4, family: boot, n: 200, config_size: 200,
+       scan: {first: 2000, cap: 400, target_from: n_rule, min_nontrivial: 20, state: eligibility_test}}
+    - cell: C5
+      family: orlib
+      ports: [1, 2, 3, 4, 5]
+      lam_indices: 25
+      config_size: [{max_n: 100, size: 100}, {size: 200}]
+  methods:
+    source: reference
+    time_limit_s: 7200.0
+    spec: {name: scip, id: ref-scip-persp-mineig, formulation: perspective, diag: mineig, usesymmetry: default}
+smoke:  # calibration seeds only, small instances, 30 s limit: a check of the machinery, not a run
+  inputs:
+    n_rule: configs/E2/smoke/n_rule.json
+  launch: {jobs: 2, shards: 4}
+  params:
+    seed_role: calibration
+    warm_up: false
+    fixed: {boot_n: 30}
+    solver_seeds: {exact: [10000], heuristic: [10000]}
+    instances:
+      - {cell: C1, family: factor, n: 20, seeds: [1000, 1001], config_size: 20}
+      - {cell: C5, family: orlib, ports: [1], lam_indices: [10, 20], config_size: 20}
+    methods:
+      time_limit_s: 30.0

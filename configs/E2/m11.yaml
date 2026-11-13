@@ -1,0 +1,55 @@
+# E2, validation of the exact stack against Bertsimas & Cory-Wright (M11; ANALYSIS_PLAN §2 RQ2 "Валидация бейзлайна" and
+# the §12 entry of 2026-10-17 "Выборы валидации точного стека M11 (до прогона)"): Tables 3 and 4 of the paper, problem (34)
+# on OR-Library port1-5 (n = 31, 85, 89, 98, 225), k in {5, 10, 20}: 15 instances per table.
+#   T3: kappa = 1, no linear constraint, limit 300 s;   SCIP (3 permutation seeds, the median is the value of a cell) and OA
+#   T4: kappa = 0 and mu'x >= rbar (rbar from the rule of the paper), limit 3600 s;   SCIP only (OA has no linear rows)
+# The methods are the exact-class representatives of the pilot, read from tuned.json: SCIP perspective D = lambda_min I,
+# misc/usesymmetry = 0 (`scip-persp-mineig-sym0`, exact_rep of N = 100 and 200) and OA with HiGHS (`oa-highs`, exact_rep of
+# N = 400). No warm start, one thread. Stopping rule: relative gap 1e-4 and absolute gap 1e-6 (the CPLEX defaults the paper
+# used), on the true objective of (34); time = wall clock of the call (build + solve), `budget_s` = the limit.
+#
+# Seed role: calibration (solver seeds 10000-19999). The instances are fixed benchmark files (no instance seeds) and the rows
+# test no hypothesis of the plan: they are a validation with a reported consequence (the median ratio of our times to the best
+# published ones, `e2_analysis m11`), so the test streams 20000-29999, reserved for the confirmatory stages, stay unspent.
+# Timing stage; the numbers of the paper are in `m11_bcw_published.yaml` (input, hashed into the manifest). Hardware is not
+# normalised (their MacBook Pro i9 / CPLEX 12.8 / Mosek 9 against gpu-07, Xeon Silver 4216): the ratios are raw.
+# Needs data/raw/orlib (gitignored; copy it into the bundle) and its provenance.
+#
+# python -m cif.experiments.launch run --config configs/E2/m11.yaml --cores 0-31 --pin --out-dir $OUT/m11
+stream: E2
+name: m11
+experiment: cif.experiments.e2_m11
+threads: 1
+seeds: [10000, 10001, 10002]
+inputs:
+  tuned: configs/E2/pilot/tuned.json
+  orlib: data/raw/orlib/provenance.json
+  published: configs/E2/m11_bcw_published.yaml
+launch: {timing: true, jobs: 16, shards: 105}
+params:
+  stage: m11
+  seed_role: calibration
+  warm_up: true
+  overrun_tol_rel: 0.05
+  orlib_dir: data/raw/orlib
+  ports: [1, 2, 3, 4, 5]
+  ks: [5, 10, 20]
+  solver: {mip_gap: 1.0e-4, abs_gap: 1.0e-6}
+  tables:
+    T3: {kappa: 1.0, time_limit_s: 300.0, methods: [scip, oa]}
+    T4: {kappa: 0.0, time_limit_s: 3600.0, methods: [scip], return_row: true}
+  methods:
+    scip: {size: 100, role: exact_rep}
+    oa: {size: 400, role: exact_rep}
+  solver_seeds:
+    scip: {first: 10000, count: 3}
+    oa: {first: 10000, count: 1}
+smoke:  # port 1, k = 5, both tables, short limits: a check of the machinery, not a run
+  launch: {jobs: 2, shards: 4}
+  params:
+    warm_up: false
+    ports: [1]
+    ks: [5]
+    tables:
+      T3: {kappa: 1.0, time_limit_s: 20.0, methods: [scip, oa]}
+      T4: {kappa: 0.0, time_limit_s: 30.0, methods: [scip], return_row: true}

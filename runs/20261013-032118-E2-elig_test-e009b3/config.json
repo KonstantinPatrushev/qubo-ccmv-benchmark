@@ -1,0 +1,141 @@
+{
+ "experiment": "cif.experiments.e2_benchmark",
+ "inputs": {
+  "c4_lambda": "configs/E2/pilot/c4_lambda.json",
+  "eligibility_test": "configs/E2/pilot/eligibility_test.json",
+  "n_rule": "configs/E2/pilot/n_rule.json",
+  "orlib": "data/raw/orlib/provenance.json",
+  "sp500_pit": "data/processed/sp500_pit/provenance.json"
+ },
+ "launch": {
+  "jobs": 16,
+  "shards": 256,
+  "timing": true
+ },
+ "mode": "full",
+ "name": "elig_test",
+ "params": {
+  "budget_s": null,
+  "eligibility": {
+   "certificate": "full",
+   "margin": 0.001,
+   "tau": 0.001
+  },
+  "fixed": {
+   "boot_data_dir": "data/processed/sp500_pit",
+   "boot_n": 200,
+   "fraction": 0.5,
+   "lam": 5.0,
+   "orlib_dir": "data/raw/orlib",
+   "orlib_k": 10,
+   "orlib_m": 25,
+   "orlib_w_max": 1.0,
+   "orlib_w_min": 0.01
+  },
+  "instances": [
+   {
+    "cell": "C1",
+    "config_size": 100,
+    "family": "factor",
+    "n": 100,
+    "scan": {
+     "cap": 400,
+     "first": 2000,
+     "min_nontrivial": 20,
+     "state": "eligibility_test",
+     "target_from": "n_rule"
+    }
+   },
+   {
+    "cell": "C2",
+    "config_size": 200,
+    "family": "factor",
+    "n": 200,
+    "scan": {
+     "cap": 400,
+     "first": 2000,
+     "min_nontrivial": 20,
+     "state": "eligibility_test",
+     "target_from": "n_rule"
+    }
+   },
+   {
+    "cell": "C3",
+    "config_size": 400,
+    "family": "factor",
+    "n": 400,
+    "scan": {
+     "cap": 400,
+     "first": 2000,
+     "min_nontrivial": 20,
+     "state": "eligibility_test",
+     "target_from": "n_rule"
+    }
+   },
+   {
+    "cell": "C4",
+    "config_size": 200,
+    "family": "boot",
+    "n": 200,
+    "scan": {
+     "cap": 400,
+     "first": 2000,
+     "min_nontrivial": 20,
+     "state": "eligibility_test",
+     "target_from": "n_rule"
+    }
+   },
+   {
+    "cell": "C5",
+    "config_size": [
+     {
+      "max_n": 100,
+      "size": 100
+     },
+     {
+      "size": 200
+     }
+    ],
+    "family": "orlib",
+    "lam_indices": 25,
+    "ports": [
+     1,
+     2,
+     3,
+     4,
+     5
+    ]
+   }
+  ],
+  "methods": {
+   "source": "reference",
+   "spec": {
+    "diag": "mineig",
+    "formulation": "perspective",
+    "id": "ref-scip-persp-mineig",
+    "name": "scip",
+    "usesymmetry": "default"
+   },
+   "time_limit_s": 7200.0
+  },
+  "seed_role": "test",
+  "skip_nonbinding": true,
+  "solver": {
+   "abs_gap_rel": 1e-06,
+   "abs_gap_safety": 0.5,
+   "mip_gap": 1e-06,
+   "trajectory_tol": 1e-09
+  },
+  "solver_seeds": {
+   "exact": [
+    20000
+   ],
+   "heuristic": [
+    20000
+   ]
+  },
+  "stage": "eligibility",
+  "warm_up": true
+ },
+ "stream": "E2"
+}

@@ -1,0 +1,83 @@
+# E2, pilot, step 1 (ANALYSIS_PLAN §12 A1, 2026-10-11): the SCREENING of the CALIBRATION instances. Methods are compared
+# only on instances where the common start does not reach the main target of the time-to-target, g_start > tau = 1e-3;
+# the decision is made here, before any method runs on the instance, from a solution found (non-trivial) or from a
+# dual bound proved (trivial), by SCIP (perspective, mineig) warm-started at the common start; what is neither within
+# the 2 h limit is undecided, excluded and counted. The tuning sets (screen, recheck), the representatives, the n rule
+# and the TTT instances are drawn from the non-trivial ones.
+#
+# A SCAN IN ROUNDS. Each cell scans seeds in increasing order until n non-trivial instances: the seeds of the plan first
+# (factor: 1000-1007 / 1008-1015 / 1016-1023 for N = 100 / 200 / 400; boot: 1100-1109), then, separately for every N,
+# the next ones (factor from 1024, boot from 1110), n = 8 (boot: 10), at most 200 seeds per cell. A round is one
+# registered run of this config; the state it reads is the eligibility report of the rounds so far
+# (configs/E2/pilot/eligibility_calibration.json: a stub before the first round, then the output of
+# `e2_pilot eligibility`), and the cells are the next block of every unfinished scan (size from the share of
+# non-trivial instances seen so far, cif.experiments.e2_eligibility.next_block). The 24 plan instances are already
+# certified (registered run 20261011-211545-E2-ref_calibration-936867, full certificates before any method ran):
+# build the state from that run first (configs/E2/README.md, step 1), so that round 1 starts at seed 1024.
+# A calibration size with fewer than 8 non-trivial instances is descriptive and takes the configurations of the
+# nearest N (A1).
+#
+# certificate: full = the reference run of §5 (limits/absgap = 1e-6*0.5*s_start, to the optimum): the class, the exact
+# g_start and the optimum f* of a non-trivial instance come from one run, so no separate reference stage follows. On
+# trivial instances `tau` (stop as soon as the dual bound is within tau of the start) cost about the same in the
+# measurements of this stage (README); `certificate: tau` is the other level of A1 and then ref_calibration.yaml
+# certifies the selected instances. Timings (t_cert of the trivial instances, A3) are descriptive and taken under
+# the same cap as the timing stages: at most 16 jobs on the shared server, one per physical core.
+#
+# python -m cif.experiments.launch run --config configs/E2/elig_calibration.yaml --cores 0-31 --pin --out-dir $OUT/...
+stream: E2
+name: elig_calibration
+experiment: cif.experiments.e2_benchmark
+inputs:
+  eligibility_calibration: configs/E2/pilot/eligibility_calibration.json
+  c4_lambda: configs/E2/pilot/c4_lambda.json
+  sp500_pit: data/processed/sp500_pit/provenance.json
+launch: {timing: true, jobs: 16, shards: 256}
+params:
+  stage: eligibility
+  seed_role: calibration
+  budget_s: null
+  warm_up: true
+  skip_nonbinding: false
+  fixed: {lam: 5.0, fraction: 0.5, boot_data_dir: data/processed/sp500_pit, boot_n: 200}
+  solver: {mip_gap: 1.0e-6, abs_gap_rel: 1.0e-6, abs_gap_safety: 0.5, trajectory_tol: 1.0e-9}
+  eligibility: {tau: 1.0e-3, certificate: full, margin: 1.0e-3}
+  solver_seeds: {exact: [10000], heuristic: [10000]}
+  instances:
+    - cell: T100
+      family: factor
+      n: 100
+      config_size: 100
+      scan: {head: [1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007], then_from: 1024, cap: 200, target: 8,
+             min_nontrivial: 8, state: eligibility_calibration}
+    - cell: T200
+      family: factor
+      n: 200
+      config_size: 200
+      scan: {head: [1008, 1009, 1010, 1011, 1012, 1013, 1014, 1015], then_from: 1024, cap: 200, target: 8,
+             min_nontrivial: 8, state: eligibility_calibration}
+    - cell: T400
+      family: factor
+      n: 400
+      config_size: 400
+      scan: {head: [1016, 1017, 1018, 1019, 1020, 1021, 1022, 1023], then_from: 1024, cap: 200, target: 8,
+             min_nontrivial: 8, state: eligibility_calibration}
+    - cell: CB200
+      family: boot
+      n: 200
+      config_size: 200
+      scan: {head: [1100, 1101, 1102, 1103, 1104, 1105, 1106, 1107, 1108, 1109], then_from: 1110, cap: 200,
+             target: 10, min_nontrivial: 8, state: eligibility_calibration}
+  methods:
+    source: reference
+    time_limit_s: 7200.0
+    spec: {name: scip, id: ref-scip-persp-mineig, formulation: perspective, diag: mineig, usesymmetry: default}
+smoke:
+  launch: {jobs: 2, shards: 4}
+  params:
+    warm_up: false
+    fixed: {boot_n: 30}
+    instances:
+      - {cell: T20, family: factor, n: 20, seeds: [1000, 1001, 1002], config_size: 20}
+    methods:
+      time_limit_s: 30.0

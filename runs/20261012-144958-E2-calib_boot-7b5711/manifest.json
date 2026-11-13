@@ -1,0 +1,169 @@
+{
+ "run_id": "20261012-144958-E2-calib_boot-7b5711",
+ "stream": "E2",
+ "name": "calib_boot",
+ "config_hash": "7b5711dee204",
+ "git_sha": "58c965ffa6b84a6f8afe222cc166d4f5f1b3a5ca",
+ "git_branch": "stream/E0-engine",
+ "git_available": true,
+ "git_dirty": false,
+ "git_status": [
+  "?? runs/20261012-144958-E2-calib_boot-7b5711/config.json"
+ ],
+ "untracked_code": [],
+ "untracked_code_sha256": {},
+ "code_state_files": [],
+ "code_parts": "",
+ "host": "konstantin-laptop",
+ "cpu": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
+ "threads": {
+  "env": {
+   "OMP_NUM_THREADS": null,
+   "MKL_NUM_THREADS": null,
+   "OPENBLAS_NUM_THREADS": null,
+   "NUMEXPR_NUM_THREADS": null
+  },
+  "cpu_count": 8,
+  "pools": [
+   {
+    "user_api": "blas",
+    "internal_api": "openblas",
+    "num_threads": 8,
+    "version": "0.3.32"
+   },
+   {
+    "user_api": "openmp",
+    "internal_api": "openmp",
+    "num_threads": 8,
+    "version": null
+   }
+  ]
+ },
+ "cpu_governor": "powersave",
+ "machine": {
+  "cpu": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
+  "n_cpus": 8,
+  "affinity": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "governors": {
+   "powersave": 8
+  },
+  "loadavg": [
+   2.98046875,
+   2.423828125,
+   2.1630859375
+  ]
+ },
+ "python": "3.11.15",
+ "packages": {
+  "numpy": "2.1.3",
+  "pandas": "2.2.3",
+  "scipy": "1.14.1",
+  "cvxpy": "1.6.7",
+  "clarabel": "0.11.1",
+  "pyscipopt": "6.1.0",
+  "highspy": "1.13.1",
+  "dwave-samplers": "1.7.0",
+  "dimod": "0.12.21",
+  "qiskit": "2.3.1",
+  "qiskit-aer": "0.17.2",
+  "scikit-learn": "1.5.2",
+  "statsmodels": "0.14.6",
+  "yfinance": "1.2.2",
+  "apimoex": "1.4.0"
+ },
+ "seeds": [],
+ "inputs": {
+  "tuned": {
+   "path": "configs/E2/pilot/tuned.json",
+   "sha256": "af6fbb7f3c5e353ea0efba5e37f37296f2cf0b2b4ffea1c51726b2efc358e58a",
+   "bytes": 244415
+  },
+  "c4_lambda": {
+   "path": "configs/E2/pilot/c4_lambda.json",
+   "sha256": "6251cb596b187260e89bee269fb51f57c5fcb5332a43d1ab1f680345ce17f62d",
+   "bytes": 1299
+  },
+  "eligibility_calibration": {
+   "path": "configs/E2/pilot/eligibility_calibration.json",
+   "sha256": "5c7c3ae9338b367da7909d9103d1b7b5834510f95ef3b4a31f88df0d9fc3d297",
+   "bytes": 118706
+  },
+  "sp500_pit": {
+   "path": "data/processed/sp500_pit/provenance.json",
+   "sha256": "d602d31364a252d39f597a7d0e8cf4da3bce8174874c876ace5ca576751fa5ae",
+   "bytes": 223396
+  }
+ },
+ "notes": "ingested from 30 shard(s)",
+ "started_at": "2026-10-12T11:49:58+00:00",
+ "status": "completed",
+ "mode": "ingested",
+ "bundle_sha": "58c965ffa6b84a6f8afe222cc166d4f5f1b3a5ca",
+ "hosts": [
+  "gpu-07"
+ ],
+ "sessions_unfinished": 0,
+ "cpu_models": [
+  "Intel(R) Xeon(R) Silver 4216 CPU @ 2.10GHz"
+ ],
+ "cpu_governors": [
+  "schedutil"
+ ],
+ "loadavg_start_max": 15.67529296875,
+ "loadavg_end_max": 15.81494140625,
+ "n_sessions": 30,
+ "n_cells": 90,
+ "n_rows_in_shards": 90,
+ "n_duplicates": 0,
+ "n_missing": 0,
+ "n_errors": 0,
+ "shard_inputs_match": true,
+ "shard_files": [
+  "calib_boot_shard0000.jsonl",
+  "calib_boot_shard0001.jsonl",
+  "calib_boot_shard0002.jsonl",
+  "calib_boot_shard0003.jsonl",
+  "calib_boot_shard0004.jsonl",
+  "calib_boot_shard0005.jsonl",
+  "calib_boot_shard0006.jsonl",
+  "calib_boot_shard0007.jsonl",
+  "calib_boot_shard0008.jsonl",
+  "calib_boot_shard0009.jsonl",
+  "calib_boot_shard0010.jsonl",
+  "calib_boot_shard0011.jsonl",
+  "calib_boot_shard0012.jsonl",
+  "calib_boot_shard0013.jsonl",
+  "calib_boot_shard0014.jsonl",
+  "calib_boot_shard0015.jsonl",
+  "calib_boot_shard0016.jsonl",
+  "calib_boot_shard0017.jsonl",
+  "calib_boot_shard0018.jsonl",
+  "calib_boot_shard0019.jsonl",
+  "calib_boot_shard0020.jsonl",
+  "calib_boot_shard0021.jsonl",
+  "calib_boot_shard0022.jsonl",
+  "calib_boot_shard0023.jsonl",
+  "calib_boot_shard0024.jsonl",
+  "calib_boot_shard0025.jsonl",
+  "calib_boot_shard0026.jsonl",
+  "calib_boot_shard0027.jsonl",
+  "calib_boot_shard0028.jsonl",
+  "calib_boot_shard0029.jsonl"
+ ],
+ "finished_at": "2026-10-12T11:49:58+00:00",
+ "loadavg_end": [
+  2.98046875,
+  2.423828125,
+  2.1630859375
+ ],
+ "n_rows": 90
+}

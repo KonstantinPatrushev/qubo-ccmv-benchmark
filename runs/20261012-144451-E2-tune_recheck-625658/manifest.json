@@ -1,0 +1,193 @@
+{
+ "run_id": "20261012-144451-E2-tune_recheck-625658",
+ "stream": "E2",
+ "name": "tune_recheck",
+ "config_hash": "625658cb689f",
+ "git_sha": "6624871e4d239277c075ee28f01606138000defb",
+ "git_branch": "stream/E0-engine",
+ "git_available": true,
+ "git_dirty": false,
+ "git_status": [
+  "?? runs/20261012-144451-E2-tune_recheck-625658/config.json"
+ ],
+ "untracked_code": [],
+ "untracked_code_sha256": {},
+ "code_state_files": [],
+ "code_parts": "",
+ "host": "konstantin-laptop",
+ "cpu": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
+ "threads": {
+  "env": {
+   "OMP_NUM_THREADS": null,
+   "MKL_NUM_THREADS": null,
+   "OPENBLAS_NUM_THREADS": null,
+   "NUMEXPR_NUM_THREADS": null
+  },
+  "cpu_count": 8,
+  "pools": [
+   {
+    "user_api": "blas",
+    "internal_api": "openblas",
+    "num_threads": 8,
+    "version": "0.3.32"
+   },
+   {
+    "user_api": "openmp",
+    "internal_api": "openmp",
+    "num_threads": 8,
+    "version": null
+   }
+  ]
+ },
+ "cpu_governor": "powersave",
+ "machine": {
+  "cpu": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
+  "n_cpus": 8,
+  "affinity": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "governors": {
+   "powersave": 8
+  },
+  "loadavg": [
+   1.7080078125,
+   1.6982421875,
+   1.92724609375
+  ]
+ },
+ "python": "3.11.15",
+ "packages": {
+  "numpy": "2.1.3",
+  "pandas": "2.2.3",
+  "scipy": "1.14.1",
+  "cvxpy": "1.6.7",
+  "clarabel": "0.11.1",
+  "pyscipopt": "6.1.0",
+  "highspy": "1.13.1",
+  "dwave-samplers": "1.7.0",
+  "dimod": "0.12.21",
+  "qiskit": "2.3.1",
+  "qiskit-aer": "0.17.2",
+  "scikit-learn": "1.5.2",
+  "statsmodels": "0.14.6",
+  "yfinance": "1.2.2",
+  "apimoex": "1.4.0"
+ },
+ "seeds": [],
+ "inputs": {
+  "screen": {
+   "path": "configs/E2/pilot/screen.json",
+   "sha256": "40913c3c0d2af8a8b6845c815f50c0186fcfd4f42f9a1f4d09d4173b16cdd05d",
+   "bytes": 220915
+  },
+  "eligibility_calibration": {
+   "path": "configs/E2/pilot/eligibility_calibration.json",
+   "sha256": "5c7c3ae9338b367da7909d9103d1b7b5834510f95ef3b4a31f88df0d9fc3d297",
+   "bytes": 118706
+  }
+ },
+ "notes": "ingested from 64 shard(s)",
+ "started_at": "2026-10-12T11:44:51+00:00",
+ "status": "completed",
+ "mode": "ingested",
+ "bundle_sha": "6624871e4d239277c075ee28f01606138000defb",
+ "hosts": [
+  "gpu-07"
+ ],
+ "sessions_unfinished": 0,
+ "cpu_models": [
+  "Intel(R) Xeon(R) Silver 4216 CPU @ 2.10GHz"
+ ],
+ "cpu_governors": [
+  "schedutil"
+ ],
+ "loadavg_start_max": 19.39404296875,
+ "loadavg_end_max": 19.43701171875,
+ "n_sessions": 64,
+ "n_cells": 936,
+ "n_rows_in_shards": 936,
+ "n_duplicates": 0,
+ "n_missing": 0,
+ "n_errors": 0,
+ "shard_inputs_match": true,
+ "shard_files": [
+  "tune_recheck_shard0000.jsonl",
+  "tune_recheck_shard0001.jsonl",
+  "tune_recheck_shard0002.jsonl",
+  "tune_recheck_shard0003.jsonl",
+  "tune_recheck_shard0004.jsonl",
+  "tune_recheck_shard0005.jsonl",
+  "tune_recheck_shard0006.jsonl",
+  "tune_recheck_shard0007.jsonl",
+  "tune_recheck_shard0008.jsonl",
+  "tune_recheck_shard0009.jsonl",
+  "tune_recheck_shard0010.jsonl",
+  "tune_recheck_shard0011.jsonl",
+  "tune_recheck_shard0012.jsonl",
+  "tune_recheck_shard0013.jsonl",
+  "tune_recheck_shard0014.jsonl",
+  "tune_recheck_shard0015.jsonl",
+  "tune_recheck_shard0016.jsonl",
+  "tune_recheck_shard0017.jsonl",
+  "tune_recheck_shard0018.jsonl",
+  "tune_recheck_shard0019.jsonl",
+  "tune_recheck_shard0020.jsonl",
+  "tune_recheck_shard0021.jsonl",
+  "tune_recheck_shard0022.jsonl",
+  "tune_recheck_shard0023.jsonl",
+  "tune_recheck_shard0024.jsonl",
+  "tune_recheck_shard0025.jsonl",
+  "tune_recheck_shard0026.jsonl",
+  "tune_recheck_shard0027.jsonl",
+  "tune_recheck_shard0028.jsonl",
+  "tune_recheck_shard0029.jsonl",
+  "tune_recheck_shard0030.jsonl",
+  "tune_recheck_shard0031.jsonl",
+  "tune_recheck_shard0032.jsonl",
+  "tune_recheck_shard0033.jsonl",
+  "tune_recheck_shard0034.jsonl",
+  "tune_recheck_shard0035.jsonl",
+  "tune_recheck_shard0036.jsonl",
+  "tune_recheck_shard0037.jsonl",
+  "tune_recheck_shard0038.jsonl",
+  "tune_recheck_shard0039.jsonl",
+  "tune_recheck_shard0040.jsonl",
+  "tune_recheck_shard0041.jsonl",
+  "tune_recheck_shard0042.jsonl",
+  "tune_recheck_shard0043.jsonl",
+  "tune_recheck_shard0044.jsonl",
+  "tune_recheck_shard0045.jsonl",
+  "tune_recheck_shard0046.jsonl",
+  "tune_recheck_shard0047.jsonl",
+  "tune_recheck_shard0048.jsonl",
+  "tune_recheck_shard0049.jsonl",
+  "tune_recheck_shard0050.jsonl",
+  "tune_recheck_shard0051.jsonl",
+  "tune_recheck_shard0052.jsonl",
+  "tune_recheck_shard0053.jsonl",
+  "tune_recheck_shard0054.jsonl",
+  "tune_recheck_shard0055.jsonl",
+  "tune_recheck_shard0056.jsonl",
+  "tune_recheck_shard0057.jsonl",
+  "tune_recheck_shard0058.jsonl",
+  "tune_recheck_shard0059.jsonl",
+  "tune_recheck_shard0060.jsonl",
+  "tune_recheck_shard0061.jsonl",
+  "tune_recheck_shard0062.jsonl",
+  "tune_recheck_shard0063.jsonl"
+ ],
+ "finished_at": "2026-10-12T11:44:51+00:00",
+ "loadavg_end": [
+  1.7080078125,
+  1.6982421875,
+  1.92724609375
+ ],
+ "n_rows": 936
+}

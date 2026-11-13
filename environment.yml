@@ -1,0 +1,50 @@
+# Environment specification (ranges). The exact snapshot the runs were made with is
+# environment.lock.yml (linux-64). Create: conda env create -f environment.yml
+name: cif
+channels:
+  - conda-forge
+  - nodefaults
+
+dependencies:
+  - python=3.11
+  - pip
+  - numpy>=1.26,<2.2
+  - pandas>=2.2,<2.3
+  - pyarrow>=15.0
+  - scipy>=1.13,<1.15
+  - scikit-learn>=1.5,<1.6
+  - statsmodels>=0.14
+  - patsy>=0.5.6  # imported by cif.stats.rq1_models (already pulled in by statsmodels)
+  - cvxpy>=1.5
+  - ecos
+  - highspy
+  - matplotlib>=3.8
+  - seaborn>=0.13
+  - pulp>=2.8
+  - coincbc
+  - requests
+  - python-dotenv
+  - pyyaml
+  - joblib
+  - tqdm
+  - jupyterlab
+  - ipykernel
+  - pytest
+  - ruff
+  - pip:
+      # pip wheels of pyscipopt 6.1 bundle SCIP 10.0 (the version the paper reports)
+      - pyscipopt>=6.0
+      - lxml>=5.0
+      - beautifulsoup4>=4.12
+      - html5lib>=1.1
+      - yfinance>=0.2.40
+      - apimoex>=1.4
+      - dimod>=0.12
+      - dwave-ocean-sdk>=8.0
+      - qiskit>=1.2
+      - qiskit-aer>=0.15
+      - qiskit-ibm-runtime>=0.30
+      - qiskit-optimization>=0.6
+      - python-docx>=1.1  # scripts/build_final_report_docx.py (отчёт ЭПП)
+      # octillion-client (Experiment C on SnowDrop) is not on PyPI; install it from the vendor
+      - -e .

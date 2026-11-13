@@ -1,0 +1,50 @@
+# E2, pilot, step 5 (only if the C4 lambda rule found an admissible lambda, or for the descriptive C4): the three
+# representatives at 60 s on the NON-TRIVIAL calibration instances of C4 (boot, seeds 1100-1109 and then 1110 on, as the
+# scan of elig_calibration.yaml selected them; N = 200, u = 1, lambda from configs/E2/pilot/c4_lambda.json), with the
+# configurations of N = 200 (ANALYSIS_PLAN §3: "ORlib с N > 100 и C4 — конфигурации N = 200"). Gives PI+(60 s) per
+# instance for the n-per-cell rule of C4 (SD of log R and log R_b on the calibration instances of the cell); cell label
+# CB200. A set with fewer than 8 non-trivial instances is descriptive (§12 A1): no cells, and the n rule takes n = 20.
+#   python -m cif.experiments.e2_pilot n-rule --rows <recheck run> <this run> <ref runs> --tuned configs/E2/pilot/tuned.json \
+#       --eligibility configs/E2/pilot/eligibility_calibration.json --out configs/E2/pilot/n_rule.json \
+#       --cell C1=T100:100 --cell C2=T200:200 --cell C3=T400:400 --cell C4=CB200:200
+# Uses the S&P 500 point-in-time panel (calibration seeds only; no strategy is evaluated). Timing stage.
+#
+# python -m cif.experiments.launch run --config configs/E2/calib_boot.yaml --cores 0-31 --pin --out-dir $OUT/...
+stream: E2
+name: calib_boot
+experiment: cif.experiments.e2_benchmark
+inputs:
+  tuned: configs/E2/pilot/tuned.json
+  c4_lambda: configs/E2/pilot/c4_lambda.json
+  eligibility_calibration: configs/E2/pilot/eligibility_calibration.json
+  sp500_pit: data/processed/sp500_pit/provenance.json
+launch: {timing: true, jobs: 16, shards: 30}
+params:
+  stage: calib_boot
+  seed_role: calibration
+  budget_s: 60.0
+  warm_up: true
+  overrun_tol_rel: 0.05
+  skip_nonbinding: false
+  fixed: {lam: 5.0, fraction: 0.5, boot_data_dir: data/processed/sp500_pit, boot_n: 200}
+  solver: {mip_gap: 1.0e-6, abs_gap_rel: 1.0e-6, abs_gap_safety: 0.5, trajectory_tol: 1.0e-9}
+  solver_seeds: {exact: [10003, 10004, 10005], heuristic: [10003, 10004, 10005]}
+  instances:
+    - {cell: CB200, family: boot, n: 200, config_size: 200,
+       eligible: {report: eligibility_calibration, cell: CB200, require_enough: true}}
+  methods: {source: tuned, roles: [exact_rep, qubo_rep, ls]}
+smoke:
+  seeds: [1100, 10003]
+  inputs:
+    tuned: configs/E2/smoke/tuned.json
+    c4_lambda: configs/E2/smoke/c4_lambda.json
+    eligibility_calibration: configs/E2/smoke/eligibility_calibration.json
+  launch: {jobs: 2, shards: 3}
+  params:
+    budget_s: 0.5
+    warm_up: false
+    fixed: {boot_n: 30}
+    instances:
+      - {cell: CB30, family: boot, n: 30, config_size: 20,
+         eligible: {report: eligibility_calibration, cell: CB30, require_enough: true}}
+    solver_seeds: {exact: [10003], heuristic: [10003]}

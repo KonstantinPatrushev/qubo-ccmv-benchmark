@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If you use this code or these results, please cite the paper and this archive."
+title: "QUBO heuristics versus exact and local search methods for cardinality-constrained mean-variance portfolios: a pre-registered anytime benchmark: code, registered runs and analyses"
+authors:
+  - family-names: Avdoshin
+    given-names: Sergey M.
+    orcid: "https://orcid.org/0000-0001-8473-8077"
+    affiliation: "National Research University Higher School of Economics"
+  - family-names: Patrushev
+    given-names: Konstantin A.
+    orcid: "https://orcid.org/0009-0008-0915-5443"
+    affiliation: "National Research University Higher School of Economics"
+license: MIT
+repository-code: "https://github.com/KonstantinPatrushev/qubo-ccmv-benchmark"
+version: 1.0.0

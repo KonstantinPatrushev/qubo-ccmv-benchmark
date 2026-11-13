@@ -1,0 +1,48 @@
+# E1, RQ1: attribution of the gap of the QUBO pipeline to the surrogate (E_form) and to the sampler
+# (E_samp). Smoke grid for the machinery: CALIBRATION seeds only (ANALYSIS_PLAN §3: instances
+# 1000-1999, solvers 10000-19999). There are no test-seed runs while the plan is not frozen.
+#
+# Without --smoke: 3 pairs (N = 16: 1000, 1001; N = 24: 1020) x h in {0.15, 0.45} x 8 sampler
+# configurations x 1 solver seed = 48 cells of about 1 s each, plus the instance-level oracle
+# (certified f*, enumeration of all K-subsets) once per instance. With --smoke: 1 pair, 8 cells.
+#
+# Sampler batches are sized for about 1 s per cell on a busy laptop at N = 16 / 24 (the real timings
+# are in the rows: solve_s, solve_cpu_s). They are NOT equal-time: SA with the objective-scaled beta
+# range rejects almost every proposal and finishes in tenths of a second, tabu needs fewer reads at
+# N = 16 than at N = 24. The final sizes are chosen with the pilot (plan §6).
+# Penalty multipliers are those of cif.qubo.builder.selection_penalty_scale (plan §6: 1, 3, 10, 30, 100).
+stream: E1
+name: attribution_smoke
+experiment: cif.experiments.e1_attribution
+seeds: [1000, 1001, 1020, 10000]   # instance seeds and solver seeds of the grid (checked by cells())
+inputs: {}                          # synthetic instances: no market data is read
+params:
+  seed_role: calibration
+  instances:
+    - {n: 16, pair_seeds: [1000, 1001]}
+    - {n: 24, pair_seeds: [1020]}
+  h_levels: [0.15, 0.45]            # vol_dispersion of the pair (H1a)
+  lam: 5.0
+  w_min: 0.0
+  w_max: 1.0
+  ms: [1, 5, 20, 50, 200]
+  solver_seeds: [10000]
+  scip:                             # certified optimum f* (plan §5): gap 1e-6 relative implies 1e-6 s*
+    formulation: perspective
+    diag: mineig
+    mip_gap: 1.0e-6
+    time_limit_s: 600.0
+    seed: 0
+  samplers:
+    - {name: sa, penalty: [10, 100], beta: [default, objective], num_reads: 1000, num_sweeps: 1000}
+    - {name: tabu, penalty: [10, 100], num_reads: 100, num_restarts: 0, tenure: 5}
+    - {name: swap_sa, cold_ratio: [0.01, 0.2], num_reads: 100, num_sweeps: 700}
+smoke:
+  seeds: [1000, 10000]
+  params:
+    instances:
+      - {n: 16, pair_seeds: [1000]}
+    samplers:
+      - {name: sa, penalty: [10], beta: [default, objective], num_reads: 300, num_sweeps: 200}
+      - {name: tabu, penalty: [10], num_reads: 20, num_restarts: 0, tenure: 5}
+      - {name: swap_sa, cold_ratio: [0.01], num_reads: 40, num_sweeps: 100}

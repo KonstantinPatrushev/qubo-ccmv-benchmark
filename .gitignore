@@ -1,0 +1,17 @@
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+data/raw/
+data/processed/**
+!data/processed/*/
+!data/processed/*/provenance.json
+runs/*/results.jsonl
+paper/*.aux
+paper/*.log
+paper/*.bbl
+paper/*.blg
+paper/*.fls
+paper/*.fdb_latexmk
+paper/*.out
+paper/*.pdf

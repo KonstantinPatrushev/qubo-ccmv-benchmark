@@ -1,0 +1,79 @@
+{
+ "experiment": "cif.experiments.e2_benchmark",
+ "inputs": {
+  "c4_lambda": "configs/E2/pilot/c4_lambda.json",
+  "eligibility_test": "configs/E2/pilot/eligibility_test.json",
+  "sp500_pit": "data/processed/sp500_pit/provenance.json",
+  "tuned": "configs/E2/pilot/tuned.json"
+ },
+ "launch": {
+  "jobs": 16,
+  "shards": 128,
+  "timing": true
+ },
+ "mode": "full",
+ "name": "bench_boot",
+ "params": {
+  "budget_s": 60.0,
+  "fixed": {
+   "boot_data_dir": "data/processed/sp500_pit",
+   "boot_n": 200,
+   "fraction": 0.5,
+   "lam": 5.0
+  },
+  "instances": [
+   {
+    "cell": "C4",
+    "config_size": 200,
+    "eligible": {
+     "cell": "C4",
+     "report": "eligibility_test"
+    },
+    "family": "boot",
+    "n": 200
+   }
+  ],
+  "methods": {
+   "roles": [
+    "exact_rep",
+    "qubo_rep",
+    "ls",
+    "sa",
+    "tabu",
+    "swap_sa"
+   ],
+   "source": "tuned"
+  },
+  "overrun_tol_rel": 0.05,
+  "seed_role": "test",
+  "skip_nonbinding": true,
+  "solver": {
+   "abs_gap_rel": 1e-06,
+   "abs_gap_safety": 0.5,
+   "mip_gap": 1e-06,
+   "trajectory_tol": 1e-09
+  },
+  "solver_seeds": {
+   "exact": [
+    20000,
+    20001,
+    20002
+   ],
+   "heuristic": [
+    20000,
+    20001,
+    20002,
+    20003,
+    20004,
+    20005,
+    20006,
+    20007,
+    20008,
+    20009
+   ]
+  },
+  "stage": "bench",
+  "warm_up": true
+ },
+ "stream": "E2"
+}

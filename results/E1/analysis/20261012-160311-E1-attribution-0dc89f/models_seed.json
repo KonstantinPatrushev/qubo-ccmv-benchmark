@@ -1,0 +1,85 @@
+{
+ "skipped": [],
+ "sa": {
+  "exploratory": true,
+  "exploratory_level": false,
+  "response": "E_samp",
+  "unit": "seed",
+  "formula": "y ~ C(n) + C(h) + C(penalty) * C(beta) * log_m",
+  "n_obs": 80000,
+  "n_groups": 160,
+  "n_missing": 0,
+  "converged": true,
+  "warnings": [],
+  "random_var": 0.4345181940872952,
+  "resid_var": 1.5969978600654324,
+  "icc": 0.21388863415530188,
+  "level": 0.95,
+  "reference": {
+   "penalty": 100,
+   "beta": "default"
+  }
+ },
+ "tabu": {
+  "exploratory": true,
+  "exploratory_level": false,
+  "response": "E_samp",
+  "unit": "seed",
+  "formula": "y ~ C(n) + C(h) + C(penalty) * log_m",
+  "n_obs": 40000,
+  "n_groups": 160,
+  "n_missing": 0,
+  "converged": true,
+  "warnings": [],
+  "random_var": 0.17075825110735188,
+  "resid_var": 0.1476031156362039,
+  "icc": 0.5363661202174066,
+  "level": 0.95,
+  "reference": {
+   "penalty": 100
+  }
+ },
+ "swap_sa": {
+  "exploratory": true,
+  "exploratory_level": false,
+  "response": "E_samp",
+  "unit": "seed",
+  "formula": "y ~ C(n) + C(h) + log_m",
+  "n_obs": 8000,
+  "n_groups": 160,
+  "n_missing": 0,
+  "converged": true,
+  "warnings": [],
+  "random_var": 0.21666997909516464,
+  "resid_var": 0.14670013958234573,
+  "icc": 0.5962790222920297,
+  "level": 0.95,
+  "reference": {
+   "cold_ratio": 0.01
+  }
+ },
+ "swap_sa[cold_ratio=0.2]": {
+  "exploratory": true,
+  "exploratory_level": true,
+  "response": "E_samp",
+  "unit": "seed",
+  "formula": "y ~ C(n) + C(h) + log_m",
+  "n_obs": 8000,
+  "n_groups": 160,
+  "n_missing": 0,
+  "converged": true,
+  "warnings": [
+   "Maximum Likelihood optimization failed to converge. Check mle_retvals",
+   "Random effects covariance is singular",
+   "Retrying MixedLM optimization with lbfgs",
+   "The MLE may be on the boundary of the parameter space."
+  ],
+  "random_var": 9.383550970358077e-35,
+  "resid_var": 0.0076128409727018245,
+  "icc": 1.232595164407831e-32,
+  "level": 0.95,
+  "reference": {
+   "cold_ratio": 0.01
+  }
+ }
+}

@@ -1,0 +1,122 @@
+{
+ "run_id": "20261012-225430-E3-assemble-us_irregular-6318ec",
+ "stream": "E3",
+ "name": "assemble-us_irregular",
+ "config_hash": "6318ec484043",
+ "git_sha": "be21b73e0093727f28e28ddeb579fad12bbf0006",
+ "git_branch": "stream/E0-engine",
+ "git_available": true,
+ "git_dirty": false,
+ "git_status": [
+  " M runs/registry.jsonl",
+  "?? runs/20261012-225410-E3-assemble-us-25f399/config.json",
+  "?? runs/20261012-225410-E3-assemble-us-25f399/days.parquet",
+  "?? runs/20261012-225410-E3-assemble-us-25f399/doses_MV.parquet",
+  "?? runs/20261012-225410-E3-assemble-us-25f399/folds.parquet",
+  "?? runs/20261012-225410-E3-assemble-us-25f399/foldstats_gross.parquet",
+  "?? runs/20261012-225410-E3-assemble-us-25f399/foldstats_gross_lag1.parquet",
+  "?? runs/20261012-225410-E3-assemble-us-25f399/foldstats_gross_term100.parquet",
+  "?? runs/20261012-225410-E3-assemble-us-25f399/foldstats_gross_term30.parquet",
+  "?? runs/20261012-225410-E3-assemble-us-25f399/foldstats_net.parquet",
+  "?? runs/20261012-225410-E3-assemble-us-25f399/foldstats_net30.parquet",
+  "?? runs/20261012-225410-E3-assemble-us-25f399/manifest.json",
+  "?? runs/20261012-225410-E3-assemble-us-25f399/meta.json",
+  "?? runs/20261012-225410-E3-assemble-us-25f399/paths_gross.parquet",
+  "?? runs/20261012-225410-E3-assemble-us-25f399/paths_gross_lag1.parquet",
+  "?? runs/20261012-225410-E3-assemble-us-25f399/paths_gross_term100.parquet",
+  "?? runs/20261012-225410-E3-assemble-us-25f399/paths_gross_term30.parquet",
+  "?? runs/20261012-225410-E3-assemble-us-25f399/paths_net.parquet",
+  "?? runs/20261012-225410-E3-assemble-us-25f399/paths_net30.parquet",
+  "?? runs/20261012-225410-E3-assemble-us-25f399/solvers.parquet",
+  "?? runs/20261012-225430-E3-assemble-us_irregular-6318ec/config.json"
+ ],
+ "untracked_code": [],
+ "untracked_code_sha256": {},
+ "code_state_files": [],
+ "code_parts": "",
+ "host": "konstantin-laptop",
+ "cpu": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
+ "threads": {
+  "env": {
+   "OMP_NUM_THREADS": null,
+   "MKL_NUM_THREADS": null,
+   "OPENBLAS_NUM_THREADS": null,
+   "NUMEXPR_NUM_THREADS": null
+  },
+  "cpu_count": 8,
+  "pools": [
+   {
+    "user_api": "blas",
+    "internal_api": "openblas",
+    "num_threads": 8,
+    "version": "0.3.32"
+   },
+   {
+    "user_api": "openmp",
+    "internal_api": "openmp",
+    "num_threads": 8,
+    "version": null
+   }
+  ]
+ },
+ "cpu_governor": "powersave",
+ "machine": {
+  "cpu": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
+  "n_cpus": 8,
+  "affinity": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "governors": {
+   "powersave": 8
+  },
+  "loadavg": [
+   11.27783203125,
+   18.40234375,
+   16.4169921875
+  ]
+ },
+ "python": "3.11.15",
+ "packages": {
+  "numpy": "2.1.3",
+  "pandas": "2.2.3",
+  "scipy": "1.14.1",
+  "cvxpy": "1.6.7",
+  "clarabel": "0.11.1",
+  "pyscipopt": "6.1.0",
+  "highspy": "1.13.1",
+  "dwave-samplers": "1.7.0",
+  "dimod": "0.12.21",
+  "qiskit": "2.3.1",
+  "qiskit-aer": "0.17.2",
+  "scikit-learn": "1.5.2",
+  "statsmodels": "0.14.6",
+  "yfinance": "1.2.2",
+  "apimoex": "1.4.0"
+ },
+ "seeds": [],
+ "inputs": {
+  "rows": {
+   "path": "runs/20261012-224237-E3-us_sens_irregular-59b241/results.jsonl",
+   "sha256": "464990cdb1431396351e93b8441b6d020e06d0df35c4c1795f3ae860e53f7596",
+   "bytes": 630829
+  }
+ },
+ "notes": "",
+ "started_at": "2026-10-12T19:54:30+00:00",
+ "status": "completed",
+ "mode": "assembly",
+ "finished_at": "2026-10-12T19:54:44+00:00",
+ "loadavg_end": [
+  10.55126953125,
+  17.89208984375,
+  16.28125
+ ],
+ "n_rows": 0
+}

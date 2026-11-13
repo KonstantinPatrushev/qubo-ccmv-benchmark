@@ -1,0 +1,169 @@
+{
+ "run_id": "20261011-205903-E1-pilot_floor-9da201",
+ "stream": "E1",
+ "name": "pilot_floor",
+ "config_hash": "9da2018d5f2c",
+ "git_sha": "2cff55cdf391f922d4e29d2d049253a4caaf7da7",
+ "git_branch": "stream/E0-engine",
+ "git_available": true,
+ "git_dirty": false,
+ "git_status": [
+  "?? runs/20261011-205903-E1-pilot_floor-9da201/config.json"
+ ],
+ "untracked_code": [],
+ "untracked_code_sha256": {},
+ "code_state_files": [],
+ "code_parts": "",
+ "host": "konstantin-laptop",
+ "cpu": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
+ "threads": {
+  "env": {
+   "OMP_NUM_THREADS": null,
+   "MKL_NUM_THREADS": null,
+   "OPENBLAS_NUM_THREADS": null,
+   "NUMEXPR_NUM_THREADS": null
+  },
+  "cpu_count": 8,
+  "pools": [
+   {
+    "user_api": "blas",
+    "internal_api": "openblas",
+    "num_threads": 8,
+    "version": "0.3.32"
+   }
+  ]
+ },
+ "cpu_governor": "powersave",
+ "machine": {
+  "cpu": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
+  "n_cpus": 8,
+  "affinity": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "governors": {
+   "powersave": 8
+  },
+  "loadavg": [
+   4.71826171875,
+   2.29296875,
+   2.1962890625
+  ]
+ },
+ "python": "3.11.15",
+ "packages": {
+  "numpy": "2.1.3",
+  "pandas": "2.2.3",
+  "scipy": "1.14.1",
+  "cvxpy": "1.6.7",
+  "clarabel": "0.11.1",
+  "pyscipopt": "6.1.0",
+  "highspy": "1.13.1",
+  "dwave-samplers": "1.7.0",
+  "dimod": "0.12.21",
+  "qiskit": "2.3.1",
+  "qiskit-aer": "0.17.2",
+  "scikit-learn": "1.5.2",
+  "statsmodels": "0.14.6",
+  "yfinance": "1.2.2",
+  "apimoex": "1.4.0"
+ },
+ "seeds": [
+  1000,
+  1001,
+  1002,
+  1003,
+  1004,
+  1005,
+  1006,
+  1007,
+  1008,
+  1009,
+  1010,
+  1011,
+  1012,
+  1013,
+  1014,
+  1015,
+  1016,
+  1017,
+  1018,
+  1019,
+  1020,
+  1021,
+  1022,
+  1023,
+  1024,
+  1025,
+  1026,
+  1027,
+  1028,
+  1029,
+  1030,
+  1031,
+  1032,
+  1033,
+  1034,
+  1035,
+  1036,
+  1037,
+  1038,
+  1039
+ ],
+ "inputs": {},
+ "notes": "ingested from 16 shard(s)",
+ "started_at": "2026-10-11T17:59:03+00:00",
+ "status": "completed",
+ "mode": "ingested",
+ "bundle_sha": "2cff55cdf391f922d4e29d2d049253a4caaf7da7",
+ "hosts": [
+  "gpu-07"
+ ],
+ "sessions_unfinished": 0,
+ "cpu_models": [
+  "Intel(R) Xeon(R) Silver 4216 CPU @ 2.10GHz"
+ ],
+ "cpu_governors": [
+  "schedutil"
+ ],
+ "loadavg_start_max": 3.03173828125,
+ "loadavg_end_max": 4.150390625,
+ "n_sessions": 16,
+ "n_cells": 80,
+ "n_rows_in_shards": 80,
+ "n_duplicates": 0,
+ "n_missing": 0,
+ "n_errors": 0,
+ "shard_inputs_match": true,
+ "shard_files": [
+  "shard_0.jsonl",
+  "shard_10.jsonl",
+  "shard_11.jsonl",
+  "shard_12.jsonl",
+  "shard_13.jsonl",
+  "shard_14.jsonl",
+  "shard_15.jsonl",
+  "shard_1.jsonl",
+  "shard_2.jsonl",
+  "shard_3.jsonl",
+  "shard_4.jsonl",
+  "shard_5.jsonl",
+  "shard_6.jsonl",
+  "shard_7.jsonl",
+  "shard_8.jsonl",
+  "shard_9.jsonl"
+ ],
+ "finished_at": "2026-10-11T17:59:03+00:00",
+ "loadavg_end": [
+  4.71826171875,
+  2.29296875,
+  2.1962890625
+ ],
+ "n_rows": 80
+}

@@ -1,0 +1,4 @@
+market,n_folds,n_folds_Fk,share_binding,share_lower_bound,n_assets_median,n_assets_min,K_median,depth_median
+ff49,636,636,0.940251572327044,0.9638364779874213,49.0,48,6.0,1.5
+us,155,155,1.0,1.0,100.0,100,11.0,1.5454545454545454
+us_irregular,155,155,1.0,0.9935483870967742,100.0,100,11.0,1.5454545454545454

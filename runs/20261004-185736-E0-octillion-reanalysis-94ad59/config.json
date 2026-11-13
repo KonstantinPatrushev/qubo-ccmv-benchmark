@@ -1,0 +1,13 @@
+{
+ "inputs": [
+  "results/experiment_c_octillion_seed42.json",
+  "results/experiment_c_octillion_seed123.json",
+  "results/experiment_c_octillion_seed7.json"
+ ],
+ "metrics": [
+  "p_valid",
+  "p_opt",
+  "ar_valid",
+  "p_opt_in_S"
+ ]
+}

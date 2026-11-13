@@ -1,0 +1,25 @@
+{
+ "analysis_config": "configs/E3/analysis.yaml",
+ "assembly": {
+  "allow_incomplete": false,
+  "passes": {
+   "gross": {
+    "paths": "core",
+    "tc_bps": 0.0
+   },
+   "net": {
+    "paths": "core",
+    "tc_bps": 10.0
+   }
+  },
+  "workers": 16
+ },
+ "lam": null,
+ "pilot_operators": null,
+ "rows_sha256": "464990cdb1431396351e93b8441b6d020e06d0df35c4c1795f3ae860e53f7596",
+ "source": "us_irregular",
+ "source_config": "configs/E3/us_sens_irregular.yaml",
+ "source_config_hash": "59b2418c0fe5",
+ "source_git_sha": "3b19c7539d5a04ec147fdc35b77892c0199560c6",
+ "source_run_id": "20261012-224237-E3-us_sens_irregular-59b241"
+}

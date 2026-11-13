@@ -1,0 +1,107 @@
+{
+ "run_id": "20261011-232931-E3-pilot-acc916",
+ "stream": "E3",
+ "name": "pilot",
+ "config_hash": "acc9169351f7",
+ "git_sha": "a7eee13cf3ad69805e1956778acba30dea923fc0",
+ "git_branch": "stream/E0-engine",
+ "git_available": true,
+ "git_dirty": false,
+ "git_status": [
+  "?? runs/20261011-232931-E3-pilot-acc916/config.json"
+ ],
+ "untracked_code": [],
+ "untracked_code_sha256": {},
+ "code_state_files": [],
+ "code_parts": "",
+ "host": "konstantin-laptop",
+ "cpu": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
+ "threads": {
+  "env": {
+   "OMP_NUM_THREADS": null,
+   "MKL_NUM_THREADS": null,
+   "OPENBLAS_NUM_THREADS": null,
+   "NUMEXPR_NUM_THREADS": null
+  },
+  "cpu_count": 8,
+  "pools": [
+   {
+    "user_api": "blas",
+    "internal_api": "openblas",
+    "num_threads": 8,
+    "version": "0.3.32"
+   },
+   {
+    "user_api": "openmp",
+    "internal_api": "openmp",
+    "num_threads": 8,
+    "version": null
+   }
+  ]
+ },
+ "cpu_governor": "powersave",
+ "machine": {
+  "cpu": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
+  "n_cpus": 8,
+  "affinity": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "governors": {
+   "powersave": 8
+  },
+  "loadavg": [
+   8.14111328125,
+   7.375,
+   6.421875
+  ]
+ },
+ "python": "3.11.15",
+ "packages": {
+  "numpy": "2.1.3",
+  "pandas": "2.2.3",
+  "scipy": "1.14.1",
+  "cvxpy": "1.6.7",
+  "clarabel": "0.11.1",
+  "pyscipopt": "6.1.0",
+  "highspy": "1.13.1",
+  "dwave-samplers": "1.7.0",
+  "dimod": "0.12.21",
+  "qiskit": "2.3.1",
+  "qiskit-aer": "0.17.2",
+  "scikit-learn": "1.5.2",
+  "statsmodels": "0.14.6",
+  "yfinance": "1.2.2",
+  "apimoex": "1.4.0"
+ },
+ "seeds": [
+  20261011
+ ],
+ "inputs": {
+  "rows": {
+   "path": "runs/20261011-214722-E3-ff49_pilot-4b7586/results.jsonl",
+   "sha256": "55dde6b60ffe3e1e7ef50088d3e1c7e68496d712aabf5baee3c8782a613f7bab",
+   "bytes": 2066448
+  }
+ },
+ "notes": "",
+ "started_at": "2026-10-11T20:29:31+00:00",
+ "status": "completed",
+ "artifacts": [
+  "pilot_report.json"
+ ],
+ "mode": "pilot",
+ "finished_at": "2026-10-11T21:00:51+00:00",
+ "loadavg_end": [
+  4.66748046875,
+  6.4345703125,
+  9.50390625
+ ],
+ "n_rows": 0
+}

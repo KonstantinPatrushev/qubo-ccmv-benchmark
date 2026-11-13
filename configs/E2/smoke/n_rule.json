@@ -1,0 +1,6 @@
+{
+ "kind": "e2-n-rule",
+ "smoke": true,
+ "note": "Hand-written stand-in for the n-per-cell report of the pilot, for --smoke runs of the machinery only.",
+ "n_instances": {"C1": 2, "C2": 2, "C3": 2, "C4": 2}
+}

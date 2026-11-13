@@ -1,0 +1,70 @@
+{
+ "experiment": "cif.experiments.e2_benchmark",
+ "inputs": {
+  "c4_lambda": "configs/E2/pilot/c4_lambda.json",
+  "eligibility_calibration": "configs/E2/pilot/eligibility_calibration.json",
+  "sp500_pit": "data/processed/sp500_pit/provenance.json",
+  "tuned": "configs/E2/pilot/tuned.json"
+ },
+ "launch": {
+  "jobs": 16,
+  "shards": 30,
+  "timing": true
+ },
+ "mode": "full",
+ "name": "calib_boot",
+ "params": {
+  "budget_s": 60.0,
+  "fixed": {
+   "boot_data_dir": "data/processed/sp500_pit",
+   "boot_n": 200,
+   "fraction": 0.5,
+   "lam": 5.0
+  },
+  "instances": [
+   {
+    "cell": "CB200",
+    "config_size": 200,
+    "eligible": {
+     "cell": "CB200",
+     "report": "eligibility_calibration",
+     "require_enough": true
+    },
+    "family": "boot",
+    "n": 200
+   }
+  ],
+  "methods": {
+   "roles": [
+    "exact_rep",
+    "qubo_rep",
+    "ls"
+   ],
+   "source": "tuned"
+  },
+  "overrun_tol_rel": 0.05,
+  "seed_role": "calibration",
+  "skip_nonbinding": false,
+  "solver": {
+   "abs_gap_rel": 1e-06,
+   "abs_gap_safety": 0.5,
+   "mip_gap": 1e-06,
+   "trajectory_tol": 1e-09
+  },
+  "solver_seeds": {
+   "exact": [
+    10003,
+    10004,
+    10005
+   ],
+   "heuristic": [
+    10003,
+    10004,
+    10005
+   ]
+  },
+  "stage": "calib_boot",
+  "warm_up": true
+ },
+ "stream": "E2"
+}

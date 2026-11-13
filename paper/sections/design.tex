@@ -1,0 +1,151 @@
+% sections/design.tex — numbers of results only through \res{}; design constants of the frozen plan carry % num-ok;
+% every claim has a row in paper/CLAIMS.md. Draft for the author's review (plan of sections approved 2026-10-18).
+\section{Experimental design}\label{sec:design}
+
+\subsection{Pre-registration}\label{sec:prereg}
+
+The research questions, hypotheses, instances, metrics, tests and the wording of every outcome were fixed in an
+analysis plan before the pilot runs. The plan was frozen on 8 October 2026, and the SHA-256 of its file received a
+public RFC~3161 timestamp on 11 October 2026, before the first pilot run. Values marked as pilot parameters in the plan
+(the pool size $m_0$ of H1a, the risk aversion of the walk-forward, the equivalence margins, the sampler work of RQ1,
+the class representatives) were chosen on calibration instances and the pilot period by rules written in the plan,
+and recorded before the confirmatory runs. Every later change is a dated entry of a deviation log with its reason and
+the hypotheses it affects; \ref{app:deviations} lists those that bear on the results. Results from earlier
+work, including our earlier paper on the same problem~\cite{avdoshin2026discrete},
+count as exploratory: confirmatory claims rest only
+on new instances, seeds and periods. Calibration and test instances use disjoint seed ranges, and so do the solvers.
+
+\subsection{Instances}\label{sec:instances}
+
+Table~\ref{tab:cells} lists the instance families. The factor family draws $\Sigma$ from a multi-factor model with
+sector factors and idiosyncratic risk and $\mu$ through the factor betas; its parameter $h$ sets the dispersion of
+volatilities (and betas). In C1--C3 the cardinality is half the support of the continuous optimum,
+$K = \lfloor s_{\mathrm{cont}}/2 \rfloor$, so the constraint binds by construction. The S\&P~500 bootstrap (C4) samples a
+month end between 2013 and 2025, takes the 200 constituents with the largest dollar volume on that date, and estimates
+$\mu$ by the sample mean and $\Sigma$ by Ledoit--Wolf shrinkage~\cite{ledoit2004wellconditioned} on a bootstrap of the
+756 preceding trading days. The pre-registered rule for its risk aversion found no admissible value, so C4 is
+descriptive. The OR-Library cell (C5) uses the five problems of Chang et al.~\cite{chang2000heuristics} with their
+constraints and 25 values of $\lambda$ per problem; its cluster is the problem (port). The dense family (D1) is a
+stress test kept from our earlier experiments and is descriptive.
+
+\begin{table}[t]
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{Instance families and cells. $s_{\mathrm{cont}}$: support size of the continuous optimum. Factor, S\&P and
+dense instances have $l = 0$ and $u = 1$.}\label{tab:cells}
+\begin{tabular}{p{0.14\textwidth}p{0.4\textwidth}p{0.13\textwidth}p{0.24\textwidth}} % num-ok: column widths
+\toprule
+Cell & Family & $N$ & $K$ \\
+\midrule
+RQ1 pairs & factor, $h \in \{0.15, 0.45\}$, 80 pairs & 16, 24 & $\lfloor s_{\mathrm{cont}}/2 \rfloor$ clipped to $[3, 8]$, per pair \\ % num-ok: design constants of the plan
+C1, C2, C3 & factor, $\lambda = 5$ & 100, 200, 400 & $\lfloor s_{\mathrm{cont}}/2 \rfloor$ \\
+C4 & S\&P 500 bootstrap, $\lambda = 20$ (descriptive) & 200 & $\lfloor s_{\mathrm{cont}}/2 \rfloor$ \\
+C5 & OR-Library~\cite{chang2000heuristics}, $\mathbf{1}^{\top}z = K$, $\varepsilon = 0.01$, 25 $\lambda$ per port & 31--225 & 10 \\ % num-ok: design constants of the plan
+D1 & dense $\Sigma$ (descriptive) & 100, 200 & $\lceil N/4 \rceil$ \\
+\midrule
+E3 & FF49 industries (primary); S\&P~500 at date, top 100 (US) & 49; 100 & $K_f$ per fold \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Screening of trivial instances} A method comparison is informative only where a method can improve on
+the common start. Before any method runs on a test instance, a reference stage decides whether the common start is
+already within the target, $\hat g_{\mathrm{start}} \le \tau$ (the gap $\hat g$, its scale $s$ and the target
+$\tau = 10^{-3}$ are defined in Section~\ref{sec:metrics}): an instance is non-trivial if a solution better than the
+start by more than $\tau s$ is found, trivial if a dual bound proves the opposite, and undetermined (excluded and
+counted) if neither happens within two hours. The decision is not revisited. Test seeds are scanned in increasing order
+until a cell holds 40 non-trivial instances: the pre-registered sample-size rule asked for more in every cell of the scan,
+so its cap of 40 applied and the planned precision of the cell estimates was not reached. Of the 125 OR-Library points,
+the \res{e2.a3.c5.nscanned} on which the cardinality constraint binds are all screened, and C5 enters the pooled
+estimate if at least 10 non-trivial points come from at least three ports. A cell with fewer than 20 non-trivial instances is descriptive. The share of trivial instances per cell (A3) is
+reported with a Wilson interval.
+
+\subsection{Metrics}\label{sec:metrics}
+
+Gaps are normalised by the scale of the reference solution,
+$\hat g(f) = (f - f_{\mathrm{ref}})/s_{\mathrm{ref}}$ with
+$s_{\mathrm{ref}} = |\mu^{\top}w_{\mathrm{ref}}| + \frac{\lambda}{2} w_{\mathrm{ref}}^{\top}\Sigma w_{\mathrm{ref}} > 0$.
+The reference is the certified optimum where SCIP closes the gap to $10^{-6} s_{\mathrm{ref}}$ within two hours, and the
+best known value over all runs otherwise; its type is reported. The primary measure of RQ2 is the primal
+integral~\cite{berthold2013measuring} after the common start,
+$\mathrm{PI}^{+}(T) = \frac{1}{T}\int_{t_0}^{T} \min(1, \hat g(f_{\mathrm{inc}}(t)))\, dt$ with $T = 60$~s and $t_0$
+the time to build the start: on $[0, t_0)$ every method has the same integrand, which would otherwise pull all ratios
+towards one. Per instance, the value of a representative is the median over its seeds, and
+$R = \mathrm{PI}^{+}(\text{QUBO})/\mathrm{PI}^{+}(\text{exact})$, $R_b = \mathrm{PI}^{+}(\text{QUBO})/\mathrm{PI}^{+}(\text{LS})$.
+Secondary measures are the time to the target $\hat g \le \tau$, end to end and censored at the budget, with
+Kaplan--Meier medians over seeds and $\tau = 10^{-4}$ as a sensitivity; $t_{\mathrm{primal}}$ and the time to the
+certificate of the exact representative; performance profiles~\cite{dolan2002benchmarking}; time-to-target
+curves~\cite{aiex2006ttt}; and the delay to a method's first own solution, measured in cold runs without the common
+start. The sensitivities of the primal integral are the integral over $[0, T]$, the integral counted from a method's
+first improvement of the start, and the cold runs.
+
+\subsection{Tuning, representatives and budgets}\label{sec:tuning}
+
+Each heuristic and the variant of the exact method were tuned by one protocol, a random search over at most 30
+configurations of a pre-registered space: for each heuristic \res{e2.tune.heur.nconfigs} configurations were drawn, while
+the space of the exact class (formulation and symmetry handling) has only \res{e2.tune.exact.n100.nconfigs}
+configurations at $N = 100$ and \res{e2.tune.exact.n200.nconfigs} at larger $N$, all of which were evaluated. Tuning
+used the non-trivial calibration instances of the same $N$ with three seeds; the criterion is the
+median $\mathrm{PI}^{+}$ at 10~s, the winner is rechecked at 60~s, and ties are broken by the time to target. The
+representatives of the classes are the tuned winners: SCIP with the perspective reformulation of
+$D = \lambda_{\min} I$ and without symmetry detection for $N = 100$ and $200$, outer approximation for $N = 400$, swap-SA
+for the QUBO pipeline, and local search; the OR-Library ports and FF49 use the configurations of the nearest $N$.
+Budgets are 60~s end to end in RQ2, 10~s in H1c and, in RQ1, one sampler call whose fixed work was set on the pilot to
+a median of about one second. Heuristics run with 10 seeds per instance and SCIP with three permutation seeds.
+
+All timed runs used one server with two Intel Xeon Silver 4216 processors (32 physical cores) and the pinned
+environment of the code archive. The server is shared, so at most 16 single-threaded jobs ran at once, each pinned to
+a physical core, and the load and the frequency governor were recorded with every run.
+
+\subsection{Statistical analysis}\label{sec:stats}
+
+\paragraph{RQ1} H1a is a one-sided Wilcoxon signed-rank test, stratified by $N$, on the paired differences of
+$E_{\mathrm{form}}(m_0)$ between the two levels of $h$; H1c the same test on the differences of the final gaps of tabu
+search and simulated annealing at 10~s over the non-trivial instances of C1--C3, with differences below
+$10^{-8} s$ treated as zeros. The family $\{$H1a, H1c$\}$ is adjusted by Holm's procedure.
+
+\paragraph{RQ2} The confirmatory estimates of H2 and H2b are the means of $\log R$ and $\log R_b$ over the pooled cells
+with equal cell weights (C5 as the mean over ports of the means over $\lambda$), with 95\% intervals from a stratified % num-ok: confidence level of the plan
+percentile bootstrap (instances within cells, ports in C5; 9999 resamples). The interval is mapped on five outcomes
+against the band of practical equivalence $[1/1.5, 1.5]$: QUBO better (below the band), QUBO worse (above), equivalent % num-ok: equivalence band of the plan
+(inside), direction established but magnitude undetermined (excludes one, crosses an edge of the band), and
+inconclusive. Cells are described with Bonferroni intervals, \res{e2.celllevel.pct}\% per cell and simultaneous 99\% % num-ok: family level of the plan
+over the four pooled cells. The secondary analyses use the same instances and references.
+
+\paragraph{RQ3} The walk-forward uses training windows of 756 trading days, test windows of 21 days and a step of 21
+days; $\mu$ is the sample mean and $\Sigma$ the Ledoit--Wolf estimate, and portfolios are bought and held with drift
+inside the test window, with upper bounds $u = 0.2$ (FF49) and $0.1$ (US), $K_f = \max(\lceil 1/u \rceil + 1, \lfloor % num-ok: design constants of the plan
+s_{\mathrm{cont},f}/2 \rfloor)$ and $\lambda_f = 20$ from the pilot. On every fold the optimum and the next best supports
+are enumerated exactly: rank $k + 1$ is the optimum of the mixed-integer programme with cuts that exclude all supersets
+of the supports of ranks $1, \ldots, k$. The path of rank $r$ holds the portfolio of rank $r$ on every fold of the
+confirmatory period whose ranks are all certified (\res{e3.ff.mv.nfolds} folds on FF49, \res{e3.us.mv.nfolds} on US).
+H3a compares the path of rank 2 with the optimum by a two one-sided test~\cite{schuirmann1987comparison} and a
+two-sided test at $\alpha = 0.05$: for the mean--variance arm on the difference of Sharpe ratios of the excess return % num-ok: significance level of the plan
+before costs, with the margin $\pm\res{e3.ff.mv.margin.high}$ that corresponds to 25~bp of certainty equivalent per % num-ok: smallest effect of interest of the plan
+year; for the minimum-variance arm on the log ratio of variances, with the margin of the same 25~bp. The primary test % num-ok: smallest effect of interest of the plan
+is FF49-MV; FF49-GMV and US-MV are adjusted by Holm's procedure. Intervals come from the studentised circular block
+bootstrap of Ledoit and Wolf~\cite{ledoit2008robust}, joint over all paths of a market and arm, with the block length
+calibrated by their algorithm on the pair of the optimum and rank 2. H3b is the slope of the out-of-sample difference
+on the logarithm of the mean in-sample dose over the ranks $\{2, 3, 5, 9, 17, 33\}$, with a 95\% percentile interval of % num-ok: confidence level of the plan
+the joint bootstrap (4999 resamples). H3c tests whether the losses of real solvers are explained by their in-sample gap
+and is descriptive when fewer than two solvers leave a material gap.
+
+\paragraph{Validation of the exact stack} Our exact representatives solved problem~(34) of Bertsimas and
+Cory-Wright~\cite{bertsimas2022scalable} on the OR-Library problems with $k \in \{5, 10, 20\}$, under the conditions of
+their Tables~3 and~4 (with and without a minimum return, limits of 300 and 3600~s), with the default stopping rule of
+CPLEX that they used (relative gap $10^{-4}$, absolute gap $10^{-6}$), one thread and three SCIP seeds. Per instance we
+divide our median time by the best published time; the plan's rule restricts the conclusions of RQ2 to open-source
+exact methods when the median ratio exceeds 10. The verdict uses SCIP, the exact representative of RQ2 at these sizes.
+
+\subsection{Code, registration and use of AI tools}\label{sec:code}
+
+All experiments ran through one Python package with unit tests, from configuration files. A run is registered with
+its configuration, the commit of the code and the hashes of its inputs, and an analysis reads registered runs only.
+Every reported result (numbers, result tables and figures) is generated by code from registered analyses.
+
+An AI coding assistant (Claude Code, Anthropic) was used in the research process. It drafted the analysis plan from
+the research questions of the authors, which the authors revised and approved before it was frozen; it wrote the code
+of the package, the experiments and the analyses together with several thousand unit tests, ran the experiments and
+registered them; and separate instances of the assistant audited the code, the data and the analyses at the
+checkpoints of the plan, showing each finding with a failing test (the audit reports are in the code archive). The
+authors took the decisions of the deviation log and of the checkpoints and checked the results, and they take
+responsibility for the code and the results.

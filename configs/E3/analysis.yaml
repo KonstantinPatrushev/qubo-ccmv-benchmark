@@ -1,0 +1,97 @@
+# E3, the stages AFTER the cells (docs/ANALYSIS_PLAN.md v2.4 §2 RQ3, §7.1, §7.4; see configs/E3/README.md):
+#   python -m cif.experiments.e3_pilot    --analysis-config configs/E3/analysis.yaml --source pilot
+#   python -m cif.experiments.e3_assemble --analysis-config configs/E3/analysis.yaml --source ff49   (also us, us_irregular;
+#                                         ff49 reads the levels L of the operators from sources.pilot_operators)
+#   python -m cif.experiments.e3_analysis --analysis-config configs/E3/analysis.yaml
+# Each stage is a registered run (stream E3) whose manifest holds the run it was made from and the SHA-256 of its
+# input; the tables go to the directory of the analysis run, not to paper/.
+#
+# Every RUN_ID_* below is a placeholder that stops the stage until the run exists (the id is printed by `ingest`,
+# `e3_assemble`): fill it in, commit the config, then run the stage from the clean tree.
+stream: E3
+name: analysis
+
+# The registered runs of the cells (after `cif.experiments.ingest`), with the config each was made from.
+sources:
+  pilot:
+    config: configs/E3/pilot.yaml
+    run: runs/20261011-214722-E3-ff49_pilot-4b7586
+  # the pilot of the descriptive operators (б), (а): the plan reads their levels L on the PILOT folds, per arm
+  pilot_operators:
+    config: configs/E3/pilot_operators.yaml
+    run: runs/20261012-012232-E3-ff49_pilot_operators-171464
+  ff49:
+    config: configs/E3/ff49.yaml
+    run: runs/20261012-222900-E3-ff49_confirmatory-c6fdd6
+    assembly:
+      # the descriptive operators (б) and (а): L = the levels reached on >= min_share (80 %) of the folds of the
+      # PILOT period, per arm, read from sources.pilot_operators (levels_L: pilot, the default); L_a = {g <= g*};
+      # F_a, F_b = the confirmatory folds where every level of L_a / L is reached. `levels_L: [..]` (both arms)
+      # or `levels_L: {MV: [..], GMV: [..]}` overrides the pilot.
+      operators:
+        arms: [MV, GMV]
+        swap: {min_share: 0.8, g_star_bp: 10.0, levels_L: pilot, passes: [gross, net]}
+        perturb: {min_share: 0.8, g_star_bp: 10.0, levels_L: pilot, passes: [gross, net]}
+  us:
+    config: configs/E3/us.yaml
+    run: runs/20261012-223519-E3-us_confirmatory-0b0bdf
+    assembly:
+      passes:                 # + the terminal return of a delisting: -30 % and -100 % (plan §3, M13)
+        gross: {tc_bps: 0.0, paths: all}
+        net: {tc_bps: 10.0, paths: all}
+        net30: {tc_bps: 30.0, paths: core}
+        gross_lag1: {tc_bps: 0.0, execution_lag: 1, paths: core}
+        gross_term30: {tc_bps: 0.0, terminal_return: -0.3, paths: core}
+        gross_term100: {tc_bps: 0.0, terminal_return: -1.0, paths: core}
+  us_irregular:
+    config: configs/E3/us_sens_irregular.yaml
+    run: runs/20261012-224237-E3-us_sens_irregular-59b241
+    assembly:
+      passes:
+        gross: {tc_bps: 0.0, paths: core}
+        net: {tc_bps: 10.0, paths: core}
+
+# Defaults of `e3_assemble`: the passes of the engine ("до издержек" = tc 0; the main pass 10 bp; sensitivities 30 bp
+# and a one-day execution lag). `paths: all` runs every path, `core` the optimum, rank 2, the ranks of H3b and the
+# solvers. workers: the plan's §12 cap for the shared server is 16 single-thread jobs.
+assembly:
+  workers: 16
+  allow_incomplete: false
+  passes:
+    gross: {tc_bps: 0.0, paths: all}
+    net: {tc_bps: 10.0, paths: all}
+    net30: {tc_bps: 30.0, paths: core}
+    gross_lag1: {tc_bps: 0.0, execution_lag: 1, paths: core}
+
+# The registered runs of `e3_assemble`, for `e3_analysis` (fill in after the three assemblies).
+assemblies:
+  ff49: runs/20261012-222933-E3-assemble-ff49-afc094
+  us: runs/20261012-225410-E3-assemble-us-25f399
+  us_irregular: runs/20261012-225430-E3-assemble-us_irregular-6318ec
+
+# The margins of H3a are the values of the PILOT (plan §2, §12): Delta_SR = SESOI/sigma* (MV and US-MV) and
+# delta = (0.005/lambda_f)/sigma2* (GMV, margin log(1 -+ delta) of the log variance ratio). null = the analysis stops.
+margins:
+  sesoi: 0.0025
+  delta_sr: 0.020794439827411894     # [пилот] §12 2026-10-12
+  delta_var: 0.040799110353205444    # [пилот] §12 2026-10-12
+
+stats:
+  seed: 20261011                  # one seed per test and variant is derived from it (e3_analysis.seed_for)
+  alpha: 0.05
+  n_boot: 4999                    # H3a, H3b, H3c (plan §2: B = 4999)
+  calibration: {grid: [1, 5, 10, 21, 42, 63, 126], n_pseudo: 1000, n_boot: 499}   # LW Algorithm 3.1 (plan §7.4)
+  fixed_blocks: [21, 63]          # sensitivity: fixed blocks (plan §7.4)
+  delta_sr_alt: [0.02, 0.05]      # sensitivity: Delta_SR (plan §2 H3a)
+  g_star_bp: 10.0                 # g*: the share of folds with a rank-2 dose of at most g* is reported
+  h3c_solvers: [tabu, sa, ls]     # SCIP is excluded from H3c (plan §2)
+  coverage_min: 0.9               # US sensitivity: folds whose index members are covered >= 90 % by data
+  net_passes: {cost_0: gross, cost_10: net, cost_30: net30}
+  sensitivity_passes: {lag1: gross_lag1, term30: gross_term30, term100: gross_term100}
+  net_bootstrap: {n_boot: 4999}   # stationary bootstrap of the net differences (plan §7.4)
+  gamma: lambda_f                 # CE with gamma = lambda_f (plan §2)
+
+# The pilot report (e3_pilot): the rule of 70 % and the config whose length the power pilot rescales to.
+pilot:
+  min_binding_share: 0.7
+  confirmatory_config: configs/E3/ff49.yaml

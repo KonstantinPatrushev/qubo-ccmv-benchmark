@@ -1,0 +1,83 @@
+{
+ "experiment": "cif.experiments.e2_m11",
+ "inputs": {
+  "orlib": "data/raw/orlib/provenance.json",
+  "published": "configs/E2/m11_bcw_published.yaml",
+  "tuned": "configs/E2/pilot/tuned.json"
+ },
+ "launch": {
+  "jobs": 16,
+  "shards": 105,
+  "timing": true
+ },
+ "mode": "full",
+ "name": "m11",
+ "params": {
+  "ks": [
+   5,
+   10,
+   20
+  ],
+  "methods": {
+   "oa": {
+    "role": "exact_rep",
+    "size": 400
+   },
+   "scip": {
+    "role": "exact_rep",
+    "size": 100
+   }
+  },
+  "orlib_dir": "data/raw/orlib",
+  "overrun_tol_rel": 0.05,
+  "ports": [
+   1,
+   2,
+   3,
+   4,
+   5
+  ],
+  "seed_role": "calibration",
+  "solver": {
+   "abs_gap": 1e-06,
+   "mip_gap": 0.0001
+  },
+  "solver_seeds": {
+   "oa": {
+    "count": 1,
+    "first": 10000
+   },
+   "scip": {
+    "count": 3,
+    "first": 10000
+   }
+  },
+  "stage": "m11",
+  "tables": {
+   "T3": {
+    "kappa": 1.0,
+    "methods": [
+     "scip",
+     "oa"
+    ],
+    "time_limit_s": 300.0
+   },
+   "T4": {
+    "kappa": 0.0,
+    "methods": [
+     "scip"
+    ],
+    "return_row": true,
+    "time_limit_s": 3600.0
+   }
+  },
+  "warm_up": true
+ },
+ "seeds": [
+  10000,
+  10001,
+  10002
+ ],
+ "stream": "E2",
+ "threads": 1
+}

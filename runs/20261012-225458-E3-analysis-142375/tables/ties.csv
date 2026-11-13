@@ -1,0 +1,5 @@
+market,arm,n_folds_Fk,n_pairs,n_tied_pairs,share_tied_pairs,n_boundary_known,share_boundary_tie
+ff49,MV,636,20352,215,0.010564072327044025,636,0.015723270440251572
+ff49,GMV,636,20352,70,0.0034394654088050316,636,0.0015723270440251573
+us,MV,155,155,0,0.0,155,0.0
+us_irregular,MV,155,155,0,0.0,155,0.0

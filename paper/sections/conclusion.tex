@@ -1,0 +1,31 @@
+% sections/conclusion.tex — numbers only through \res{}; every claim has a row in paper/CLAIMS.md.
+% Draft for the author's review (plan of sections approved 2026-10-18: the answer to each question in one or two
+% sentences); revised after the review r1.
+\section{Conclusion}\label{sec:conclusion}
+
+We compared QUBO-based heuristics with open-source exact solvers and with a local search on the true objective for the
+cardinality-constrained mean--variance problem, in a benchmark whose hypotheses, metrics and tests were fixed before
+the pilot runs.
+
+At $N \le 24$, the equal-weight binary surrogate limits a QUBO pipeline more when the volatilities and betas of the
+assets are more dispersed; an oracle pool of its best subsets removes most of this limit, but the real samplers return
+few distinct subsets per call, and in the frozen tuning space tabu search improved the common start where single-flip
+simulated annealing could not (RQ1). On most factor and OR-Library instances and on a substantial share of the S\&P~500
+instances, the refined solution of the continuous relaxation was already within the target, and on the factor instances
+the gaps that remained were a few basis points of certainty equivalent per year. On the remaining instances a pipeline
+with a cardinality-preserving sampler approached the optimum faster than open-source exact solvers, while pipelines
+with penalty samplers did not; against local search it was faster on the typical factor instance but failed on a
+minority of instances, and local search was faster on average and, in the median over its runs, reached the target
+within the budget on every instance. Since the open-source exact baseline was
+much slower than the best published methods, the advantage over exact methods concerns open-source solvers only,
+although it held under the two alternative open-source baselines we tried (RQ2).
+Out of sample, the best non-optimal support was equivalent to the optimum for minimum-variance portfolios, although the
+out-of-sample variance grew with the in-sample gap along the series of alternatives; for mean--variance portfolios the
+comparison was inconclusive at the power of the study, which is uncertainty rather than evidence that accuracy matters
+(RQ3).
+
+For practice, the evidence supports building the common start first, giving it to an exact solver when a certificate is
+needed, and improving it by a local search on the true objective; a QUBO pipeline needs a sampler that preserves the
+cardinality and a diverse pool to compete, and even then it was less reliable than local search. The open questions are
+those of the limitations: commercial and multi-threaded exact solvers, other QUBO samplers and smaller penalties, and
+the same protocol on quantum hardware.

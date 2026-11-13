@@ -1,0 +1,6 @@
+{
+ "kind": "e2-ttt-instances",
+ "smoke": true,
+ "note": "Hand-written stand-in for the TTT-instance report of the pilot, for --smoke runs of the machinery only.",
+ "instances": [1000, 1001]
+}

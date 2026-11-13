@@ -1,0 +1,125 @@
+{
+ "experiment": "cif.experiments.e3_walkforward",
+ "inputs": {
+  "ff49": "data/processed/ff49/provenance.json"
+ },
+ "launch": {
+  "jobs": 16,
+  "shards": 212,
+  "timing": true
+ },
+ "mode": "full",
+ "name": "ff49_confirmatory",
+ "params": {
+  "arms": [
+   "MV",
+   "GMV"
+  ],
+  "kbest": {
+   "abs_gap_rel": 1e-06,
+   "boundary_check": true,
+   "card_mode": "eq",
+   "time_limit_s": 600.0,
+   "warm_start": true
+  },
+  "lambda_f": 20.0,
+  "lambdas": null,
+  "market": {
+   "data_dir": "data/processed/ff49",
+   "name": "ff49",
+   "source": "ff49",
+   "test_days": 21,
+   "train_days": 756,
+   "u": 0.2
+  },
+  "n_ranks": 32,
+  "operators": {
+   "arms": [
+    "MV",
+    "GMV"
+   ],
+   "perturb": {
+    "levels": [
+     1,
+     2,
+     5,
+     10,
+     25,
+     50,
+     100
+    ],
+    "max_draws": 100000,
+    "n_replicas": 30
+   },
+   "swap": {
+    "levels": [
+     1,
+     2,
+     5,
+     10,
+     25,
+     50,
+     100
+    ],
+    "max_restarts": 10,
+    "max_steps": 200,
+    "n_replicas": 30
+   }
+  },
+  "optimum": {
+   "diag": "mineig",
+   "formulation": "perspective",
+   "mip_gap": 1e-06,
+   "time_limit_s": 7200.0
+  },
+  "period": {
+   "end": "2025-12-31",
+   "name": "confirmatory",
+   "start": "1973-01-01"
+  },
+  "seed_role": "test",
+  "solver_seed": 20000,
+  "solvers": {
+   "arms": [
+    "MV"
+   ],
+   "common_start": true,
+   "ls": {
+    "budget_s": 1.0,
+    "improvement": "first",
+    "num_restarts": 86,
+    "rcl_size": 3
+   },
+   "sa": {
+    "beta": "default",
+    "budget_s": 1.0,
+    "m_b": 20,
+    "num_reads_b": 59,
+    "num_sweeps": 1250,
+    "penalty": 1.0
+   },
+   "scip": {
+    "budget_s": 10.0,
+    "diag": "mineig",
+    "formulation": "perspective",
+    "mip_gap": 1e-06,
+    "scip_params": {
+     "misc/usesymmetry": 0
+    }
+   },
+   "tabu": {
+    "budget_s": 1.0,
+    "m_b": 20,
+    "num_reads_b": 10,
+    "num_restarts_b": 3,
+    "penalty": 1.0,
+    "tenure": 36
+   },
+   "tuned": true
+  }
+ },
+ "seeds": [
+  20000
+ ],
+ "stream": "E3"
+}

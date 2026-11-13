@@ -1,0 +1,102 @@
+# E3, FF49 CONFIRMATORY (docs/ANALYSIS_PLAN.md v2.4 §2 RQ3, §3): the primary market of RQ3. Test windows
+# 1973-01-01 ... 2025-12-31, 636 folds by the calendar of the FF49 dataset of 2026-10-08 (training 756 days, test 21,
+# step 21, u = 0.20, K_f = max(6, floor(s_cont,f/2))), both arms (MV and GMV), test seeds (20000-29999).
+#
+# DO NOT RUN BEFORE:
+#   1. the pilot is done and its values are in §12 of the plan: lambda_f below (null = the grid refuses to build);
+#   2. E2 has tuned the real solvers for N = 100: params.solvers holds them (tuned: false = a full run refuses every cell).
+# The margins of the pilot (Delta_SR, delta) go to configs/E3/analysis.yaml (margins), not here.
+#
+# A cell is (arm, fold): s_cont and K_f; the certified optimum (SCIP to limits/absgap ~ 1e-6*s_ref, up to 2 h); the 32
+# best distinct refined supports (operator (г), ranks 2-33, 600 s per MIQP, plus one MIQP for the tie at the boundary)
+# with doses and weights; the real solvers (в) on the MV arm (SCIP 10 s; tabu, SA, LS 1 s end to end; one run per fold
+# and solver, one common start); the descriptive operators (б) and (а) on both arms. 2 arms x 636 folds = 1272 cells.
+#
+# Run server (plan §12: gpu-07 is shared, at most 16 single-thread jobs, pinned to physical cores):
+#   launch.jobs 16; launch.timing true - the budgets of the real solvers are wall clock, so this is a timing stage and
+#   the launcher holds it to half of the physical cores; launch.shards 212 = 6 cells per shard (3 MV and 3 GMV, folds
+#   212 apart). The number of shards is fixed by the first start of an output directory.
+stream: E3
+name: ff49_confirmatory
+experiment: cif.experiments.e3_walkforward
+seeds: [20000]
+inputs:
+  ff49: data/processed/ff49/provenance.json
+launch: {jobs: 16, shards: 212, timing: true}
+params:
+  seed_role: test
+  solver_seed: 20000
+  market:
+    name: ff49
+    source: ff49
+    data_dir: data/processed/ff49
+    u: 0.20
+    train_days: 756
+    test_days: 21
+  period: {name: confirmatory, start: "1973-01-01", end: "2025-12-31"}
+  arms: [MV, GMV]
+  lambda_f: 20.0              # [пилот] §12 2026-10-12, run 20261011-232931-E3-pilot-acc916
+  lambdas: null
+  n_ranks: 32                 # R = 32: ranks 2-33 in both arms
+  optimum: {time_limit_s: 7200.0, mip_gap: 1.0e-6, formulation: perspective, diag: mineig}
+  kbest: {time_limit_s: 600.0, card_mode: eq, abs_gap_rel: 1.0e-6, warm_start: true, boundary_check: true}
+  # The real solvers (в) are the configurations E2 tuned for N = 100 (plan §2 H3c, §12 2026-10-12 [пилот E2]):
+  # configs/E2/pilot/tuned.json, sizes["100"].roles; tests/test_e3_configs.py checks them against that report.
+  # SCIP <- exact_rep, tabu <- tabu, SA <- sa, LS <- ls (not qubo_rep / swap_sa, not h1c_sa / h1c_tabu). The budgets
+  # (SCIP 10 s, tabu / SA / LS 1 s, end to end), the gap of SCIP and the common start are E3's own, not the report's.
+  solvers:
+    tuned: true               # the parameters below are the tuned ones; false = a full run refuses every cell
+    arms: [MV]                # H3c is FF49-MV only (plan §2)
+    common_start: true        # the common start of plan §5 is in the pool / the warm start of every solver
+    scip:                     # 10 s end to end (plan §2 (в)); exact_rep = scip-persp-mineig-sym0
+      formulation: perspective
+      diag: mineig
+      budget_s: 10.0
+      mip_gap: 1.0e-6
+      scip_params: {misc/usesymmetry: 0}   # usesymmetry 0 of the role: SCIP's symmetry detection does not look at the clock
+    tabu:                     # 1 s end to end; tabu-25
+      budget_s: 1.0
+      num_restarts_b: 3
+      num_reads_b: 10
+      tenure: 36
+      penalty: 1.0
+      m_b: 20
+    sa:                       # 1 s end to end; sa-14
+      budget_s: 1.0
+      num_reads_b: 59
+      num_sweeps: 1250
+      penalty: 1.0
+      beta: default
+      m_b: 20
+    ls:                       # 1 s end to end; ls-24
+      budget_s: 1.0
+      improvement: first
+      num_restarts: 86
+      rcl_size: 3
+  operators:                  # descriptive (plan §2): at most 66 000 refinements per fold and level, no clock
+    arms: [MV, GMV]           # both arms: L is read per arm from the pilot (orchestrator, 2026-10-12)
+    swap: {levels: [1, 2, 5, 10, 25, 50, 100], n_replicas: 30, max_steps: 200, max_restarts: 10}
+    perturb: {levels: [1, 2, 5, 10, 25, 50, 100], n_replicas: 30, max_draws: 100000}
+# --smoke: a synthetic factor-model market (no FF49 data is read); placeholders are allowed in a smoke run
+smoke:
+  seeds: [10000]
+  launch: {jobs: 2, shards: 4, timing: true}
+  params:
+    seed_role: calibration
+    solver_seed: 10000
+    market: {name: synthetic, source: synthetic, n_assets: 12, n_days: 300, seed: 1000, start: "2000-01-03",
+             u: 0.34, train_days: 60, test_days: 5, gap_fraction: 0.0}
+    period: {name: confirmatory, start: "2000-06-01", end: "2000-07-15"}
+    lambda_f: 5.0
+    n_ranks: 3
+    optimum: {time_limit_s: 60.0}
+    kbest: {time_limit_s: 60.0}
+    solvers:
+      tuned: true
+      scip: {budget_s: 3.0}
+      tabu: {budget_s: 0.3, num_restarts_b: 2, num_reads_b: 2, tenure: 3, m_b: 20}
+      sa: {budget_s: 0.3, num_reads_b: 20, num_sweeps: 50, m_b: 20}
+      ls: {budget_s: 0.3}
+    operators:
+      swap: {levels: [10, 500], n_replicas: 3, max_steps: 60, max_restarts: 3}
+      perturb: {levels: [10, 500], n_replicas: 3, max_draws: 2000}

@@ -1,0 +1,4 @@
+key,solver,descriptive_h3c,iut_passes,reason,dose_bp,median_gap_bp,inside_range,observed,predicted,residual,ci_tost_low,ci_tost_high,equivalent,rank_1,rank_2_5,rank_6_33,rank_gt33
+ff49-MV,tabu,True,,fewer than two solvers with a median gap of at least 1 bp (0 of 3): H3c is descriptive,6.000664075646769,0.0,False,,,,,,,0.7122641509433962,0.2138364779874214,0.05660377358490566,0.01729559748427673
+ff49-MV,sa,True,,fewer than two solvers with a median gap of at least 1 bp (0 of 3): H3c is descriptive,6.758701618877513,0.0,False,,,,,,,0.7012578616352201,0.21855345911949686,0.059748427672955975,0.020440251572327043
+ff49-MV,ls,True,,fewer than two solvers with a median gap of at least 1 bp (0 of 3): H3c is descriptive,9.870467476202625e-11,0.0,False,,,,,,,1.0,0.0,0.0,0.0

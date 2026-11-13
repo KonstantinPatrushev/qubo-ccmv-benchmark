@@ -1,0 +1,48 @@
+# E2, confirmatory (H1c, held-out replication, ANALYSIS_PLAN §2, §6, §7.1; §12 A5): tabu against SA at EQUAL budget (10 s
+# end-to-end) and EQUAL tuning (30 configurations each, criterion: the median final gap at 10 s; roles h1c_sa and
+# h1c_tabu of configs/E2/pilot/tuned.json), 10 seeds, on the NON-TRIVIAL test instances of C1-C3 that the finished test scan
+# selected (the same instances as bench_factor.yaml; §12 A1). The result is the incumbent at 10 s (row field `f_at_budget`,
+# median over the 10 seeds per instance); the test (one-sided signed ranks of F_tabu - F_SA in units of the scale, strata N,
+# differences within 1e-8·s* dropped as zeros before ranking, A5) is `python -m cif.experiments.e2_analysis h1c` and
+# needs no certificate. ORlib in H1c is descriptive (exploratory) and is not in this config. TEST seeds. Clean tree,
+# after the pilot.
+# NOTE for Methods: the tabu pipeline of E2 reads 10 reads per batch in every configuration (num_reads_b = 10 is not in
+# the tuning space), whereas the exploratory configuration behind H1c had 200: H1c repeats the direction of that
+# finding, not its configuration.
+#
+# python -m cif.experiments.launch run --config configs/E2/h1c.yaml --cores 0-31 --pin --out-dir $OUT/...
+stream: E2
+name: h1c
+experiment: cif.experiments.e2_benchmark
+inputs:
+  tuned: configs/E2/pilot/tuned.json
+  eligibility_test: configs/E2/pilot/eligibility_test.json
+launch: {timing: true, jobs: 16, shards: 128}
+params:
+  stage: h1c
+  seed_role: test
+  budget_s: 10.0
+  warm_up: true
+  overrun_tol_rel: 0.05
+  skip_nonbinding: true
+  fixed: {lam: 5.0, fraction: 0.5}
+  solver: {mip_gap: 1.0e-6, abs_gap_rel: 1.0e-6, abs_gap_safety: 0.5, trajectory_tol: 1.0e-9}
+  solver_seeds:
+    heuristic: [20000, 20001, 20002, 20003, 20004, 20005, 20006, 20007, 20008, 20009]
+  instances:
+    - {cell: C1, family: factor, n: 100, config_size: 100, eligible: {report: eligibility_test, cell: C1}}
+    - {cell: C2, family: factor, n: 200, config_size: 200, eligible: {report: eligibility_test, cell: C2}}
+    - {cell: C3, family: factor, n: 400, config_size: 400, eligible: {report: eligibility_test, cell: C3}}
+  methods: {source: tuned, roles: [h1c_sa, h1c_tabu]}
+smoke:  # calibration seeds only, a 20-asset instance, 0.5 s: a check of the machinery, not a run
+  inputs:
+    tuned: configs/E2/smoke/tuned.json
+    eligibility_test: configs/E2/smoke/eligibility_test.json
+  launch: {jobs: 2, shards: 4}
+  params:
+    seed_role: calibration
+    budget_s: 0.5
+    warm_up: false
+    solver_seeds: {heuristic: [10010, 10011]}
+    instances:
+      - {cell: C1, family: factor, n: 20, config_size: 20, eligible: {report: eligibility_test, cell: C1}}

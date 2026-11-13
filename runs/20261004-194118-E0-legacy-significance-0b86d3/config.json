@@ -1,0 +1,31 @@
+{
+ "n_boot": 4999,
+ "n_pseudo": 200,
+ "pairs": [
+  [
+   "tabu_sa",
+   "scip_miqp"
+  ],
+  [
+   "neal_sa",
+   "scip_miqp"
+  ],
+  [
+   "scip_miqp",
+   "equal_weight"
+  ],
+  [
+   "continuous_mvo",
+   "equal_weight"
+  ],
+  [
+   "tabu_sa",
+   "equal_weight"
+  ]
+ ],
+ "seed": 20261004,
+ "source_run": "20261004-185703-E0-legacy-delta-6e82b7",
+ "status": "exploratory",
+ "units": "percent daily returns",
+ "variant": "traded_rf0"
+}

@@ -1,0 +1,27 @@
+{
+  "title": "QUBO heuristics versus exact and local search methods for cardinality-constrained mean-variance portfolios: a pre-registered anytime benchmark: code, registered runs and analyses",
+  "upload_type": "software",
+  "description": "Code, configurations, pre-registered analysis plan, registered runs and analyses of the paper \"QUBO heuristics versus exact and local search methods for cardinality-constrained mean-variance portfolios: a pre-registered anytime benchmark\" by S. M. Avdoshin and K. A. Patrushev. Code under the MIT licence; runs, analyses, tables and figures under CC BY 4.0.",
+  "creators": [
+    {
+      "name": "Avdoshin, Sergey M.",
+      "affiliation": "National Research University Higher School of Economics",
+      "orcid": "0000-0001-8473-8077"
+    },
+    {
+      "name": "Patrushev, Konstantin A.",
+      "affiliation": "National Research University Higher School of Economics",
+      "orcid": "0009-0008-0915-5443"
+    }
+  ],
+  "license": "mit",
+  "access_right": "open",
+  "keywords": [
+    "portfolio optimization",
+    "cardinality constraints",
+    "QUBO",
+    "local search",
+    "anytime benchmarking",
+    "pre-registration"
+  ]
+}

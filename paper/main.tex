@@ -1,0 +1,120 @@
+% main.tex — manuscript for Computers & Operations Research (Elsevier, class elsarticle).
+% Numbers only through \res{<key>} (generated/numbers.tex, scripts/paper_numbers.py); claims — paper/CLAIMS.md;
+% references — refs.bib, verified by tools/lit/verify_bib.py. Build: latexmk -pdf main.tex (from paper/).
+\documentclass[preprint,12pt]{elsarticle}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\input{cif-macros}
+
+\journal{Computers \& Operations Research}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{QUBO heuristics versus exact and local search methods for cardinality-constrained mean--variance portfolios:
+a pre-registered anytime benchmark}
+
+% Authors as in the earlier study (user, 2026-11-04: the citation block of Proc. ISP RAS 2026, 38(4)); affiliation,
+% e-mails as printed there. Corresponding author: the submitting author (default, to be confirmed). ORCIDs go into the
+% submission system: S. M. Avdoshin 0000-0001-8473-8077, K. A. Patrushev 0009-0008-0915-5443.
+\author[hse]{Sergey M. Avdoshin}
+\ead{savdoshin@hse.ru}
+\author[hse]{Konstantin A. Patrushev\corref{cor}}
+\ead{kapatrushev@edu.hse.ru}
+\cortext[cor]{Corresponding author.}
+\affiliation[hse]{organization={National Research University Higher School of Economics},
+            addressline={20 Myasnitskaya st.},
+            city={Moscow},
+            postcode={101000},
+            country={Russia}}
+
+\begin{abstract}
+Cardinality-constrained mean--variance portfolio selection is a standard test case for QUBO heuristics, but their
+comparisons with classical methods often rest on weak baselines, on the optimum of the binary surrogate as reference
+and on instances where the cardinality constraint may not bind. We report a
+pre-registered anytime benchmark of tuned QUBO pipelines (a sampler on the binary surrogate followed by convex
+refinement of the weights), open-source exact solvers and a local search on the true objective, all started from the
+same refined continuous relaxation, with equal budgets and one tuning protocol. That start was already
+within the target on \res{e2.a3.factor.min.pct}--\res{e2.a3.factor.max.pct}\% of the synthetic factor instances, where
+the remaining gaps were at most \res{e2.a3.c2.gstart.max.bp}~bp of certainty equivalent per year. On the non-trivial
+instances, the pipeline with a cardinality-preserving sampler approached the optimum faster than the open-source exact
+solvers (ratio of primal integrals \res{e2.h2}, \res{e2.level.pct}\% CI \res{e2.h2.ci.low}--\res{e2.h2.ci.high}),
+whereas pipelines with penalty samplers did not. Against local search it was faster on the typical factor instance but
+failed on a minority of instances, and local search was faster on average (\res{e2.h2b},
+\res{e2.h2b.ci.low}--\res{e2.h2b.ci.high}). Real samplers returned few distinct subsets per call, so their pools
+recovered less of the surrogate's loss than an oracle pool. Our
+exact solver needed in the median \res{e2.m11.t3.scip.median} and \res{e2.m11.t4.scip.median} times the best published
+times, so the first result concerns open-source solvers. Out of sample, on 49 industry portfolios, the best non-optimal
+support was equivalent to the optimum for minimum-variance portfolios; for mean--variance portfolios the comparison was
+inconclusive.
+\end{abstract}
+
+\begin{keyword}
+portfolio optimization \sep cardinality constraints \sep QUBO \sep local search \sep anytime benchmarking \sep
+pre-registration
+\end{keyword}
+
+\end{frontmatter}
+
+\input{sections/introduction}
+\input{sections/related}
+\input{sections/methods}
+\input{sections/design}
+\input{sections/results}
+\input{sections/discussion}
+\input{sections/conclusion}
+\input{sections/appendix}
+
+\section*{Data and code availability}
+The code, the configuration files, the registry of runs, the analysis outputs from which every number, table and figure
+of this paper is generated, and the frozen analysis plan with its RFC~3161 timestamp are available at
+\url{https://github.com/KonstantinPatrushev/qubo-ccmv-benchmark} (code under the MIT licence, results under CC BY 4.0) % num-ok: licence name
+and archived on Zenodo, \todo{Zenodo DOI}. The OR-Library problems are public~\cite{beasley1990orlibrary}. The 49 industry
+portfolios and their risk-free rate come from the data library of Kenneth
+French\footnote{\url{https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html}}, and the US
+risk-free rate is the series DTB3 of FRED\footnote{\url{https://fred.stlouisfed.org/series/DTB3}}. The membership of
+the S\&P~500 was reconstructed from public Wikipedia pages, and prices and volumes were downloaded from Yahoo Finance;
+these data are not redistributed, and the archive contains the code that downloads and builds them and the hashes of
+the files used.
+
+\section*{CRediT authorship contribution statement}
+\textbf{Sergey M. Avdoshin:} Conceptualization, Supervision, Writing -- review \& editing.
+\textbf{Konstantin A. Patrushev:} Conceptualization, Methodology, Software, Validation, Formal analysis, Investigation,
+Data curation, Writing -- original draft, Visualization.
+
+\section*{Declaration of competing interest}
+The authors declare that they have no known competing financial interests or personal relationships that could have
+appeared to influence the work reported in this paper.
+
+\section*{Acknowledgements}
+% Reporting rules of the HSE supercomputer (hpc.hse.ru/users/report, read 2026-11-04): the required phrase and the
+% optional reference to the counter article. The runs of this paper were on another server (Section 4.4); the earlier
+% study it builds on was computed in part on the HSE supercomputer (its own acknowledgement), hence the scope.
+The supercomputer of HSE University~\cite{kostenetskiy2026high} was used to conduct the computational research of the
+earlier study on which this work builds~\cite{avdoshin2026discrete}.
+
+\section*{Funding}
+This research did not receive any specific grant from funding agencies in the public, commercial, or not-for-profit
+sectors.
+
+\section*{Declaration of generative AI and AI-assisted technologies in the manuscript preparation process}
+% Elsevier's template statement (policy page, read 2026-10-19); purposes from docs/AI_USE.md. The second sentence
+% becomes true only after the authors' own revision of the drafts — confirm before submission.
+During the preparation of this work, the authors used Claude Code (Anthropic) in order to search and screen the
+literature, to draft sections of the text from the authors' outline and the registered results, and to check the
+consistency of the text with the results and the references. After using this tool, the authors reviewed and edited
+the content as needed and take full responsibility for the content of the published article. The use of the same tool
+for code and analysis is described in Section~\ref{sec:code}. % accepted by the authors 2026-11-04; true at submission
+
+\bibliographystyle{elsarticle-num}
+\bibliography{refs}
+
+\end{document}

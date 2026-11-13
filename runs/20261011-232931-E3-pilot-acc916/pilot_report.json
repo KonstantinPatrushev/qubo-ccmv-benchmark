@@ -1,0 +1,142 @@
+{
+ "stage": "E3 pilot",
+ "created_at": "2026-10-11T21:00:51+00:00",
+ "plan": {
+  "version": "v2.4",
+  "sections": "§3 (λ_f), §2 H3a (Δ_SR, δ), §7.4 (power pilot), §12"
+ },
+ "market": "ff49",
+ "period": {
+  "name": "pilot",
+  "start": "1963-07-01",
+  "end": "1972-12-31"
+ },
+ "n_folds": 112,
+ "n_folds_Fk": 112,
+ "fold_sets": {
+  "MV": {
+   "n_included": 112,
+   "n_excluded": 0,
+   "n_excluded_optimum": 0,
+   "n_excluded_degenerate": 0,
+   "n_excluded_rank": 0
+  },
+  "GMV": {
+   "n_included": 112,
+   "n_excluded": 0,
+   "n_excluded_optimum": 0,
+   "n_excluded_degenerate": 0,
+   "n_excluded_rank": 0
+  },
+  "common": {
+   "n_included": 112,
+   "n_excluded": 0,
+   "n_excluded_optimum": 0,
+   "n_excluded_degenerate": 0,
+   "n_excluded_rank": 0
+  }
+ },
+ "lambda_f": 20.0,
+ "lambda_rule": {
+  "candidates": [
+   5.0,
+   10.0,
+   20.0
+  ],
+  "min_share": 0.7,
+  "u": 0.2,
+  "floor_K": 6,
+  "binding_share": {
+   "5.0": 0.25,
+   "10.0": 0.5892857142857143,
+   "20.0": 0.8214285714285714
+  },
+  "n_folds": {
+   "5.0": 112,
+   "10.0": 112,
+   "20.0": 112
+  },
+  "n_binding": {
+   "5.0": 28,
+   "10.0": 66,
+   "20.0": 92
+  },
+  "n_cells": {
+   "5.0": 112,
+   "10.0": 112,
+   "20.0": 112
+  },
+  "lambda_f": 20.0,
+  "fallback": false
+ },
+ "regime": {
+  "share_binding": 0.8214285714285714,
+  "share_lower_bound": 1.0,
+  "K_median": 6.0
+ },
+ "margins": {
+  "lambda_f": 20.0,
+  "sesoi": 0.0025,
+  "n_days": 2352,
+  "sigma_star": 0.12022444560898535,
+  "delta_sr": 0.020794439827411894,
+  "sigma2_star": 0.006127584592793906,
+  "delta_var": 0.040799110353205444,
+  "margin_log_variance": [
+   -0.04165474778094475,
+   0.039988793443699995
+  ],
+  "delta_var_error": null
+ },
+ "power": {
+  "confirmatory_days": 13356,
+  "MV": {
+   "rho": 0.991037107408026,
+   "n_days": 2352,
+   "functional": "sharpe",
+   "block": 10,
+   "block_source": "calibration",
+   "estimate": 0.010613407753258454,
+   "se": 0.04598251802211353,
+   "ci_tost": [
+    -0.06526761661292321,
+    0.08649443211944013
+   ],
+   "halfwidth_pilot": 0.07588102436618167,
+   "halfwidth_confirmatory": 0.031842975198385054,
+   "margin_halfwidth": 0.020794439827411894,
+   "expected_inconclusive": true,
+   "outcome_pilot": "inconclusive"
+  },
+  "GMV": {
+   "rho": 0.9731663115687834,
+   "n_days": 2352,
+   "functional": "logvar",
+   "block": 1,
+   "block_source": "calibration",
+   "estimate": 0.021135859119898015,
+   "se": 0.011389517808369196,
+   "ci_tost": [
+    0.0022739857809589356,
+    0.039997732458837094
+   ],
+   "halfwidth_pilot": 0.01886187333893908,
+   "halfwidth_confirmatory": 0.007915261686880948,
+   "margin_halfwidth": 0.039988793443699995,
+   "expected_inconclusive": false,
+   "outcome_pilot": "inconclusive"
+  }
+ },
+ "yaml": {
+  "lambda_f": 20.0,
+  "margins": {
+   "delta_sr": 0.020794439827411894,
+   "delta_var": 0.040799110353205444
+  }
+ },
+ "section_12_draft": "2026-10-12 — [пилот] E3 (FF49, пилотный период): λ_f = 20; σ* = 0.1202, Δ_SR = 0.0208; σ²_* = 0.00613, δ = 0.0408; ρ(ранг 2, оптимум) = 0.9910, полуширина 90 % ДИ пересчитана на подтверждение = 0.0318 против Δ_SR (исход «неопределённо» ожидаем) — значения заданы правилами плана, не подбирались по исходам — H3a, H3b, H3c — согласовал: (указать)",
+ "source_run_id": "20261011-214722-E3-ff49_pilot-4b7586",
+ "rows_sha256": "55dde6b60ffe3e1e7ef50088d3e1c7e68496d712aabf5baee3c8782a613f7bab",
+ "source_config_hash": "4b7586fe26e2",
+ "source_git_sha": "83a2c4c3c09c592c7c9dafbd59c8003330e6c826"
+}

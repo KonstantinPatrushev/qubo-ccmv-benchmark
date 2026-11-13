@@ -1,0 +1,166 @@
+{
+ "run_id": "20261012-231305-E2-elig_dense-2983d4",
+ "stream": "E2",
+ "name": "elig_dense",
+ "config_hash": "2983d494ca76",
+ "git_sha": "cd7544ee865c7780869e4f455a370e1a614d9d2c",
+ "git_branch": "stream/E0-engine",
+ "git_available": true,
+ "git_dirty": false,
+ "git_status": [
+  "?? runs/20261012-225458-E3-analysis-142375/config.json",
+  "?? runs/20261012-225458-E3-analysis-142375/manifest.json",
+  "?? runs/20261012-231305-E2-elig_dense-2983d4/config.json"
+ ],
+ "untracked_code": [],
+ "untracked_code_sha256": {},
+ "code_state_files": [],
+ "code_parts": "",
+ "host": "konstantin-laptop",
+ "cpu": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
+ "threads": {
+  "env": {
+   "OMP_NUM_THREADS": null,
+   "MKL_NUM_THREADS": null,
+   "OPENBLAS_NUM_THREADS": null,
+   "NUMEXPR_NUM_THREADS": null
+  },
+  "cpu_count": 8,
+  "pools": [
+   {
+    "user_api": "blas",
+    "internal_api": "openblas",
+    "num_threads": 8,
+    "version": "0.3.32"
+   },
+   {
+    "user_api": "openmp",
+    "internal_api": "openmp",
+    "num_threads": 8,
+    "version": null
+   }
+  ]
+ },
+ "cpu_governor": "powersave",
+ "machine": {
+  "cpu": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
+  "n_cpus": 8,
+  "affinity": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "governors": {
+   "powersave": 8
+  },
+  "loadavg": [
+   2.806640625,
+   2.2978515625,
+   6.17919921875
+  ]
+ },
+ "python": "3.11.15",
+ "packages": {
+  "numpy": "2.1.3",
+  "pandas": "2.2.3",
+  "scipy": "1.14.1",
+  "cvxpy": "1.6.7",
+  "clarabel": "0.11.1",
+  "pyscipopt": "6.1.0",
+  "highspy": "1.13.1",
+  "dwave-samplers": "1.7.0",
+  "dimod": "0.12.21",
+  "qiskit": "2.3.1",
+  "qiskit-aer": "0.17.2",
+  "scikit-learn": "1.5.2",
+  "statsmodels": "0.14.6",
+  "yfinance": "1.2.2",
+  "apimoex": "1.4.0"
+ },
+ "seeds": [],
+ "inputs": {
+  "eligibility_dense": {
+   "path": "configs/E2/pilot/eligibility_dense.json",
+   "sha256": "d78533b6e4426110ed8c3ba537d21ebe5974c3429d7af63d9ed46c22d3e0b0a3",
+   "bytes": 328
+  }
+ },
+ "notes": "ingested from 40 shard(s)",
+ "started_at": "2026-10-12T20:13:05+00:00",
+ "status": "completed",
+ "mode": "ingested",
+ "bundle_sha": "281b89ac8502ccd9b954540b566320c259c1aeef",
+ "hosts": [
+  "gpu-07"
+ ],
+ "sessions_unfinished": 0,
+ "cpu_models": [
+  "Intel(R) Xeon(R) Silver 4216 CPU @ 2.10GHz"
+ ],
+ "cpu_governors": [
+  "schedutil"
+ ],
+ "loadavg_start_max": 17.29248046875,
+ "loadavg_end_max": 17.29248046875,
+ "n_sessions": 40,
+ "n_cells": 40,
+ "n_rows_in_shards": 40,
+ "n_duplicates": 0,
+ "n_missing": 0,
+ "n_errors": 0,
+ "shard_inputs_match": true,
+ "shard_files": [
+  "elig_dense_shard0000.jsonl",
+  "elig_dense_shard0001.jsonl",
+  "elig_dense_shard0002.jsonl",
+  "elig_dense_shard0003.jsonl",
+  "elig_dense_shard0004.jsonl",
+  "elig_dense_shard0005.jsonl",
+  "elig_dense_shard0006.jsonl",
+  "elig_dense_shard0007.jsonl",
+  "elig_dense_shard0008.jsonl",
+  "elig_dense_shard0009.jsonl",
+  "elig_dense_shard0010.jsonl",
+  "elig_dense_shard0011.jsonl",
+  "elig_dense_shard0012.jsonl",
+  "elig_dense_shard0013.jsonl",
+  "elig_dense_shard0014.jsonl",
+  "elig_dense_shard0015.jsonl",
+  "elig_dense_shard0016.jsonl",
+  "elig_dense_shard0017.jsonl",
+  "elig_dense_shard0018.jsonl",
+  "elig_dense_shard0019.jsonl",
+  "elig_dense_shard0020.jsonl",
+  "elig_dense_shard0021.jsonl",
+  "elig_dense_shard0022.jsonl",
+  "elig_dense_shard0023.jsonl",
+  "elig_dense_shard0024.jsonl",
+  "elig_dense_shard0025.jsonl",
+  "elig_dense_shard0026.jsonl",
+  "elig_dense_shard0027.jsonl",
+  "elig_dense_shard0028.jsonl",
+  "elig_dense_shard0029.jsonl",
+  "elig_dense_shard0030.jsonl",
+  "elig_dense_shard0031.jsonl",
+  "elig_dense_shard0032.jsonl",
+  "elig_dense_shard0033.jsonl",
+  "elig_dense_shard0034.jsonl",
+  "elig_dense_shard0035.jsonl",
+  "elig_dense_shard0036.jsonl",
+  "elig_dense_shard0037.jsonl",
+  "elig_dense_shard0038.jsonl",
+  "elig_dense_shard0039.jsonl"
+ ],
+ "finished_at": "2026-10-12T20:13:05+00:00",
+ "loadavg_end": [
+  2.806640625,
+  2.2978515625,
+  6.17919921875
+ ],
+ "n_rows": 40
+}

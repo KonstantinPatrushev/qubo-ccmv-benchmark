@@ -1,0 +1,55 @@
+# E3, US SENSITIVITY: the universe without the stocks that have a remaining day of an irregular Yahoo ratio
+# (docs/ANALYSIS_PLAN.md v2.4 §3, "Рынок US", Чувствительность): `pseudo_split_days.parquet` lists 102 such days (95 with
+# a ratio above one, 7 below, 81 tickers) that the `adjcorr-2` corrections leave as they are. A ticker with such a day
+# among the returns of a fold's own windows (the 755 returns of its training window, the 21 of its test window) is taken
+# out of THAT fold's universe BEFORE the top 100 by median dollar volume is cut, so the universe stays 100 stocks; a day
+# outside the fold's windows leaves the ticker in (audit G1, D-3: removing a ticker from every fold selected the early
+# universes on later spin-offs). This is a data-cleaning check (the removal looks as far as the end of the fold's test
+# window), not a tradable rule.
+# Everything else is the config of us.yaml (same seeds, same lambda_f, same period): the results are compared with it.
+#
+# DO NOT RUN BEFORE us.yaml has run and lambda_f is set (null = the grid refuses to build). 155 cells, one per shard.
+stream: E3
+name: us_sens_irregular
+experiment: cif.experiments.e3_walkforward
+seeds: [20000]
+inputs:
+  sp500_pit: data/processed/sp500_pit/provenance.json
+  riskfree_v2: data/processed/riskfree_v2/provenance.json
+launch: {jobs: 16, shards: 155, timing: false}
+params:
+  seed_role: test
+  solver_seed: 20000
+  market:
+    name: us
+    source: sp500_pit
+    data_dir: data/processed/sp500_pit
+    rf_path: data/processed/riskfree_v2/us_dtb3.parquet
+    variant: no_irregular_ratio
+    n_universe: 100
+    liquidity_window: 252
+    u: 0.10
+    train_days: 756
+    test_days: 21
+  period: {name: confirmatory, start: "2013-01-04", end: "2025-12-31"}
+  arms: [MV]
+  lambda_f: 20.0              # the same as us.yaml
+  lambdas: null
+  n_ranks: 1
+  optimum: {time_limit_s: 7200.0, mip_gap: 1.0e-6, formulation: perspective, diag: mineig}
+  kbest: {time_limit_s: 600.0, card_mode: eq, abs_gap_rel: 1.0e-6, warm_start: true, boundary_check: true}
+  solvers: null
+  operators: null
+# --smoke: a synthetic factor-model market (no S&P data is read); the variant has no meaning there
+smoke:
+  seeds: [10000]
+  launch: {jobs: 2, shards: 4, timing: false}
+  params:
+    seed_role: calibration
+    solver_seed: 10000
+    market: {name: us, source: synthetic, n_assets: 12, n_days: 300, seed: 1000, start: "2000-01-03",
+             u: 0.34, train_days: 60, test_days: 5, gap_fraction: 0.0}
+    period: {name: confirmatory, start: "2000-06-01", end: "2000-07-15"}
+    lambda_f: 5.0
+    optimum: {time_limit_s: 60.0}
+    kbest: {time_limit_s: 60.0}

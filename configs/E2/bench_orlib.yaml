@@ -1,0 +1,51 @@
+# E2, confirmatory (RQ2, H2, H2b): cell C5 of ANALYSIS_PLAN §3: OR-Library port1-5 (N = 31, 85, 89, 98, 225)
+# with the constraints of Chang et al. (2000): exactly K = 10 assets (Σz = K, card_mode eq), epsilon = 0.01,
+# delta = 1, and the project's own 25-point `corner` lambda grid per port (orlib_lambda_grid). The points are the
+# BINDING (s_cont > K) and NON-TRIVIAL (§12 A1) ones of the 5 x 25 = 125 that the screening of elig_test.yaml selected
+# (configs/E2/pilot/eligibility_test.json); C5 enters the pooled estimate only with at least 10 such points in at
+# least 3 ports (the eligibility report says whether it does). No instance seeds (the instances are fixed); solver seeds
+# 20000-29999. Configurations of N = 100 for ports with N <= 100 (ports 1-4) and of N = 200 for port 5 (§3).
+# Needs data/raw/orlib (gitignored; copy it into the bundle) and its provenance. Clean tree, after the pilot.
+#
+# python -m cif.experiments.launch run --config configs/E2/bench_orlib.yaml --cores 0-31 --pin --out-dir $OUT/...
+stream: E2
+name: bench_orlib
+experiment: cif.experiments.e2_benchmark
+inputs:
+  tuned: configs/E2/pilot/tuned.json
+  eligibility_test: configs/E2/pilot/eligibility_test.json
+  orlib: data/raw/orlib/provenance.json
+launch: {timing: true, jobs: 16, shards: 256}
+params:
+  stage: bench
+  seed_role: test
+  budget_s: 60.0
+  warm_up: true
+  overrun_tol_rel: 0.05
+  skip_nonbinding: true
+  fixed: {orlib_dir: data/raw/orlib, orlib_k: 10, orlib_w_min: 0.01, orlib_w_max: 1.0, orlib_m: 25}
+  solver: {mip_gap: 1.0e-6, abs_gap_rel: 1.0e-6, abs_gap_safety: 0.5, trajectory_tol: 1.0e-9}
+  solver_seeds:
+    exact: [20000, 20001, 20002]
+    heuristic: [20000, 20001, 20002, 20003, 20004, 20005, 20006, 20007, 20008, 20009]
+  instances:
+    - cell: C5
+      family: orlib
+      ports: [1, 2, 3, 4, 5]
+      lam_indices: 25
+      config_size: [{max_n: 100, size: 100}, {size: 200}]
+      eligible: {report: eligibility_test, cell: C5}
+  methods: {source: tuned, roles: [exact_rep, qubo_rep, ls, sa, tabu, swap_sa]}
+smoke:  # calibration seeds only, port 1, two lambda points, 0.5 s: a check of the machinery, not a run
+  inputs:
+    tuned: configs/E2/smoke/tuned.json
+    eligibility_test: configs/E2/smoke/eligibility_test.json
+  launch: {jobs: 2, shards: 3}
+  params:
+    seed_role: calibration
+    budget_s: 0.5
+    warm_up: false
+    solver_seeds: {exact: [10010], heuristic: [10010]}
+    instances:
+      - {cell: C5, family: orlib, ports: [1], lam_indices: [10, 20], config_size: 20,
+         eligible: {report: eligibility_test, cell: C5}}

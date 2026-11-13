@@ -1,0 +1,71 @@
+{
+ "market": {
+  "name": "us",
+  "source": "sp500_pit",
+  "data_dir": "data/processed/sp500_pit",
+  "rf_path": "data/processed/riskfree_v2/us_dtb3.parquet",
+  "variant": "no_irregular_ratio",
+  "n_universe": 100,
+  "liquidity_window": 252,
+  "u": 0.1,
+  "train_days": 756,
+  "test_days": 21
+ },
+ "period": {
+  "name": "confirmatory",
+  "start": "2013-01-04",
+  "end": "2025-12-31"
+ },
+ "arms": [
+  "MV"
+ ],
+ "lam": 20.0,
+ "n_ranks": 1,
+ "n_folds": 155,
+ "n_missing": 0,
+ "missing": [],
+ "passes": {
+  "gross": {
+   "tc_bps": 0.0,
+   "paths": "core"
+  },
+  "net": {
+   "tc_bps": 10.0,
+   "paths": "core"
+  }
+ },
+ "solvers": {
+  "MV": []
+ },
+ "workers": 16,
+ "fold_sets": {
+  "MV": {
+   "n_included": 155,
+   "n_excluded": 0,
+   "n_excluded_optimum": 0,
+   "n_excluded_degenerate": 0,
+   "n_excluded_rank": 0
+  },
+  "common": {
+   "n_included": 155,
+   "n_excluded": 0,
+   "n_excluded_optimum": 0,
+   "n_excluded_degenerate": 0,
+   "n_excluded_rank": 0
+  }
+ },
+ "n_days": 3255,
+ "n_days_Fk": 3255,
+ "cell_seconds": {
+  "optimum_s": 866.2031898219138,
+  "kbest_s": 2192.5216803066432,
+  "cell_s": 4553.880876395851
+ },
+ "source_run_id": "20261012-224237-E3-us_sens_irregular-59b241",
+ "source": "us_irregular",
+ "rows_sha256": "464990cdb1431396351e93b8441b6d020e06d0df35c4c1795f3ae860e53f7596",
+ "pilot_operators_run_id": null,
+ "rank_ids": [
+  2
+ ]
+}

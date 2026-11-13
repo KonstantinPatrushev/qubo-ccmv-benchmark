@@ -1,0 +1,28 @@
+{
+ "n_boot": 4999,
+ "n_pseudo": 200,
+ "pairs": [
+  [
+   "tabu",
+   "scip_native"
+  ],
+  [
+   "swap_sa",
+   "scip_native"
+  ],
+  [
+   "neal",
+   "scip_native"
+  ],
+  [
+   "scip_native",
+   "equal_weight"
+  ]
+ ],
+ "seed": 20261004,
+ "source_run": "20261004-200013-E0-expd-v5-turnover_aware-0a6fca",
+ "status": "exploratory",
+ "template": "daily_{uni}_{strat}.parquet",
+ "units": "percent daily returns",
+ "variant": "traded_rf0"
+}

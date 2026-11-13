@@ -1,0 +1,125 @@
+{
+ "experiment": "cif.experiments.e2_benchmark",
+ "inputs": {},
+ "launch": {
+  "jobs": 16,
+  "shards": 24,
+  "timing": false
+ },
+ "mode": "full",
+ "name": "ref_calibration",
+ "params": {
+  "budget_s": null,
+  "fixed": {
+   "fraction": 0.5,
+   "lam": 5.0
+  },
+  "instances": [
+   {
+    "cell": "T100",
+    "config_size": 100,
+    "family": "factor",
+    "n": 100,
+    "seeds": [
+     1000,
+     1001,
+     1002,
+     1003,
+     1004,
+     1005,
+     1006,
+     1007
+    ]
+   },
+   {
+    "cell": "T200",
+    "config_size": 200,
+    "family": "factor",
+    "n": 200,
+    "seeds": [
+     1008,
+     1009,
+     1010,
+     1011,
+     1012,
+     1013,
+     1014,
+     1015
+    ]
+   },
+   {
+    "cell": "T400",
+    "config_size": 400,
+    "family": "factor",
+    "n": 400,
+    "seeds": [
+     1016,
+     1017,
+     1018,
+     1019,
+     1020,
+     1021,
+     1022,
+     1023
+    ]
+   }
+  ],
+  "methods": {
+   "source": "reference",
+   "spec": {
+    "diag": "mineig",
+    "formulation": "perspective",
+    "id": "ref-scip-persp-mineig",
+    "name": "scip",
+    "usesymmetry": "default"
+   },
+   "time_limit_s": 7200.0
+  },
+  "seed_role": "calibration",
+  "skip_nonbinding": false,
+  "solver": {
+   "abs_gap_rel": 1e-06,
+   "abs_gap_safety": 0.5,
+   "mip_gap": 1e-06,
+   "trajectory_tol": 1e-09
+  },
+  "solver_seeds": {
+   "exact": [
+    10000
+   ],
+   "heuristic": [
+    10000
+   ]
+  },
+  "stage": "reference",
+  "warm_up": true
+ },
+ "seeds": [
+  1000,
+  1001,
+  1002,
+  1003,
+  1004,
+  1005,
+  1006,
+  1007,
+  1008,
+  1009,
+  1010,
+  1011,
+  1012,
+  1013,
+  1014,
+  1015,
+  1016,
+  1017,
+  1018,
+  1019,
+  1020,
+  1021,
+  1022,
+  1023,
+  10000
+ ],
+ "stream": "E2"
+}

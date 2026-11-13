@@ -1,0 +1,53 @@
+{
+ "run_id": "20261004-222712-E0-expd-v5-fold-diagnostic-0e95ec",
+ "stream": "E0",
+ "name": "expd-v5-fold-diagnostic",
+ "config_hash": "0e95ec9b4660",
+ "git_sha": "2fbb1749cd7de55a5b829723a128e3740e8fd826",
+ "git_branch": "stream/E0-engine",
+ "git_available": true,
+ "git_dirty": true,
+ "git_status": [
+  "?? runs/20261004-222712-E0-expd-v5-fold-diagnostic-0e95ec/config.json",
+  "?? scripts/build_final_report_docx.py"
+ ],
+ "untracked_code": [
+  "scripts/build_final_report_docx.py"
+ ],
+ "untracked_code_sha256": {
+  "scripts/build_final_report_docx.py": "f70300fefa0e536f0db4219c8e9deb919076a4d40a2808473d6b86359fe7b9dc"
+ },
+ "code_state_files": [
+  "untracked_code/scripts/build_final_report_docx.py"
+ ],
+ "code_parts": "",
+ "host": "konstantin-laptop",
+ "cpu": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
+ "python": "3.11.15",
+ "packages": {
+  "numpy": "2.1.3",
+  "pandas": "2.2.3",
+  "scipy": "1.14.1",
+  "cvxpy": "1.6.7",
+  "clarabel": "0.11.1",
+  "pyscipopt": "6.1.0",
+  "highspy": "1.13.1",
+  "dwave-samplers": "1.7.0",
+  "dimod": "0.12.21",
+  "qiskit": "2.3.1",
+  "qiskit-aer": "0.17.2",
+  "scikit-learn": "1.5.2",
+  "statsmodels": "0.14.6",
+  "yfinance": "1.2.2",
+  "apimoex": "1.4.0"
+ },
+ "seeds": [],
+ "notes": "",
+ "started_at": "2026-10-04T19:27:12+00:00",
+ "status": "completed",
+ "artifacts": [
+  "fold_diagnostic.csv"
+ ],
+ "finished_at": "2026-10-04T19:41:43+00:00",
+ "n_rows": 5
+}

@@ -1,0 +1,60 @@
+{
+ "experiment": "cif.experiments.e2_benchmark",
+ "inputs": {
+  "ttt_instances": "configs/E2/pilot/ttt_instances.json",
+  "tuned": "configs/E2/pilot/tuned.json"
+ },
+ "launch": {
+  "jobs": 16,
+  "shards": 90,
+  "timing": true
+ },
+ "mode": "full",
+ "name": "ttt",
+ "params": {
+  "budget_s": 60.0,
+  "fixed": {
+   "fraction": 0.5,
+   "lam": 5.0
+  },
+  "instances": [
+   {
+    "cell": "TTT",
+    "config_size": 200,
+    "family": "factor",
+    "n": 200,
+    "seeds_from": "ttt_instances"
+   }
+  ],
+  "methods": {
+   "roles": [
+    "exact_rep",
+    "qubo_rep",
+    "ls"
+   ],
+   "source": "tuned"
+  },
+  "overrun_tol_rel": 0.05,
+  "seed_role": "calibration",
+  "skip_nonbinding": false,
+  "solver": {
+   "abs_gap_rel": 1e-06,
+   "abs_gap_safety": 0.5,
+   "mip_gap": 1e-06,
+   "trajectory_tol": 1e-09
+  },
+  "solver_seeds": {
+   "exact": {
+    "count": 100,
+    "first": 10100
+   },
+   "heuristic": {
+    "count": 100,
+    "first": 10100
+   }
+  },
+  "stage": "ttt",
+  "warm_up": true
+ },
+ "stream": "E2"
+}

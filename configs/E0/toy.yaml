@@ -1,0 +1,14 @@
+# Reference config for the experiment runner (cif.experiments.run); the toy experiment only
+# exercises the infrastructure. Copy this layout for real experiments: configs/<stream>/<name>.yaml
+stream: E0
+name: toy
+experiment: cif.experiments.toy
+seeds: [2000, 2001, 2002]
+inputs:
+  riskfree_v2: data/processed/riskfree_v2/provenance.json
+smoke:
+  seeds: [2000]
+  params:
+    n: [10]
+params:
+  n: [10, 20, 50]

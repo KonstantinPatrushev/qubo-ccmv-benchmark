@@ -1,0 +1,43 @@
+# E2, descriptive (ANALYSIS_PLAN §3, R14; §12 A1: "D1 descriptive with the same rule"): cell D1: the legacy dense
+# generator Σ = 0.005·AAᵀ + 0.01·I, lambda = 5, l = 0, u = 1, K = ceil(N / 4), N = 100 and 200. The instances are the
+# NON-TRIVIAL ones that the screening of elig_dense.yaml selected (20 + 20 where it finds them; scan from TEST seed 2000;
+# configs/E2/pilot/eligibility_dense.json). A stress test, not part of the pooled estimate; every selected instance is
+# run, binding or not (the rows carry `binding`). The three representatives only (exact, QUBO, LS), 60 s, same seeds as
+# bench_factor.yaml. Clean tree, after the pilot.
+#
+# python -m cif.experiments.launch run --config configs/E2/bench_dense.yaml --cores 0-31 --pin --out-dir $OUT/...
+stream: E2
+name: bench_dense
+experiment: cif.experiments.e2_benchmark
+inputs:
+  tuned: configs/E2/pilot/tuned.json
+  eligibility_dense: configs/E2/pilot/eligibility_dense.json
+launch: {timing: true, jobs: 16, shards: 64}
+params:
+  stage: bench
+  seed_role: test
+  budget_s: 60.0
+  warm_up: true
+  overrun_tol_rel: 0.05
+  skip_nonbinding: false
+  fixed: {lam: 5.0, fraction: 0.5}
+  solver: {mip_gap: 1.0e-6, abs_gap_rel: 1.0e-6, abs_gap_safety: 0.5, trajectory_tol: 1.0e-9}
+  solver_seeds:
+    exact: [20000, 20001, 20002]
+    heuristic: [20000, 20001, 20002, 20003, 20004, 20005, 20006, 20007, 20008, 20009]
+  instances:
+    - {cell: D1_100, family: dense, n: 100, config_size: 100, eligible: {report: eligibility_dense, cell: D1_100}}
+    - {cell: D1_200, family: dense, n: 200, config_size: 200, eligible: {report: eligibility_dense, cell: D1_200}}
+  methods: {source: tuned, roles: [exact_rep, qubo_rep, ls]}
+smoke:  # calibration seeds only, a 20-asset instance, 0.5 s: a check of the machinery, not a run
+  inputs:
+    tuned: configs/E2/smoke/tuned.json
+    eligibility_dense: configs/E2/smoke/eligibility_dense.json
+  launch: {jobs: 2, shards: 3}
+  params:
+    seed_role: calibration
+    budget_s: 0.5
+    warm_up: false
+    solver_seeds: {exact: [10010], heuristic: [10010]}
+    instances:
+      - {cell: D1_20, family: dense, n: 20, config_size: 20, eligible: {report: eligibility_dense, cell: D1_20}}

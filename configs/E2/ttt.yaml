@@ -1,0 +1,42 @@
+# E2, descriptive (TTT curves, ANALYSIS_PLAN §6, Aiex-Resende-Ribeiro 2007; minor 10): 100 runs of each representative
+# (exact, QUBO, LS; configurations of N = 200) on the 3 calibration instances of N = 200 whose difficulty (PI+ at
+# 60 s of the exact representative, §12 A2) is the median of the 8 non-trivial ones (configs/E2/pilot/ttt_instances.json,
+# chosen among the non-trivial calibration instances, §12 A1), 60 s end-to-end.
+# Calibration seeds (the instances are calibration ones, solvers 10100-10199): the curves describe, they test nothing. The time
+# to the target (tau = 1e-3, sensitivity 1e-4) is read from the trajectories of the rows against the reference
+# of the instance. Timing stage.
+#
+# python -m cif.experiments.launch run --config configs/E2/ttt.yaml --cores 0-31 --pin --out-dir $OUT/...
+stream: E2
+name: ttt
+experiment: cif.experiments.e2_benchmark
+inputs:
+  tuned: configs/E2/pilot/tuned.json
+  ttt_instances: configs/E2/pilot/ttt_instances.json
+launch: {timing: true, jobs: 16, shards: 90}
+params:
+  stage: ttt
+  seed_role: calibration
+  budget_s: 60.0
+  warm_up: true
+  overrun_tol_rel: 0.05
+  skip_nonbinding: false
+  fixed: {lam: 5.0, fraction: 0.5}
+  solver: {mip_gap: 1.0e-6, abs_gap_rel: 1.0e-6, abs_gap_safety: 0.5, trajectory_tol: 1.0e-9}
+  solver_seeds:
+    exact: {first: 10100, count: 100}
+    heuristic: {first: 10100, count: 100}
+  instances:
+    - {cell: TTT, family: factor, n: 200, seeds_from: ttt_instances, config_size: 200}
+  methods: {source: tuned, roles: [exact_rep, qubo_rep, ls]}
+smoke:
+  inputs:
+    tuned: configs/E2/smoke/tuned.json
+    ttt_instances: configs/E2/smoke/ttt_instances.json
+  launch: {jobs: 2, shards: 4}
+  params:
+    budget_s: 0.5
+    warm_up: false
+    solver_seeds: {exact: {first: 10100, count: 2}, heuristic: {first: 10100, count: 2}}
+    instances:
+      - {cell: TTT, family: factor, n: 20, seeds_from: ttt_instances, config_size: 20}

@@ -1,0 +1,11 @@
+{
+ "others": [
+  "tabu",
+  "swap_sa",
+  "neal",
+  "continuous_mvo",
+  "rounded_topk"
+ ],
+ "source_run": "20261004-200013-E0-expd-v5-turnover_aware-0a6fca",
+ "status": "exploratory"
+}

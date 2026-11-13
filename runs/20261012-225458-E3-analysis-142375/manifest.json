@@ -1,0 +1,134 @@
+{
+ "run_id": "20261012-225458-E3-analysis-142375",
+ "stream": "E3",
+ "name": "analysis",
+ "config_hash": "1423751cedda",
+ "git_sha": "cd7544ee865c7780869e4f455a370e1a614d9d2c",
+ "git_branch": "stream/E0-engine",
+ "git_available": true,
+ "git_dirty": false,
+ "git_status": [
+  "?? runs/20261012-225458-E3-analysis-142375/config.json"
+ ],
+ "untracked_code": [],
+ "untracked_code_sha256": {},
+ "code_state_files": [],
+ "code_parts": "",
+ "host": "konstantin-laptop",
+ "cpu": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
+ "threads": {
+  "env": {
+   "OMP_NUM_THREADS": null,
+   "MKL_NUM_THREADS": null,
+   "OPENBLAS_NUM_THREADS": null,
+   "NUMEXPR_NUM_THREADS": null
+  },
+  "cpu_count": 8,
+  "pools": [
+   {
+    "user_api": "blas",
+    "internal_api": "openblas",
+    "num_threads": 8,
+    "version": "0.3.32"
+   },
+   {
+    "user_api": "openmp",
+    "internal_api": "openmp",
+    "num_threads": 8,
+    "version": null
+   }
+  ]
+ },
+ "cpu_governor": "powersave",
+ "machine": {
+  "cpu": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
+  "n_cpus": 8,
+  "affinity": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "governors": {
+   "powersave": 8
+  },
+  "loadavg": [
+   8.650390625,
+   17.11279296875,
+   16.05126953125
+  ]
+ },
+ "python": "3.11.15",
+ "packages": {
+  "numpy": "2.1.3",
+  "pandas": "2.2.3",
+  "scipy": "1.14.1",
+  "cvxpy": "1.6.7",
+  "clarabel": "0.11.1",
+  "pyscipopt": "6.1.0",
+  "highspy": "1.13.1",
+  "dwave-samplers": "1.7.0",
+  "dimod": "0.12.21",
+  "qiskit": "2.3.1",
+  "qiskit-aer": "0.17.2",
+  "scikit-learn": "1.5.2",
+  "statsmodels": "0.14.6",
+  "yfinance": "1.2.2",
+  "apimoex": "1.4.0"
+ },
+ "seeds": [
+  20261011
+ ],
+ "inputs": {
+  "ff49": {
+   "path": "runs/20261012-222933-E3-assemble-ff49-afc094/meta.json",
+   "sha256": "d3429dfa3bb93be3bd8b5178e2d949d146031dfb423cdf854b133e2c7ab094b2",
+   "bytes": 1892
+  },
+  "us": {
+   "path": "runs/20261012-225410-E3-assemble-us-25f399/meta.json",
+   "sha256": "7616f1050c15312a0445181cac79ce30fe8d7d25b0c4426a449b5957da69c87e",
+   "bytes": 1640
+  },
+  "us_irregular": {
+   "path": "runs/20261012-225430-E3-assemble-us_irregular-6318ec/meta.json",
+   "sha256": "71880a1f079678fd0d5f153dedb7107bf00ff03b35a0e2d1daaa2b203453066b",
+   "bytes": 1348
+  }
+ },
+ "notes": "",
+ "started_at": "2026-10-12T19:54:58+00:00",
+ "status": "completed",
+ "mode": "analysis",
+ "artifacts": [
+  "tables/analysis.json",
+  "tables/h3a.csv",
+  "tables/h3b.csv",
+  "tables/h3b_per_rank.csv",
+  "tables/h3c.csv",
+  "tables/net_metrics.csv",
+  "tables/net_differences.csv",
+  "tables/sensitivity.csv",
+  "tables/arm_contrast.csv",
+  "tables/operator_reach.csv",
+  "tables/operator_gaps.csv",
+  "tables/operator_levels.csv",
+  "tables/operator_sets.csv",
+  "tables/rank2_doses.csv",
+  "tables/doses_by_rank.csv",
+  "tables/exclusions.csv",
+  "tables/regime.csv",
+  "tables/ties.csv"
+ ],
+ "finished_at": "2026-10-12T22:14:08+00:00",
+ "loadavg_end": [
+  1.19580078125,
+  3.53515625,
+  4.39453125
+ ],
+ "n_rows": 0
+}

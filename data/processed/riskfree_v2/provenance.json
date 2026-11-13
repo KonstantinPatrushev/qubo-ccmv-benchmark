@@ -1,0 +1,241 @@
+{
+ "dataset": "riskfree_v2",
+ "built_at": "2026-10-09T15:09:20+00:00",
+ "git": {
+  "sha": "69978f969994411800b2c81706afa5f7787b7948",
+  "branch": "stream/E0-engine",
+  "dirty": false
+ },
+ "config": {
+  "raw_dir": "data/raw/riskfree_v2",
+  "processed_dir": "data/processed/riskfree_v2",
+  "moex_calendar": "data/processed/moex_v2/calendar.parquet",
+  "us_calendar_source": "data/raw/sp500_prices_raw.parquet",
+  "fred_series": "DTB3",
+  "ruonia_from": "2010-01-01",
+  "ruonia_to": "2025-12-31",
+  "pause": 1.0
+ },
+ "code_sha256": {
+  "src/cif/data/riskfree.py": "83aedaa74a71eabb2b3738eddb5701abb9383443a40292c599348573281a7e7f",
+  "scripts/data/build_riskfree.py": "d23fd5e22b58d90139f1fd7213c9759cf7d18cc59a14ee373e6f990d7e0f7988"
+ },
+ "sources": {
+  "us": {
+   "series": "FRED DTB3: 3-Month Treasury Bill Secondary Market Rate, Discount Basis (H.15), percent per year",
+   "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DTB3",
+   "fetched_at": "2026-10-04T16:20:54+00:00"
+  },
+  "ru": {
+   "series": "CBR RUONIA overnight rate, percent per year, ACT/365; 'published' is the publication date of each fixing",
+   "url": "https://www.cbr.ru/DailyInfoWebServ/DailyInfo.asmx (SOAP method Ruonia, one call per year)",
+   "fetched_at_first": "2026-10-04T16:21:25+00:00",
+   "fetched_at_last": "2026-10-04T16:21:47+00:00"
+  },
+  "ru_key_rate_fallback": "not needed: the RUONIA web service is available"
+ },
+ "method": {
+  "accrual": "trading day d earns the rate known at the close of the previous trading day p over the (d - p) calendar days (no look-ahead)",
+  "us": "r = (1 + y/100) ** (days/365) - 1 on the published DTB3; r_daily_bey applies it to the bond-equivalent yield 365*d/(360 - d*91)",
+  "ru": "r = y/100 * days/365; a fixing is known from its publication date (the next business day)",
+  "us_calendar": "dates of data/raw/sp500_prices_raw.parquet (NYSE days)",
+  "ru_calendar": "tradable days of data/processed/moex_v2/calendar.parquet"
+ },
+ "summary": {
+  "us": {
+   "label": "us_dtb3",
+   "first_day": "2011-01-03",
+   "last_day": "2025-12-30",
+   "n_days": 3771,
+   "n_missing_r_daily": 1,
+   "mean_y_pct": 1.4671777188328912,
+   "min_y_pct": -0.05,
+   "max_y_pct": 5.36,
+   "compounded_annual_return": 0.014531809142032781,
+   "max_staleness_days": 5
+  },
+  "ru": {
+   "label": "ru_ruonia",
+   "first_day": "2013-01-08",
+   "last_day": "2025-12-30",
+   "n_days": 3263,
+   "n_missing_r_daily": 1,
+   "mean_y_pct": 9.801045370938075,
+   "min_y_pct": 3.28,
+   "max_y_pct": 28.65,
+   "compounded_annual_return": 0.10303029113128748,
+   "max_staleness_days": 28
+  }
+ },
+ "checks": {
+  "us_bey_minus_published_pp_mean": 0.03469406604812107,
+  "us_annual_return_published_vs_bey_pp": [
+   1.453180914203278,
+   1.4870714276976171
+  ],
+  "ru_return_on_first_day_after_2022_closure": {
+   "days": 27.0,
+   "r_daily": 0.007138356164383562,
+   "y_pct": 9.65
+  },
+  "ru_first_day_nan": true
+ },
+ "files": {
+  "raw": {
+   "cbr_ruonia_2010.fetched_at": {
+    "sha256": "edbe448f6a71ba1f141077bf0db6b10a91fd6e7873b264aed166fd90c4473a2e",
+    "bytes": 25
+   },
+   "cbr_ruonia_2010.xml": {
+    "sha256": "94abce2f824ca3c62a768363b4c2df5372873725d4ae963f0a8c18d6f1cdd96e",
+    "bytes": 30586
+   },
+   "cbr_ruonia_2011.fetched_at": {
+    "sha256": "3a51cadb04ef0fd6db652eec0ecc9d31568f36fd24828940f81d07f6e50c2a1a",
+    "bytes": 25
+   },
+   "cbr_ruonia_2011.xml": {
+    "sha256": "43345a13faea99ba87a7250e32821867372133f59afd28171574a1eaa7abae70",
+    "bytes": 30411
+   },
+   "cbr_ruonia_2012.fetched_at": {
+    "sha256": "d92483e3203675315342d4dd3680ade17322ee038da35e988912896574291a15",
+    "bytes": 25
+   },
+   "cbr_ruonia_2012.xml": {
+    "sha256": "05fb2bcc2f288878b0d38299875a11900f8612888c7f0a2cc29a15ccdbb9dff1",
+    "bytes": 30525
+   },
+   "cbr_ruonia_2013.fetched_at": {
+    "sha256": "6ee4a88e2177816df99b15953e6cf620f8725c2666cbb1d070ec4911639cee5d",
+    "bytes": 25
+   },
+   "cbr_ruonia_2013.xml": {
+    "sha256": "a1fd70e3a38162d5335dc8c4ec07ffd7878398024184f457aea9ea397aa305f0",
+    "bytes": 30287
+   },
+   "cbr_ruonia_2014.fetched_at": {
+    "sha256": "b8947427a47e4291fff65ba43c55a58a072aca4e2acfbcd7958cdcfd62558990",
+    "bytes": 25
+   },
+   "cbr_ruonia_2014.xml": {
+    "sha256": "d720a6f0669e95b1eb3a54209413d36cb48bebb64efc186c269ff3f5d67641c3",
+    "bytes": 30365
+   },
+   "cbr_ruonia_2015.fetched_at": {
+    "sha256": "035c70b849a59f7a5348802cde970c3977b6792e4e5fd66516a217abff1ba576",
+    "bytes": 25
+   },
+   "cbr_ruonia_2015.xml": {
+    "sha256": "6fc381a9e2d0b4ebd17bb2c564fa0073f95a534e241b15643a58d97e2fe8fc18",
+    "bytes": 30600
+   },
+   "cbr_ruonia_2016.fetched_at": {
+    "sha256": "030716c90c4e04fbd20705f217f85ba9833b3cf6daf2f437a87f980ef6ca34c5",
+    "bytes": 25
+   },
+   "cbr_ruonia_2016.xml": {
+    "sha256": "539a8950cc60be20144c55646c1fffeb5f4b9433ca781362bb1a716f551aa100",
+    "bytes": 30655
+   },
+   "cbr_ruonia_2017.fetched_at": {
+    "sha256": "a718b33e08346cc9eac16aa3e67af0af671225a5747952834ec9c18d3fe2b235",
+    "bytes": 25
+   },
+   "cbr_ruonia_2017.xml": {
+    "sha256": "f9f497be2efcef747e90064c37fb3f004b60d6514650e77180dddc1716b21cfe",
+    "bytes": 34585
+   },
+   "cbr_ruonia_2018.fetched_at": {
+    "sha256": "5780a874a85d7e3347974c26c849d8d51916fca5d6fd15a63cdf940cc374e328",
+    "bytes": 25
+   },
+   "cbr_ruonia_2018.xml": {
+    "sha256": "a335eff626880a3cfac15973caee6788dffd5b9e20f48bee1fd791b7bd1ec786",
+    "bytes": 43561
+   },
+   "cbr_ruonia_2019.fetched_at": {
+    "sha256": "c2f8ff7d63d4c7b5f8bc530ae231fcb31def64cc06ff2e3b6fe43f565fc31f28",
+    "bytes": 25
+   },
+   "cbr_ruonia_2019.xml": {
+    "sha256": "31fa5edae6aafd5e584b7b54cc17143517ce1a36783c8944eb119a1edbc8b9ed",
+    "bytes": 43437
+   },
+   "cbr_ruonia_2020.fetched_at": {
+    "sha256": "8b6b286cbdb20d1232e3b6372c43f23c99177978e4b5845bbf84b4c793ee0d26",
+    "bytes": 25
+   },
+   "cbr_ruonia_2020.xml": {
+    "sha256": "df878687040d42953f186a1af58c53106eb0c33f76f5fa728db51273af487e04",
+    "bytes": 42510
+   },
+   "cbr_ruonia_2021.fetched_at": {
+    "sha256": "0ab43e8283f1abc2e64054fe8935e88afea052eadfe8bb3d7c7ffeacbbc6763f",
+    "bytes": 25
+   },
+   "cbr_ruonia_2021.xml": {
+    "sha256": "c30b7dceebd77af7de198d97ccbcd94dfb46b29e3d813f775a9fee5e90c1452d",
+    "bytes": 43506
+   },
+   "cbr_ruonia_2022.fetched_at": {
+    "sha256": "331673f26aea6727f5aa4ef2d741a9b73e12fbea422ea64be0f5b63d20f36a3b",
+    "bytes": 25
+   },
+   "cbr_ruonia_2022.xml": {
+    "sha256": "3f9e56659953adbcb5dd22f0ac36910cca1e8e42f32b03d752021621bfd42663",
+    "bytes": 43463
+   },
+   "cbr_ruonia_2023.fetched_at": {
+    "sha256": "568d2e6807a2132298518d732bfb4e36f74c18fc3cd31e4d4d5c92400bf58ab9",
+    "bytes": 25
+   },
+   "cbr_ruonia_2023.xml": {
+    "sha256": "f7ec42d4e75e69d5736246952cc0edebb73e22ed8f0de215348792c35085ea1f",
+    "bytes": 43745
+   },
+   "cbr_ruonia_2024.fetched_at": {
+    "sha256": "d4bfbb635d4d089815b2bf807763598651f71c621b5c12a2b95f774c6b201a84",
+    "bytes": 25
+   },
+   "cbr_ruonia_2024.xml": {
+    "sha256": "e8fe10b345c665fcc35b63c057d4d991aa8ff5c528322392c34530379954ebc0",
+    "bytes": 44007
+   },
+   "cbr_ruonia_2025.fetched_at": {
+    "sha256": "7be2dec47bf5a34dd45096921db8dbd38b98fbb4b05ff7d01acfc4373522d395",
+    "bytes": 25
+   },
+   "cbr_ruonia_2025.xml": {
+    "sha256": "c2d1cf51484532c0fb6e0b052fbd4aceeca6ef6bbc902582a27df7d4727ecc7e",
+    "bytes": 43893
+   },
+   "fred_DTB3.csv": {
+    "sha256": "ac8d8e667dfa992832049afa9393d6135976b1a32cef64979aff3d01f0e6ec82",
+    "bytes": 301205
+   },
+   "fred_DTB3.fetched_at": {
+    "sha256": "044fde6a93adad9342580d07dd391f8a53c28d211486c133a8b8ee05a57202d2",
+    "bytes": 25
+   }
+  },
+  "processed": {
+   "ru_ruonia.parquet": {
+    "sha256": "bdd9c72cca0377e47c1703b8ae8de0bda5a60aa81d19093558cbe800c295a29b",
+    "bytes": 116502
+   },
+   "ru_ruonia_obs.parquet": {
+    "sha256": "13daecbf9fe76f5c631878a61d143d070769dd18bbb2d766b71ff27bee804105",
+    "bytes": 106841
+   },
+   "us_dtb3.parquet": {
+    "sha256": "f3ae487b35bb3b9ee42c24ccc477e5f96b04c45407794f22f26acc340058cbf3",
+    "bytes": 107035
+   },
+   "us_dtb3_obs.parquet": {
+    "sha256": "bae461142e0757c10860198dd9fbf74076d264c4a91579f7a54dcd0a30b8db52",
+    "bytes": 237755
+   }
+  }
+ }
+}

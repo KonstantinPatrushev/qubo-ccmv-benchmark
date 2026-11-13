@@ -1,0 +1,52 @@
+# E2, pilot, step 3: the winner and the runner-up of every tuning group, rerun at 60 s end-to-end on the same
+# calibration sets (ANALYSIS_PLAN §6 N6: "Победитель перепроверяется на 60 с"; if the winner is worse than the
+# runner-up by more than 5 % at 60 s, the runner-up is chosen). The sets are the non-trivial calibration instances of the
+# finished scan (§12 A1), as in tune_screen.yaml. The configurations are those of the screen report (the winner and the
+# runner-up per group and criterion, deduplicated). Solver seeds 10003-10005 are fresh seeds of the calibration range:
+# the recheck is not a rerun of the runs that picked the winner.
+# These rows also give PI+(60 s) of the representatives on the calibration instances for the n-per-cell rule
+# and for the choice of the TTT instances.
+#   python -m cif.experiments.e2_pilot tune --screen <screen run> --recheck <this run> --reference <ref runs> \
+#       --eligibility configs/E2/pilot/eligibility_calibration.json --budget 10 --budget-long 60 \
+#       --out configs/E2/pilot/tuned.json
+# Timing stage: at most 16 jobs on 32 physical cores. Needs configs/E2/pilot/screen.json (step 2).
+#
+# python -m cif.experiments.launch run --config configs/E2/tune_recheck.yaml --cores 0-31 --pin --out-dir $OUT/...
+stream: E2
+name: tune_recheck
+experiment: cif.experiments.e2_benchmark
+inputs:
+  screen: configs/E2/pilot/screen.json
+  eligibility_calibration: configs/E2/pilot/eligibility_calibration.json
+launch: {timing: true, jobs: 16, shards: 64}
+params:
+  stage: recheck
+  seed_role: calibration
+  budget_s: 60.0
+  warm_up: true
+  overrun_tol_rel: 0.05
+  skip_nonbinding: false
+  fixed: {lam: 5.0, fraction: 0.5}
+  solver: {mip_gap: 1.0e-6, abs_gap_rel: 1.0e-6, abs_gap_safety: 0.5, trajectory_tol: 1.0e-9}
+  solver_seeds: {exact: [10003, 10004, 10005], heuristic: [10003, 10004, 10005]}
+  instances:
+    - {cell: T100, family: factor, n: 100, config_size: 100,
+       eligible: {report: eligibility_calibration, cell: T100, require_enough: true}}
+    - {cell: T200, family: factor, n: 200, config_size: 200,
+       eligible: {report: eligibility_calibration, cell: T200, require_enough: true}}
+    - {cell: T400, family: factor, n: 400, config_size: 400,
+       eligible: {report: eligibility_calibration, cell: T400, require_enough: true}}
+  methods: {source: recheck}
+smoke:
+  seeds: [1000, 10003]
+  inputs:
+    screen: configs/E2/smoke/screen.json
+    eligibility_calibration: configs/E2/smoke/eligibility_calibration.json
+  launch: {jobs: 2, shards: 4}
+  params:
+    budget_s: 1.0
+    warm_up: false
+    instances:
+      - {cell: T20, family: factor, n: 20, config_size: 20,
+         eligible: {report: eligibility_calibration, cell: T20, require_enough: true}}
+    solver_seeds: {exact: [10003], heuristic: [10003]}

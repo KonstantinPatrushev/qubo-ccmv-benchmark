@@ -1,0 +1,57 @@
+# E2, pilot, step 2: tuning at 10 s end-to-end (ANALYSIS_PLAN §6 N6, Appendix B). On the calibration set of
+# each N (factor, K = floor(s_cont / 2), 3 solver seeds): up to 30 random configurations of each heuristic
+# (SA, tabu, swap-SA, LS) and the variants of the exact class (SCIP big-M / perspective-mineig / perspective-SDP
+# (N <= 150) x misc/usesymmetry {default, 0}, and OA). The calibration set of a size is its 8 NON-TRIVIAL instances
+# (§12 A1: on instances whose common start is already within tau of the optimum PI+ is 0 for every method and the
+# criterion is decided by noise): the instances the finished calibration scan selected (elig_calibration.yaml,
+# configs/E2/pilot/eligibility_calibration.json). A size with fewer than 8 non-trivial instances is not tuned: it takes
+# the configurations of the nearest N (`e2_pilot tune --eligibility`).
+# The criterion is the median PI+ at 10 s (PI+ = PI - t0/T, §12 A2; H1c: the median final gap at 10 s), computed from
+# these rows by
+#   python -m cif.experiments.e2_pilot screen --rows <run> --reference <ref runs> --budget 10 --out configs/E2/pilot/screen.json
+# (the reference runs: the registered 20261011-211545-E2-ref_calibration-936867 and any later ones).
+# Timing stage: at most 16 jobs on 32 physical cores. tuning_seed is the seed of the random search, not an instance or
+# solver seed. Solver seeds 10000-10002 are calibration seeds (§3).
+#
+# python -m cif.experiments.launch run --config configs/E2/tune_screen.yaml --cores 0-31 --pin --out-dir $OUT/...
+stream: E2
+name: tune_screen
+experiment: cif.experiments.e2_benchmark
+inputs:
+  eligibility_calibration: configs/E2/pilot/eligibility_calibration.json
+launch: {timing: true, jobs: 16, shards: 256}
+params:
+  stage: screen
+  seed_role: calibration
+  budget_s: 10.0
+  warm_up: true
+  overrun_tol_rel: 0.05
+  skip_nonbinding: false
+  fixed: {lam: 5.0, fraction: 0.5}
+  solver: {mip_gap: 1.0e-6, abs_gap_rel: 1.0e-6, abs_gap_safety: 0.5, trajectory_tol: 1.0e-9}
+  solver_seeds: {exact: [10000, 10001, 10002], heuristic: [10000, 10001, 10002]}
+  instances:
+    - {cell: T100, family: factor, n: 100, config_size: 100,
+       eligible: {report: eligibility_calibration, cell: T100, require_enough: true}}
+    - {cell: T200, family: factor, n: 200, config_size: 200,
+       eligible: {report: eligibility_calibration, cell: T200, require_enough: true}}
+    - {cell: T400, family: factor, n: 400, config_size: 400,
+       eligible: {report: eligibility_calibration, cell: T400, require_enough: true}}
+  methods:
+    source: screen
+    names: [sa, tabu, swap_sa, ls, exact]
+    n_configs: 30
+    tuning_seed: 20261011
+smoke:
+  seeds: [1000, 10000]
+  inputs:
+    eligibility_calibration: configs/E2/smoke/eligibility_calibration.json
+  launch: {jobs: 2, shards: 4}
+  params:
+    budget_s: 0.5
+    warm_up: false
+    instances:
+      - {cell: T20, family: factor, n: 20, config_size: 20,
+         eligible: {report: eligibility_calibration, cell: T20, require_enough: true}}
+    solver_seeds: {exact: [10000], heuristic: [10000]}
+    methods: {source: screen, names: [sa, tabu, swap_sa, ls, exact], n_configs: 2, tuning_seed: 20261011}

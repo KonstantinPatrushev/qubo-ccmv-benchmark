@@ -1,0 +1,74 @@
+{
+ "run_id": "20261004-224319-E0-legacy-significance-a47779",
+ "stream": "E0",
+ "name": "legacy-significance",
+ "config_hash": "a47779c01247",
+ "git_sha": "742c8b9594c7d879ac738cff4ccbd0b23245e99b",
+ "git_branch": "stream/E0-engine",
+ "git_available": true,
+ "git_dirty": true,
+ "git_status": [
+  " M runs/registry.jsonl",
+  "?? runs/20261004-222712-E0-expd-v5-fold-diagnostic-0e95ec/config.json",
+  "?? runs/20261004-222712-E0-expd-v5-fold-diagnostic-0e95ec/fold_diagnostic.csv",
+  "?? runs/20261004-222712-E0-expd-v5-fold-diagnostic-0e95ec/manifest.json",
+  "?? runs/20261004-222712-E0-expd-v5-fold-diagnostic-0e95ec/resolve_sp500_neal.csv",
+  "?? runs/20261004-222712-E0-expd-v5-fold-diagnostic-0e95ec/resolve_sp500_rounded_topk.csv",
+  "?? runs/20261004-222712-E0-expd-v5-fold-diagnostic-0e95ec/resolve_sp500_swap_sa.csv",
+  "?? runs/20261004-222712-E0-expd-v5-fold-diagnostic-0e95ec/resolve_sp500_tabu.csv",
+  "?? runs/20261004-222712-E0-expd-v5-fold-diagnostic-0e95ec/results.jsonl",
+  "?? runs/20261004-224147-E0-expd-v5-fold-diagnostic-0e95ec/config.json",
+  "?? runs/20261004-224147-E0-expd-v5-fold-diagnostic-0e95ec/fold_diagnostic.csv",
+  "?? runs/20261004-224147-E0-expd-v5-fold-diagnostic-0e95ec/git_diff.patch",
+  "?? runs/20261004-224147-E0-expd-v5-fold-diagnostic-0e95ec/manifest.json",
+  "?? runs/20261004-224147-E0-expd-v5-fold-diagnostic-0e95ec/resolve_moex_neal.csv",
+  "?? runs/20261004-224147-E0-expd-v5-fold-diagnostic-0e95ec/resolve_moex_rounded_topk.csv",
+  "?? runs/20261004-224147-E0-expd-v5-fold-diagnostic-0e95ec/resolve_moex_swap_sa.csv",
+  "?? runs/20261004-224147-E0-expd-v5-fold-diagnostic-0e95ec/resolve_moex_tabu.csv",
+  "?? runs/20261004-224147-E0-expd-v5-fold-diagnostic-0e95ec/results.jsonl",
+  "?? runs/20261004-224319-E0-legacy-significance-a47779/config.json",
+  "?? scripts/build_final_report_docx.py"
+ ],
+ "untracked_code": [
+  "scripts/build_final_report_docx.py"
+ ],
+ "untracked_code_sha256": {
+  "scripts/build_final_report_docx.py": "f70300fefa0e536f0db4219c8e9deb919076a4d40a2808473d6b86359fe7b9dc"
+ },
+ "code_state_files": [
+  "git_diff.patch",
+  "untracked_code/scripts/build_final_report_docx.py"
+ ],
+ "code_parts": "",
+ "host": "konstantin-laptop",
+ "cpu": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
+ "python": "3.11.15",
+ "packages": {
+  "numpy": "2.1.3",
+  "pandas": "2.2.3",
+  "scipy": "1.14.1",
+  "cvxpy": "1.6.7",
+  "clarabel": "0.11.1",
+  "pyscipopt": "6.1.0",
+  "highspy": "1.13.1",
+  "dwave-samplers": "1.7.0",
+  "dimod": "0.12.21",
+  "qiskit": "2.3.1",
+  "qiskit-aer": "0.17.2",
+  "scikit-learn": "1.5.2",
+  "statsmodels": "0.14.6",
+  "yfinance": "1.2.2",
+  "apimoex": "1.4.0"
+ },
+ "seeds": [
+  20261004
+ ],
+ "notes": "",
+ "started_at": "2026-10-04T19:43:19+00:00",
+ "status": "completed",
+ "artifacts": [
+  "significance.csv"
+ ],
+ "finished_at": "2026-10-04T20:12:04+00:00",
+ "n_rows": 8
+}

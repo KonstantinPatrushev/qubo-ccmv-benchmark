@@ -1,0 +1,83 @@
+{
+ "experiment": "cif.experiments.e2_benchmark",
+ "inputs": {
+  "eligibility_calibration": "configs/E2/pilot/eligibility_calibration.json",
+  "screen": "configs/E2/pilot/screen.json"
+ },
+ "launch": {
+  "jobs": 16,
+  "shards": 64,
+  "timing": true
+ },
+ "mode": "full",
+ "name": "tune_recheck",
+ "params": {
+  "budget_s": 60.0,
+  "fixed": {
+   "fraction": 0.5,
+   "lam": 5.0
+  },
+  "instances": [
+   {
+    "cell": "T100",
+    "config_size": 100,
+    "eligible": {
+     "cell": "T100",
+     "report": "eligibility_calibration",
+     "require_enough": true
+    },
+    "family": "factor",
+    "n": 100
+   },
+   {
+    "cell": "T200",
+    "config_size": 200,
+    "eligible": {
+     "cell": "T200",
+     "report": "eligibility_calibration",
+     "require_enough": true
+    },
+    "family": "factor",
+    "n": 200
+   },
+   {
+    "cell": "T400",
+    "config_size": 400,
+    "eligible": {
+     "cell": "T400",
+     "report": "eligibility_calibration",
+     "require_enough": true
+    },
+    "family": "factor",
+    "n": 400
+   }
+  ],
+  "methods": {
+   "source": "recheck"
+  },
+  "overrun_tol_rel": 0.05,
+  "seed_role": "calibration",
+  "skip_nonbinding": false,
+  "solver": {
+   "abs_gap_rel": 1e-06,
+   "abs_gap_safety": 0.5,
+   "mip_gap": 1e-06,
+   "trajectory_tol": 1e-09
+  },
+  "solver_seeds": {
+   "exact": [
+    10003,
+    10004,
+    10005
+   ],
+   "heuristic": [
+    10003,
+    10004,
+    10005
+   ]
+  },
+  "stage": "recheck",
+  "warm_up": true
+ },
+ "stream": "E2"
+}

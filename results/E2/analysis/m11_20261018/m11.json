@@ -1,0 +1,1888 @@
+{
+ "kind": "e2-m11",
+ "schema": "e2-m11/1",
+ "plan_version": "v2.4",
+ "role": "validation of the exact stack against the published times (not a test of a hypothesis)",
+ "settings": {
+  "threshold": 10.0,
+  "stop_rel_gap": 0.0001,
+  "stop_abs_gap": 1e-06,
+  "grid": [
+   {
+    "port": 1,
+    "k": 5
+   },
+   {
+    "port": 1,
+    "k": 10
+   },
+   {
+    "port": 1,
+    "k": 20
+   },
+   {
+    "port": 2,
+    "k": 5
+   },
+   {
+    "port": 2,
+    "k": 10
+   },
+   {
+    "port": 2,
+    "k": 20
+   },
+   {
+    "port": 3,
+    "k": 5
+   },
+   {
+    "port": 3,
+    "k": 10
+   },
+   {
+    "port": 3,
+    "k": 20
+   },
+   {
+    "port": 4,
+    "k": 5
+   },
+   {
+    "port": 4,
+    "k": 10
+   },
+   {
+    "port": 4,
+    "k": 20
+   },
+   {
+    "port": 5,
+    "k": 5
+   },
+   {
+    "port": 5,
+    "k": 10
+   },
+   {
+    "port": 5,
+    "k": 20
+   }
+  ]
+ },
+ "primary_view": "scip",
+ "prespecified": {
+  "our_time": {
+   "choice": "The time of a method in a cell is the median over its solver seeds of the wall time of the call (build + solve). A run that is not certified within the limit (the gap of the stopping rule not closed, or the call ended after the limit) counts as the limit; the median is a bound (censored) when at least half of the runs failed.",
+   "why": "§12 (2): 'у SCIP — 3 сида перестановок, значение ячейки — медиана'; (5): 'время за лимитом берётся равным лимиту и помечается границей'."
+  },
+  "published": {
+   "choice": "The best published time of a cell is the minimum over the methods of the BCW table of the printed times (Table 3: Algorithm 3, CPLEX big-M, CPLEX MISOCO; Table 4: and Algorithm 3 with the in-out cuts); a printed '>L' counts as L and is a bound, and when every method printed '>L' the best published time is L and a bound.",
+   "why": "§12 (5): 'лучшее опубликованное время ячейки (минимум по методам таблицы BCW)'."
+  },
+  "ratio": {
+   "choice": "The ratio of a cell is our time over the best published time. It is a lower bound when our time is a bound, an upper bound when the published one is; when both are bounds the cell has no ratio, is left out of the summary and is listed (excluded).",
+   "why": "§12 (5): 'ячейка, где за лимит вышли обе стороны, из сводки исключается и отчитывается'."
+  },
+  "primary_view": {
+   "choice": "The verdict reads SCIP's times (view scip): at the sizes of the OR-Library ports (n = 31-225) SCIP is the exact representative of RQ2 (tuned.json, sizes 100 and 200; OA is the representative at N = 400 only), so the rule of the plan judges the baseline that stood in H2 at these sizes. OA (view oa, T3 only) and the better of the two (view stack: the smaller of the medians of our methods, the analogue of the best of the BCW methods) are reported beside it and do not enter the verdict.",
+   "why": "§12 (2) names the stack (SCIP and OA) and (5) 'наше медианное время' per cell without saying which method of a stack of two; the entry of §12 of 2026-10-18 (before the run) fixes SCIP, the conservative reading (exploratory laptop timings of the agent, 18 runs, not registered, were seen before it)."
+  },
+  "excluded": {
+   "choice": "A cell where both our time and the best published time are bounds is excluded from the summary (counted in n_excluded, listed with its port and k); it still counts as not solved by either side.",
+   "why": "§12 (5)."
+  },
+  "summary": {
+   "choice": "Per table and view: the median of the cell ratios (bounds at their values; n_lower_bound, n_upper_bound and median_bound say how far it rests on bounds) and the number of cells of the 15 solved within the limit by us and by the best published method.",
+   "why": "§12 (5): 'Сводка — медиана отношений по ячейкам каждой таблицы и число ячеек, решённых в лимите каждой стороной'."
+  },
+  "rule": {
+   "choice": "The verdict of a table is above if the median ratio of the primary view is above 10 (10 itself is not above). The two tables are judged separately; the overall verdict is above if either table is (the conclusions of RQ2 then carry the caveat of the baseline).",
+   "why": "§12 (6): 'медианное отношение больше 10 — выводы RQ2 только про открытые точные методы с оговоркой о бейзлайне; не больше 10 — … в пределах порядка от опубликованного'; the plan does not say how the two tables combine."
+  },
+  "hardware": {
+   "choice": "No normalisation to the hardware of the paper: raw ratios of wall-clock times.",
+   "why": "§12 (4): 'нормировки по железу нет, это раскрывается'."
+  }
+ },
+ "published": {
+  "source": {
+   "title": "A Scalable Algorithm For Sparse Portfolio Selection",
+   "authors": "Dimitris Bertsimas, Ryan Cory-Wright",
+   "arxiv": "1811.00138v5",
+   "url": "https://arxiv.org/abs/1811.00138v5",
+   "location": "Section 5.1, Tables 3 and 4, page 26"
+  },
+  "hardware": {
+   "machine": "MacBook Pro, 2.9 GHz Intel Core i9, 16 GB DDR4",
+   "threads": 1,
+   "software": "Algorithm 3: Julia 1.1 with JuMP.jl 0.18.5, CPLEX 12.8.0 for the master problems and Mosek 9.0 for the continuous subproblems; CPLEX big-M and MISOCO: CPLEX 12.8.0 with default parameters",
+   "note": "our times are not normalised to this hardware (the plan says so): the ratios are raw ratios of wall-clock times"
+  },
+  "setup": [
+   "problem (34): minimise x'Sigma x/2 + |x|^2/(2 gamma) - kappa mu'x on {e'x = 1, x >= 0, |x|_0 <= k}, gamma = 100/sqrt(n); Table 3 has kappa = 1 and no other constraint, Table 4 has kappa = 0 and mu'x >= rbar",
+   "rbar = r_min + 0.3 (r_max - r_min); r_min = mu'x_min, x_min = argmin x'(I/gamma + Sigma)x/2, r_max = mu'x_max, x_max = argmax mu'x - x'x/(2 gamma), both on the unit simplex",
+   "data: the five OR-Library problems of Chang et al. (2000), n = 31, 85, 89, 98, 225",
+   "Algorithm 3 without the second-order-cone lower bound; with a return constraint feasibility of the master is ensured by a cut on the assets with mu_i >= rbar",
+   "Table 4, column algorithm3_inout: Algorithm 3 after 50 root cuts generated by the in-out method",
+   "all methods on one thread; limit 300 s (Table 3) and 3600 s (Table 4)"
+  ],
+  "path": "configs/E2/m11_bcw_published.yaml",
+  "sha256": "50615c04035ad547268a46d2c0d6bbfe19195efbeeb4de34db2fbd3082aece35"
+ },
+ "tables": {
+  "T3": {
+   "time_limit_s": 300.0,
+   "kappa": 1.0,
+   "methods": [
+    "scip",
+    "oa"
+   ],
+   "published_methods": [
+    "algorithm3",
+    "cplex_bigm",
+    "cplex_misoco"
+   ],
+   "cells": [
+    {
+     "port": 1,
+     "n": 31,
+     "k": 5,
+     "published": {
+      "algorithm3": {
+       "time_s": 0.17,
+       "censored": false
+      },
+      "cplex_bigm": {
+       "time_s": 1.98,
+       "censored": false
+      },
+      "cplex_misoco": {
+       "time_s": 0.03,
+       "censored": false
+      }
+     },
+     "published_best": {
+      "time_s": 0.03,
+      "censored": false,
+      "method": "cplex_misoco"
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 0.19939937628805637,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 6.646645876268546,
+       "bound": null,
+       "excluded": false
+      },
+      "oa": {
+       "method": "oa",
+       "time_s": 0.012643333524465561,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 0.42144445081551873,
+       "bound": null,
+       "excluded": false
+      },
+      "stack": {
+       "method": "oa",
+       "time_s": 0.012643333524465561,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 0.42144445081551873,
+       "bound": null,
+       "excluded": false
+      }
+     }
+    },
+    {
+     "port": 1,
+     "n": 31,
+     "k": 10,
+     "published": {
+      "algorithm3": {
+       "time_s": 0.16,
+       "censored": false
+      },
+      "cplex_bigm": {
+       "time_s": 1.11,
+       "censored": false
+      },
+      "cplex_misoco": {
+       "time_s": 0.01,
+       "censored": false
+      }
+     },
+     "published_best": {
+      "time_s": 0.01,
+      "censored": false,
+      "method": "cplex_misoco"
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 0.2872597146779299,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 28.725971467792988,
+       "bound": null,
+       "excluded": false
+      },
+      "oa": {
+       "method": "oa",
+       "time_s": 0.014463409781455994,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 1.4463409781455994,
+       "bound": null,
+       "excluded": false
+      },
+      "stack": {
+       "method": "oa",
+       "time_s": 0.014463409781455994,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 1.4463409781455994,
+       "bound": null,
+       "excluded": false
+      }
+     }
+    },
+    {
+     "port": 1,
+     "n": 31,
+     "k": 20,
+     "published": {
+      "algorithm3": {
+       "time_s": 0.14,
+       "censored": false
+      },
+      "cplex_bigm": {
+       "time_s": 0.01,
+       "censored": false
+      },
+      "cplex_misoco": {
+       "time_s": 0.03,
+       "censored": false
+      }
+     },
+     "published_best": {
+      "time_s": 0.01,
+      "censored": false,
+      "method": "cplex_bigm"
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 0.8922518249601126,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 89.22518249601126,
+       "bound": null,
+       "excluded": false
+      },
+      "oa": {
+       "method": "oa",
+       "time_s": 0.019814345985651016,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 1.9814345985651016,
+       "bound": null,
+       "excluded": false
+      },
+      "stack": {
+       "method": "oa",
+       "time_s": 0.019814345985651016,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 1.9814345985651016,
+       "bound": null,
+       "excluded": false
+      }
+     }
+    },
+    {
+     "port": 2,
+     "n": 85,
+     "k": 5,
+     "published": {
+      "algorithm3": {
+       "time_s": 0.01,
+       "censored": false
+      },
+      "cplex_bigm": {
+       "time_s": 300.0,
+       "censored": true
+      },
+      "cplex_misoco": {
+       "time_s": 0.11,
+       "censored": false
+      }
+     },
+     "published_best": {
+      "time_s": 0.01,
+      "censored": false,
+      "method": "algorithm3"
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 1.4586277324706316,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 145.86277324706316,
+       "bound": null,
+       "excluded": false
+      },
+      "oa": {
+       "method": "oa",
+       "time_s": 0.0267928596585989,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 2.67928596585989,
+       "bound": null,
+       "excluded": false
+      },
+      "stack": {
+       "method": "oa",
+       "time_s": 0.0267928596585989,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 2.67928596585989,
+       "bound": null,
+       "excluded": false
+      }
+     }
+    },
+    {
+     "port": 2,
+     "n": 85,
+     "k": 10,
+     "published": {
+      "algorithm3": {
+       "time_s": 0.01,
+       "censored": false
+      },
+      "cplex_bigm": {
+       "time_s": 300.0,
+       "censored": true
+      },
+      "cplex_misoco": {
+       "time_s": 0.12,
+       "censored": false
+      }
+     },
+     "published_best": {
+      "time_s": 0.01,
+      "censored": false,
+      "method": "algorithm3"
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 4.909059161320329,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 490.90591613203287,
+       "bound": null,
+       "excluded": false
+      },
+      "oa": {
+       "method": "oa",
+       "time_s": 0.03125608526170254,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 3.1256085261702538,
+       "bound": null,
+       "excluded": false
+      },
+      "stack": {
+       "method": "oa",
+       "time_s": 0.03125608526170254,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 3.1256085261702538,
+       "bound": null,
+       "excluded": false
+      }
+     }
+    },
+    {
+     "port": 2,
+     "n": 85,
+     "k": 20,
+     "published": {
+      "algorithm3": {
+       "time_s": 0.01,
+       "censored": false
+      },
+      "cplex_bigm": {
+       "time_s": 300.0,
+       "censored": true
+      },
+      "cplex_misoco": {
+       "time_s": 0.29,
+       "censored": false
+      }
+     },
+     "published_best": {
+      "time_s": 0.01,
+      "censored": false,
+      "method": "algorithm3"
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 6.06460134126246,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 606.460134126246,
+       "bound": null,
+       "excluded": false
+      },
+      "oa": {
+       "method": "oa",
+       "time_s": 0.042794208973646164,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 4.279420897364616,
+       "bound": null,
+       "excluded": false
+      },
+      "stack": {
+       "method": "oa",
+       "time_s": 0.042794208973646164,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 4.279420897364616,
+       "bound": null,
+       "excluded": false
+      }
+     }
+    },
+    {
+     "port": 3,
+     "n": 89,
+     "k": 5,
+     "published": {
+      "algorithm3": {
+       "time_s": 0.01,
+       "censored": false
+      },
+      "cplex_bigm": {
+       "time_s": 300.0,
+       "censored": true
+      },
+      "cplex_misoco": {
+       "time_s": 0.38,
+       "censored": false
+      }
+     },
+     "published_best": {
+      "time_s": 0.01,
+      "censored": false,
+      "method": "algorithm3"
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 5.845910243690014,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 584.5910243690014,
+       "bound": null,
+       "excluded": false
+      },
+      "oa": {
+       "method": "oa",
+       "time_s": 0.04155731573700905,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 4.155731573700905,
+       "bound": null,
+       "excluded": false
+      },
+      "stack": {
+       "method": "oa",
+       "time_s": 0.04155731573700905,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 4.155731573700905,
+       "bound": null,
+       "excluded": false
+      }
+     }
+    },
+    {
+     "port": 3,
+     "n": 89,
+     "k": 10,
+     "published": {
+      "algorithm3": {
+       "time_s": 0.01,
+       "censored": false
+      },
+      "cplex_bigm": {
+       "time_s": 300.0,
+       "censored": true
+      },
+      "cplex_misoco": {
+       "time_s": 0.41,
+       "censored": false
+      }
+     },
+     "published_best": {
+      "time_s": 0.01,
+      "censored": false,
+      "method": "algorithm3"
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 3.346057817339897,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 334.6057817339897,
+       "bound": null,
+       "excluded": false
+      },
+      "oa": {
+       "method": "oa",
+       "time_s": 0.03416075184941292,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 3.416075184941292,
+       "bound": null,
+       "excluded": false
+      },
+      "stack": {
+       "method": "oa",
+       "time_s": 0.03416075184941292,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 3.416075184941292,
+       "bound": null,
+       "excluded": false
+      }
+     }
+    },
+    {
+     "port": 3,
+     "n": 89,
+     "k": 20,
+     "published": {
+      "algorithm3": {
+       "time_s": 0.02,
+       "censored": false
+      },
+      "cplex_bigm": {
+       "time_s": 300.0,
+       "censored": true
+      },
+      "cplex_misoco": {
+       "time_s": 0.11,
+       "censored": false
+      }
+     },
+     "published_best": {
+      "time_s": 0.02,
+      "censored": false,
+      "method": "algorithm3"
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 3.611998802050948,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 180.5999401025474,
+       "bound": null,
+       "excluded": false
+      },
+      "oa": {
+       "method": "oa",
+       "time_s": 0.04922819323837757,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 2.4614096619188786,
+       "bound": null,
+       "excluded": false
+      },
+      "stack": {
+       "method": "oa",
+       "time_s": 0.04922819323837757,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 2.4614096619188786,
+       "bound": null,
+       "excluded": false
+      }
+     }
+    },
+    {
+     "port": 4,
+     "n": 98,
+     "k": 5,
+     "published": {
+      "algorithm3": {
+       "time_s": 0.03,
+       "censored": false
+      },
+      "cplex_bigm": {
+       "time_s": 300.0,
+       "censored": true
+      },
+      "cplex_misoco": {
+       "time_s": 0.41,
+       "censored": false
+      }
+     },
+     "published_best": {
+      "time_s": 0.03,
+      "censored": false,
+      "method": "algorithm3"
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 2.716689232736826,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 90.5563077578942,
+       "bound": null,
+       "excluded": false
+      },
+      "oa": {
+       "method": "oa",
+       "time_s": 0.12400795891880989,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 4.133598630626997,
+       "bound": null,
+       "excluded": false
+      },
+      "stack": {
+       "method": "oa",
+       "time_s": 0.12400795891880989,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 4.133598630626997,
+       "bound": null,
+       "excluded": false
+      }
+     }
+    },
+    {
+     "port": 4,
+     "n": 98,
+     "k": 10,
+     "published": {
+      "algorithm3": {
+       "time_s": 0.02,
+       "censored": false
+      },
+      "cplex_bigm": {
+       "time_s": 300.0,
+       "censored": true
+      },
+      "cplex_misoco": {
+       "time_s": 2.74,
+       "censored": false
+      }
+     },
+     "published_best": {
+      "time_s": 0.02,
+      "censored": false,
+      "method": "algorithm3"
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 5.240914821624756,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 262.0457410812378,
+       "bound": null,
+       "excluded": false
+      },
+      "oa": {
+       "method": "oa",
+       "time_s": 0.13140620663762093,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 6.570310331881046,
+       "bound": null,
+       "excluded": false
+      },
+      "stack": {
+       "method": "oa",
+       "time_s": 0.13140620663762093,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 6.570310331881046,
+       "bound": null,
+       "excluded": false
+      }
+     }
+    },
+    {
+     "port": 4,
+     "n": 98,
+     "k": 20,
+     "published": {
+      "algorithm3": {
+       "time_s": 0.03,
+       "censored": false
+      },
+      "cplex_bigm": {
+       "time_s": 300.0,
+       "censored": true
+      },
+      "cplex_misoco": {
+       "time_s": 0.38,
+       "censored": false
+      }
+     },
+     "published_best": {
+      "time_s": 0.03,
+      "censored": false,
+      "method": "algorithm3"
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 7.755053138360381,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 258.50177127867937,
+       "bound": null,
+       "excluded": false
+      },
+      "oa": {
+       "method": "oa",
+       "time_s": 0.06378761492669582,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 2.126253830889861,
+       "bound": null,
+       "excluded": false
+      },
+      "stack": {
+       "method": "oa",
+       "time_s": 0.06378761492669582,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 2.126253830889861,
+       "bound": null,
+       "excluded": false
+      }
+     }
+    },
+    {
+     "port": 5,
+     "n": 225,
+     "k": 5,
+     "published": {
+      "algorithm3": {
+       "time_s": 0.15,
+       "censored": false
+      },
+      "cplex_bigm": {
+       "time_s": 300.0,
+       "censored": true
+      },
+      "cplex_misoco": {
+       "time_s": 11.17,
+       "censored": false
+      }
+     },
+     "published_best": {
+      "time_s": 0.15,
+      "censored": false,
+      "method": "algorithm3"
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 63.856353763490915,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 425.7090250899395,
+       "bound": null,
+       "excluded": false
+      },
+      "oa": {
+       "method": "oa",
+       "time_s": 0.1563580445945263,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 1.0423869639635086,
+       "bound": null,
+       "excluded": false
+      },
+      "stack": {
+       "method": "oa",
+       "time_s": 0.1563580445945263,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 1.0423869639635086,
+       "bound": null,
+       "excluded": false
+      }
+     }
+    },
+    {
+     "port": 5,
+     "n": 225,
+     "k": 10,
+     "published": {
+      "algorithm3": {
+       "time_s": 0.02,
+       "censored": false
+      },
+      "cplex_bigm": {
+       "time_s": 300.0,
+       "censored": true
+      },
+      "cplex_misoco": {
+       "time_s": 3.04,
+       "censored": false
+      }
+     },
+     "published_best": {
+      "time_s": 0.02,
+      "censored": false,
+      "method": "algorithm3"
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 60.8448983412236,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 3042.24491706118,
+       "bound": null,
+       "excluded": false
+      },
+      "oa": {
+       "method": "oa",
+       "time_s": 0.13693838752806187,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 6.846919376403093,
+       "bound": null,
+       "excluded": false
+      },
+      "stack": {
+       "method": "oa",
+       "time_s": 0.13693838752806187,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 6.846919376403093,
+       "bound": null,
+       "excluded": false
+      }
+     }
+    },
+    {
+     "port": 5,
+     "n": 225,
+     "k": 20,
+     "published": {
+      "algorithm3": {
+       "time_s": 0.03,
+       "censored": false
+      },
+      "cplex_bigm": {
+       "time_s": 300.0,
+       "censored": true
+      },
+      "cplex_misoco": {
+       "time_s": 2.88,
+       "censored": false
+      }
+     },
+     "published_best": {
+      "time_s": 0.03,
+      "censored": false,
+      "method": "algorithm3"
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 70.45598136074841,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 2348.532712024947,
+       "bound": null,
+       "excluded": false
+      },
+      "oa": {
+       "method": "oa",
+       "time_s": 0.15090083703398705,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 5.030027901132902,
+       "bound": null,
+       "excluded": false
+      },
+      "stack": {
+       "method": "oa",
+       "time_s": 0.15090083703398705,
+       "censored": false,
+       "n_runs": 1,
+       "n_failed": 0,
+       "ratio": 5.030027901132902,
+       "bound": null,
+       "excluded": false
+      }
+     }
+    }
+   ],
+   "missing": [],
+   "excluded": [],
+   "summary": {
+    "scip": {
+     "n_cells": 15,
+     "n_ours_solved": 15,
+     "n_pub_solved": 15,
+     "n_excluded": 0,
+     "n_ratio_cells": 15,
+     "n_lower_bound": 0,
+     "n_upper_bound": 0,
+     "median_ratio": 262.0457410812378,
+     "median_bound": null
+    },
+    "oa": {
+     "n_cells": 15,
+     "n_ours_solved": 15,
+     "n_pub_solved": 15,
+     "n_excluded": 0,
+     "n_ratio_cells": 15,
+     "n_lower_bound": 0,
+     "n_upper_bound": 0,
+     "median_ratio": 3.1256085261702538,
+     "median_bound": null
+    },
+    "stack": {
+     "n_cells": 15,
+     "n_ours_solved": 15,
+     "n_pub_solved": 15,
+     "n_excluded": 0,
+     "n_ratio_cells": 15,
+     "n_lower_bound": 0,
+     "n_upper_bound": 0,
+     "median_ratio": 3.1256085261702538,
+     "median_bound": null
+    }
+   },
+   "verdict": {
+    "view": "scip",
+    "median_ratio": 262.0457410812378,
+    "threshold": 10.0,
+    "above_threshold": true,
+    "statement": "Медианное отношение нашего времени к лучшему опубликованному больше 10: выводы RQ2 формулируются только как сравнение с открытыми точными методами, а исход «QUBO лучше» сопровождается оговоркой о бейзлайне"
+   }
+  },
+  "T4": {
+   "time_limit_s": 3600.0,
+   "kappa": 0.0,
+   "methods": [
+    "scip"
+   ],
+   "published_methods": [
+    "algorithm3",
+    "algorithm3_inout",
+    "cplex_bigm",
+    "cplex_misoco"
+   ],
+   "cells": [
+    {
+     "port": 1,
+     "n": 31,
+     "k": 5,
+     "published": {
+      "algorithm3": {
+       "time_s": 0.22,
+       "censored": false
+      },
+      "algorithm3_inout": {
+       "time_s": 0.23,
+       "censored": false
+      },
+      "cplex_bigm": {
+       "time_s": 9.32,
+       "censored": false
+      },
+      "cplex_misoco": {
+       "time_s": 0.83,
+       "censored": false
+      }
+     },
+     "published_best": {
+      "time_s": 0.22,
+      "censored": false,
+      "method": "algorithm3"
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 0.5796148255467415,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 2.6346128433942795,
+       "bound": null,
+       "excluded": false
+      },
+      "stack": {
+       "method": "scip",
+       "time_s": 0.5796148255467415,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 2.6346128433942795,
+       "bound": null,
+       "excluded": false
+      }
+     }
+    },
+    {
+     "port": 1,
+     "n": 31,
+     "k": 10,
+     "published": {
+      "algorithm3": {
+       "time_s": 0.2,
+       "censored": false
+      },
+      "algorithm3_inout": {
+       "time_s": 0.25,
+       "censored": false
+      },
+      "cplex_bigm": {
+       "time_s": 1970.0,
+       "censored": false
+      },
+      "cplex_misoco": {
+       "time_s": 0.84,
+       "censored": false
+      }
+     },
+     "published_best": {
+      "time_s": 0.2,
+      "censored": false,
+      "method": "algorithm3"
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 6.158391958102584,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 30.79195979051292,
+       "bound": null,
+       "excluded": false
+      },
+      "stack": {
+       "method": "scip",
+       "time_s": 6.158391958102584,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 30.79195979051292,
+       "bound": null,
+       "excluded": false
+      }
+     }
+    },
+    {
+     "port": 1,
+     "n": 31,
+     "k": 20,
+     "published": {
+      "algorithm3": {
+       "time_s": 0.16,
+       "censored": false
+      },
+      "algorithm3_inout": {
+       "time_s": 0.16,
+       "censored": false
+      },
+      "cplex_bigm": {
+       "time_s": 258.4,
+       "censored": false
+      },
+      "cplex_misoco": {
+       "time_s": 0.05,
+       "censored": false
+      }
+     },
+     "published_best": {
+      "time_s": 0.05,
+      "censored": false,
+      "method": "cplex_misoco"
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 0.7216129470616579,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 14.432258941233158,
+       "bound": null,
+       "excluded": false
+      },
+      "stack": {
+       "method": "scip",
+       "time_s": 0.7216129470616579,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 14.432258941233158,
+       "bound": null,
+       "excluded": false
+      }
+     }
+    },
+    {
+     "port": 2,
+     "n": 85,
+     "k": 5,
+     "published": {
+      "algorithm3": {
+       "time_s": 48.29,
+       "censored": false
+      },
+      "algorithm3_inout": {
+       "time_s": 31.47,
+       "censored": false
+      },
+      "cplex_bigm": {
+       "time_s": 3600.0,
+       "censored": true
+      },
+      "cplex_misoco": {
+       "time_s": 91.98,
+       "censored": false
+      }
+     },
+     "published_best": {
+      "time_s": 31.47,
+      "censored": false,
+      "method": "algorithm3_inout"
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 76.44803729094565,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 2.4292353762613805,
+       "bound": null,
+       "excluded": false
+      },
+      "stack": {
+       "method": "scip",
+       "time_s": 76.44803729094565,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 2.4292353762613805,
+       "bound": null,
+       "excluded": false
+      }
+     }
+    },
+    {
+     "port": 2,
+     "n": 85,
+     "k": 10,
+     "published": {
+      "algorithm3": {
+       "time_s": 807.3,
+       "censored": false
+      },
+      "algorithm3_inout": {
+       "time_s": 891.97,
+       "censored": false
+      },
+      "cplex_bigm": {
+       "time_s": 3600.0,
+       "censored": true
+      },
+      "cplex_misoco": {
+       "time_s": 82.44,
+       "censored": false
+      }
+     },
+     "published_best": {
+      "time_s": 82.44,
+      "censored": false,
+      "method": "cplex_misoco"
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 591.3211090825498,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 7.172745136857713,
+       "bound": null,
+       "excluded": false
+      },
+      "stack": {
+       "method": "scip",
+       "time_s": 591.3211090825498,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 7.172745136857713,
+       "bound": null,
+       "excluded": false
+      }
+     }
+    },
+    {
+     "port": 2,
+     "n": 85,
+     "k": 20,
+     "published": {
+      "algorithm3": {
+       "time_s": 10.52,
+       "censored": false
+      },
+      "algorithm3_inout": {
+       "time_s": 13.0,
+       "censored": false
+      },
+      "cplex_bigm": {
+       "time_s": 3600.0,
+       "censored": true
+      },
+      "cplex_misoco": {
+       "time_s": 24.54,
+       "censored": false
+      }
+     },
+     "published_best": {
+      "time_s": 10.52,
+      "censored": false,
+      "method": "algorithm3"
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 650.8965052030981,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 61.872291369115786,
+       "bound": null,
+       "excluded": false
+      },
+      "stack": {
+       "method": "scip",
+       "time_s": 650.8965052030981,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 61.872291369115786,
+       "bound": null,
+       "excluded": false
+      }
+     }
+    },
+    {
+     "port": 3,
+     "n": 89,
+     "k": 5,
+     "published": {
+      "algorithm3": {
+       "time_s": 175.2,
+       "censored": false
+      },
+      "algorithm3_inout": {
+       "time_s": 151.1,
+       "censored": false
+      },
+      "cplex_bigm": {
+       "time_s": 3600.0,
+       "censored": true
+      },
+      "cplex_misoco": {
+       "time_s": 213.3,
+       "censored": false
+      }
+     },
+     "published_best": {
+      "time_s": 151.1,
+      "censored": false,
+      "method": "algorithm3_inout"
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 158.32959874533117,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 1.047846450994912,
+       "bound": null,
+       "excluded": false
+      },
+      "stack": {
+       "method": "scip",
+       "time_s": 158.32959874533117,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 1.047846450994912,
+       "bound": null,
+       "excluded": false
+      }
+     }
+    },
+    {
+     "port": 3,
+     "n": 89,
+     "k": 10,
+     "published": {
+      "algorithm3": {
+       "time_s": 3600.0,
+       "censored": true
+      },
+      "algorithm3_inout": {
+       "time_s": 3600.0,
+       "censored": true
+      },
+      "cplex_bigm": {
+       "time_s": 3600.0,
+       "censored": true
+      },
+      "cplex_misoco": {
+       "time_s": 531.3,
+       "censored": false
+      }
+     },
+     "published_best": {
+      "time_s": 531.3,
+      "censored": false,
+      "method": "cplex_misoco"
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 2346.0212168265134,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 4.415624349381731,
+       "bound": null,
+       "excluded": false
+      },
+      "stack": {
+       "method": "scip",
+       "time_s": 2346.0212168265134,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 4.415624349381731,
+       "bound": null,
+       "excluded": false
+      }
+     }
+    },
+    {
+     "port": 3,
+     "n": 89,
+     "k": 20,
+     "published": {
+      "algorithm3": {
+       "time_s": 119.5,
+       "censored": false
+      },
+      "algorithm3_inout": {
+       "time_s": 60.03,
+       "censored": false
+      },
+      "cplex_bigm": {
+       "time_s": 3600.0,
+       "censored": true
+      },
+      "cplex_misoco": {
+       "time_s": 21.32,
+       "censored": false
+      }
+     },
+     "published_best": {
+      "time_s": 21.32,
+      "censored": false,
+      "method": "cplex_misoco"
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 1197.761213734746,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 56.18016949975356,
+       "bound": null,
+       "excluded": false
+      },
+      "stack": {
+       "method": "scip",
+       "time_s": 1197.761213734746,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 56.18016949975356,
+       "bound": null,
+       "excluded": false
+      }
+     }
+    },
+    {
+     "port": 4,
+     "n": 98,
+     "k": 5,
+     "published": {
+      "algorithm3": {
+       "time_s": 2690.0,
+       "censored": false
+      },
+      "algorithm3_inout": {
+       "time_s": 2475.0,
+       "censored": false
+      },
+      "cplex_bigm": {
+       "time_s": 3600.0,
+       "censored": true
+      },
+      "cplex_misoco": {
+       "time_s": 2779.0,
+       "censored": false
+      }
+     },
+     "published_best": {
+      "time_s": 2475.0,
+      "censored": false,
+      "method": "algorithm3_inout"
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 666.2509840913117,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 0.2691923168045704,
+       "bound": null,
+       "excluded": false
+      },
+      "stack": {
+       "method": "scip",
+       "time_s": 666.2509840913117,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 0.2691923168045704,
+       "bound": null,
+       "excluded": false
+      }
+     }
+    },
+    {
+     "port": 4,
+     "n": 98,
+     "k": 10,
+     "published": {
+      "algorithm3": {
+       "time_s": 3600.0,
+       "censored": true
+      },
+      "algorithm3_inout": {
+       "time_s": 3600.0,
+       "censored": true
+      },
+      "cplex_bigm": {
+       "time_s": 3600.0,
+       "censored": true
+      },
+      "cplex_misoco": {
+       "time_s": 3600.0,
+       "censored": true
+      }
+     },
+     "published_best": {
+      "time_s": 3600.0,
+      "censored": true,
+      "method": null
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 3138.9874848760664,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 0.8719409680211295,
+       "bound": "upper",
+       "excluded": false
+      },
+      "stack": {
+       "method": "scip",
+       "time_s": 3138.9874848760664,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 0.8719409680211295,
+       "bound": "upper",
+       "excluded": false
+      }
+     }
+    },
+    {
+     "port": 4,
+     "n": 98,
+     "k": 20,
+     "published": {
+      "algorithm3": {
+       "time_s": 1638.0,
+       "censored": false
+      },
+      "algorithm3_inout": {
+       "time_s": 2067.0,
+       "censored": false
+      },
+      "cplex_bigm": {
+       "time_s": 3600.0,
+       "censored": true
+      },
+      "cplex_misoco": {
+       "time_s": 148.9,
+       "censored": false
+      }
+     },
+     "published_best": {
+      "time_s": 148.9,
+      "censored": false,
+      "method": "cplex_misoco"
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 3039.5317322425544,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 20.413241989540325,
+       "bound": null,
+       "excluded": false
+      },
+      "stack": {
+       "method": "scip",
+       "time_s": 3039.5317322425544,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 20.413241989540325,
+       "bound": null,
+       "excluded": false
+      }
+     }
+    },
+    {
+     "port": 5,
+     "n": 225,
+     "k": 5,
+     "published": {
+      "algorithm3": {
+       "time_s": 0.85,
+       "censored": false
+      },
+      "algorithm3_inout": {
+       "time_s": 0.4,
+       "censored": false
+      },
+      "cplex_bigm": {
+       "time_s": 3600.0,
+       "censored": true
+      },
+      "cplex_misoco": {
+       "time_s": 28.3,
+       "censored": false
+      }
+     },
+     "published_best": {
+      "time_s": 0.4,
+      "censored": false,
+      "method": "algorithm3_inout"
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 193.4399896785617,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 483.5999741964042,
+       "bound": null,
+       "excluded": false
+      },
+      "stack": {
+       "method": "scip",
+       "time_s": 193.4399896785617,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 483.5999741964042,
+       "bound": null,
+       "excluded": false
+      }
+     }
+    },
+    {
+     "port": 5,
+     "n": 225,
+     "k": 10,
+     "published": {
+      "algorithm3": {
+       "time_s": 0.6,
+       "censored": false
+      },
+      "algorithm3_inout": {
+       "time_s": 0.03,
+       "censored": false
+      },
+      "cplex_bigm": {
+       "time_s": 3600.0,
+       "censored": true
+      },
+      "cplex_misoco": {
+       "time_s": 3.33,
+       "censored": false
+      }
+     },
+     "published_best": {
+      "time_s": 0.03,
+      "censored": false,
+      "method": "algorithm3_inout"
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 864.1385691668838,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 28804.618972229462,
+       "bound": null,
+       "excluded": false
+      },
+      "stack": {
+       "method": "scip",
+       "time_s": 864.1385691668838,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 28804.618972229462,
+       "bound": null,
+       "excluded": false
+      }
+     }
+    },
+    {
+     "port": 5,
+     "n": 225,
+     "k": 20,
+     "published": {
+      "algorithm3": {
+       "time_s": 0.39,
+       "censored": false
+      },
+      "algorithm3_inout": {
+       "time_s": 0.08,
+       "censored": false
+      },
+      "cplex_bigm": {
+       "time_s": 3600.0,
+       "censored": true
+      },
+      "cplex_misoco": {
+       "time_s": 115.02,
+       "censored": false
+      }
+     },
+     "published_best": {
+      "time_s": 0.08,
+      "censored": false,
+      "method": "algorithm3_inout"
+     },
+     "views": {
+      "scip": {
+       "method": "scip",
+       "time_s": 705.7733190041035,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 8822.166487551294,
+       "bound": null,
+       "excluded": false
+      },
+      "stack": {
+       "method": "scip",
+       "time_s": 705.7733190041035,
+       "censored": false,
+       "n_runs": 3,
+       "n_failed": 0,
+       "ratio": 8822.166487551294,
+       "bound": null,
+       "excluded": false
+      }
+     }
+    }
+   ],
+   "missing": [],
+   "excluded": [],
+   "summary": {
+    "scip": {
+     "n_cells": 15,
+     "n_ours_solved": 15,
+     "n_pub_solved": 14,
+     "n_excluded": 0,
+     "n_ratio_cells": 15,
+     "n_lower_bound": 0,
+     "n_upper_bound": 1,
+     "median_ratio": 14.432258941233158,
+     "median_bound": null
+    },
+    "stack": {
+     "n_cells": 15,
+     "n_ours_solved": 15,
+     "n_pub_solved": 14,
+     "n_excluded": 0,
+     "n_ratio_cells": 15,
+     "n_lower_bound": 0,
+     "n_upper_bound": 1,
+     "median_ratio": 14.432258941233158,
+     "median_bound": null
+    }
+   },
+   "verdict": {
+    "view": "scip",
+    "median_ratio": 14.432258941233158,
+    "threshold": 10.0,
+    "above_threshold": true,
+    "statement": "Медианное отношение нашего времени к лучшему опубликованному больше 10: выводы RQ2 формулируются только как сравнение с открытыми точными методами, а исход «QUBO лучше» сопровождается оговоркой о бейзлайне"
+   }
+  }
+ },
+ "verdict": {
+  "threshold": 10.0,
+  "above_threshold": true,
+  "tables_above": [
+   "T3",
+   "T4"
+  ],
+  "tables_undecided": [],
+  "statement": "Медианное отношение нашего времени к лучшему опубликованному больше 10: выводы RQ2 формулируются только как сравнение с открытыми точными методами, а исход «QUBO лучше» сопровождается оговоркой о бейзлайне"
+ },
+ "audit": {
+  "n_rows": 105,
+  "n_infeasible": 0,
+  "n_over_budget": 0,
+  "n_return_violated": 0,
+  "n_certified_over_tolerance": 0,
+  "bound_conflicts": []
+ },
+ "warnings": [],
+ "provenance_clean": true,
+ "inputs": [
+  {
+   "source": "runs/20261018-013751-E2-m11-f90e2b",
+   "sha256": "83d65e2908eca1ca65dfaaaba054f8faca113d62c651f909b3ef437d94c9b648",
+   "n_rows": 105,
+   "run_id": "20261018-013751-E2-m11-f90e2b",
+   "git_sha": "dddf2c702fd10b528b9fb126cf93612395257d04",
+   "git_dirty": false,
+   "config_hash": "f90e2b691730",
+   "mode": "ingested",
+   "role": "rows",
+   "n_errors": 0,
+   "n_missing": 0,
+   "bundle_sha": "029f61a4cc41f913297534f7b3a4649e90b6471e",
+   "seed_role": "calibration",
+   "stage": "m11"
+  },
+  {
+   "source": "configs/E2/m11_bcw_published.yaml",
+   "sha256": "50615c04035ad547268a46d2c0d6bbfe19195efbeeb4de34db2fbd3082aece35",
+   "role": "published"
+  }
+ ],
+ "code": {
+  "git_sha": "dddf2c702fd10b528b9fb126cf93612395257d04",
+  "git_dirty": false,
+  "branch": "stream/E0-engine"
+ },
+ "versions": {
+  "python": "3.11.17",
+  "numpy": "2.1.3",
+  "pandas": "2.2.3",
+  "scipy": "1.14.1",
+  "pyscipopt": "6.1.0",
+  "highspy": "1.13.1"
+ }
+}

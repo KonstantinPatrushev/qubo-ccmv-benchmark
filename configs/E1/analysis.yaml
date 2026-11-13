@@ -1,0 +1,37 @@
+# E1 analysis settings (ANALYSIS_PLAN §2 RQ1, §7.1 H1a, §7.2, §7.3) for
+#   python -m cif.experiments.e1_analysis --run runs/<run_id> --config configs/E1/analysis.yaml \
+#       --out results/E1/analysis/<run_id> [--h1c-p <p>]
+# Everything the numbers depend on is here, none of it is a default of the code (R8). The analysis does
+# not change the run: it reads runs/<run_id>/{results.jsonl,config.json,manifest.json}.
+tau: 1.0e-3            # the threshold of E_form / E_pipe (§2) and the scale of asinh(E_samp / tau) (§7.3)
+zero_tol: 1.0e-8       # numerical zero of the pair differences of H1a: E_form is 0 up to the accuracy of
+                       # the refinement (about 1e-10 of the scale s*); ranking that noise would give it
+                       # the smallest ranks of the test
+alpha: 0.05
+share_ms: [1, 50]      # §2: shares of instances with E_form(m) > tau, m in {1, 50}
+level: 0.95            # Wilson and bootstrap intervals
+bootstrap:
+  n_boot: 9999
+  seed: 50000          # explicit; every table cell draws its own stream SeedSequence([seed, table, indices])
+h1a:
+  m0: 1                # §12 [пилот] m0 (2026-10-11): E_form(50) > tau at 3 of 80 calibration instances (3.75 %,
+                       # Wilson 95 % 1.3-10.5 %), below 20 %, so m0 = 1; run 20261011-205903-E1-pilot_floor-9da201.
+                       # Must agree with params.pilot.m0 of the run's config (the analysis refuses a contradiction)
+h1c:
+  p_value: null        # one-sided p of H1c from the E2 analysis, for the Holm family {H1a, H1c} (§7.1);
+                       # null: H1a is decided only if 2p <= alpha or p > alpha (otherwise "pending_h1c")
+models:                # §7.3: separate models per sampler, exploratory (estimates, no tests)
+  units:               # the primary unit is the instance median over the solver seeds (§7.2); the rows of
+    - instance_median  # single seeds are a sensitivity check
+    - seed
+  responses:           # §12 B2: asinh(E_samp / tau) (§7.3) and asinh(E_prec / tau), E_samp = E_prec + E_short
+    - E_samp           # files without a tag (models_<unit>.json, ...)
+    - E_prec           # files with the tag prec_ (models_prec_<unit>.json, ...)
+  reference:           # §12 B3: the "tuned configuration" of §6 and §7.3 is the reference one (RQ1 has no tuning
+    sa: {penalty: 100, beta: default}   # step at N <= 24): the samplers are contrasted here, and the work of a
+    tabu: {penalty: 100}                # call was sized here (configs/E1/pilot_timing.yaml). The code refuses
+    swap_sa: {cold_ratio: 0.01}         # other values: they are the plan's, not the analyst's
+  chosen_after_grid: []  # configurations picked after the nested grid was seen (levels of the grid), e.g.
+                         #   [{sampler: sa, penalty: 30, beta: objective}, {sampler: tabu, penalty: 10}]
+                         # every table labels them role = exploratory, and so are their contrasts (§12 B3);
+                         # the swap-SA levels other than the reference are exploratory without being listed

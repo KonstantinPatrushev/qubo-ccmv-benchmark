@@ -1,0 +1,78 @@
+% sections/methods.tex — numbers only through \res{}; design constants carry % num-ok; every claim has a row in
+% paper/CLAIMS.md. Draft for the author's review (plan of sections approved 2026-10-18, PLAN §6).
+\section{Problem and methods}\label{sec:methods}
+
+\subsection{The cardinality-constrained mean--variance problem}\label{sec:problem}
+
+Given expected returns $\mu \in \mathbb{R}^N$, a covariance matrix $\Sigma \succeq 0$, risk aversion $\lambda > 0$ and
+a cardinality $K$, the long-only cardinality-constrained mean--variance (CCMV) problem is
+\begin{equation}\label{eq:ccmv}
+\begin{aligned}
+\min_{w, z}\;& f(w) = -\mu^{\top} w + \frac{\lambda}{2}\, w^{\top}\Sigma w\\
+\text{s.t.}\;& \mathbf{1}^{\top} w = 1,\quad l\, z \le w \le u\, z,\quad
+\mathbf{1}^{\top} z \le K,\quad z \in \{0, 1\}^N .
+\end{aligned}
+\end{equation}
+With annualised moments, $-f(w)$ is the annual certainty equivalent of the portfolio. The minimum purchase is $l = 0$
+except on the OR-Library instances, which follow the constraints of Chang et al.~\cite{chang2000heuristics}: exactly
+$K$ assets ($\mathbf{1}^{\top} z = K$) and a minimum weight $\varepsilon$ (Section~\ref{sec:design}). For a support
+$S$ with $|S| \le K$, the \emph{refinement} $\mathrm{refine}(S)$ is the optimum of the convex quadratic programme
+(\ref{eq:ccmv}) with the support fixed to $S$, and $F(S) = f(\mathrm{refine}(S))$. All methods share one
+implementation of the refinement, a direct call of Clarabel~\cite{goulart2026clarabel} (version \ver{0.11.1}) that
+reuses the structure of the problem across calls.
+
+\paragraph{Common start} Every method of the anytime comparison receives the same warm start: the solution of the
+continuous relaxation (no cardinality) is rounded to its $K$ largest weights and refined. SCIP receives it as a
+solution, outer approximation as its first incumbent, local search as its starting point and the QUBO pipeline in its
+pool. The time to build it counts against the budget of every method, and from then on the incumbent of every method
+is at least as good as the start.
+
+\subsection{The QUBO surrogate and the two-stage pipeline}\label{sec:qubo}
+
+The QUBO-based heuristics work on the equal-weight binary-inclusion surrogate common in the quantum-portfolio
+literature~\cite{lucas2014ising,glover2019quantum}: $x_i \in \{0, 1\}$ marks asset $i$ as held, the weights are taken as
+$w = x/K$, and the cardinality enters as a penalty,
+\begin{equation}\label{eq:qubo}
+H(x) = -\frac{1}{K}\,\mu^{\top}x + \frac{\lambda}{2K^{2}}\, x^{\top}\Sigma x + \lambda_c\, (\mathbf{1}^{\top}x - K)^{2},
+\end{equation}
+with $\lambda_c$ a multiple of the largest objective coefficient. A sampler returns low-energy subsets of size $K$;
+the pipeline refines them with the true objective and keeps the best, so its output is a CCMV portfolio, not an
+equal-weight one. Three samplers are compared. Single-flip simulated annealing~\cite{kirkpatrick1983optimization} and
+tabu search~\cite{glover1986future}, as implemented in \texttt{dwave-samplers} (version \ver{1.7.0}), minimise the
+penalty QUBO~(\ref{eq:qubo}). Our simulated annealing over $K$-subsets with swap moves (swap-SA) minimises the same
+energy without the penalty term, since every state has exactly $K$ assets; it is the classical analogue of the
+constraint-preserving mixers of quantum alternating operator ansätze~\cite{hadfield2019quantum}. All three are
+classical QUBO-based heuristics in the sense used here: they rank subsets by the binary surrogate.
+
+In the anytime runs a sampler works in batches until the wall-clock budget is spent: each batch is one call of the
+sampler, after which the new distinct subsets of the batch are refined in order of energy, at most $m_b$ per batch,
+into a cumulative pool; a batch that would not fit into the remaining budget is interrupted. For RQ1 the pipeline is
+instead one sampler call of fixed work (Section~\ref{sec:design}), which separates the surrogate from the sampler: the
+\emph{ceiling of the surrogate} $E_{\mathrm{form}}(m) = \min_{S \in T_m} F(S) - f^{*}$, with $T_m$ the $m$ best
+subsets of the surrogate found by enumeration, is the gap of an oracle that minimises the surrogate exactly, and the
+pipeline gap $E_{\mathrm{pipe}}(m)$ splits into this ceiling and the residual of the sampler,
+$E_{\mathrm{samp}}(m) = E_{\mathrm{pipe}}(m) - E_{\mathrm{form}}(m)$.
+
+\subsection{Local search on the true objective}\label{sec:ls}
+
+The local search works on the true objective and never on the surrogate; it belongs to the class of local searches
+over the assets with convex weights for constrained portfolio selection~\cite{schaerf2002local,digaspero2011hybrid}. A
+greedy construction adds, $K$ times, the asset whose addition gives the best refined value; a descent then exchanges
+one held asset for one not held, refining each candidate support, with first or best improvement, until no exchange
+improves. Restarts draw each greedy choice at random from the three best candidates, a restricted candidate list as
+in GRASP~\cite{feo1995greedy}; the size of the list is a constant of the implementation, outside the tuning space.
+Refined supports are memoised within a run. In the
+anytime runs the search starts from the common start, and its incumbent is updated after every improving exchange.
+
+\subsection{Exact methods}\label{sec:exact}
+
+The exact class has four candidates: SCIP~\cite{hojny2025scip} through PySCIPOpt~\cite{maher2016pyscipopt}
+(SCIP \ver{10.0}) with a big-M model or with the perspective reformulation~\cite{frangioni2005perspective,gunluk2010perspective}
+of the diagonal $D = \lambda_{\min}(\Sigma)\, I$ or of a diagonal from a semidefinite
+programme~\cite{frangioni2007sdp} (for $N$ up to 150 only, where the programme fits in memory), and multi-tree outer
+approximation~\cite{duran1986outer} on the perspective reformulation, after Bertsimas and
+Cory-Wright~\cite{bertsimas2022scalable} but without their ridge term: subgradient cuts of the convex function of the
+binaries, a HiGHS master problem~\cite{huangfu2017parallelizing} (version \ver{1.13.1}) solved afresh after each cut,
+and the shared refinement for the subproblems. All
+solvers run on one thread; SCIP receives at least three permutation seeds. The anytime trajectory of SCIP is recorded
+by an event handler on new solutions, that of outer approximation after every master iteration.

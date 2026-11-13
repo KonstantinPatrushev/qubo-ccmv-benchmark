@@ -1,0 +1,65 @@
+{
+ "analysis_config": "configs/E3/analysis.yaml",
+ "assembly": {
+  "allow_incomplete": false,
+  "operators": {
+   "arms": [
+    "MV",
+    "GMV"
+   ],
+   "perturb": {
+    "g_star_bp": 10.0,
+    "levels_L": "pilot",
+    "min_share": 0.8,
+    "passes": [
+     "gross",
+     "net"
+    ]
+   },
+   "swap": {
+    "g_star_bp": 10.0,
+    "levels_L": "pilot",
+    "min_share": 0.8,
+    "passes": [
+     "gross",
+     "net"
+    ]
+   }
+  },
+  "passes": {
+   "gross": {
+    "paths": "all",
+    "tc_bps": 0.0
+   },
+   "gross_lag1": {
+    "execution_lag": 1,
+    "paths": "core",
+    "tc_bps": 0.0
+   },
+   "net": {
+    "paths": "all",
+    "tc_bps": 10.0
+   },
+   "net30": {
+    "paths": "core",
+    "tc_bps": 30.0
+   }
+  },
+  "workers": 16
+ },
+ "lam": null,
+ "pilot_operators": {
+  "config": "configs/E3/pilot_operators.yaml",
+  "config_hash": "17146432d445",
+  "git_sha": "163aa3cf593225d5f5b3bf0795c47ea221b11afb",
+  "lam": 20.0,
+  "rows_sha256": "79d5e3f3799ecef3807028cdbdcd6e3f82c4bd555ca782f36205856a89ae17fc",
+  "run_id": "20261012-012232-E3-ff49_pilot_operators-171464"
+ },
+ "rows_sha256": "f79a9ac24a66883f3fa9eb20994b82a05069396b78a0ed6ac4be6bb37095817a",
+ "source": "ff49",
+ "source_config": "configs/E3/ff49.yaml",
+ "source_config_hash": "c6fdd60a5234",
+ "source_git_sha": "5f2bcb35c786b5ef07189dc0fdedd041feb6284e",
+ "source_run_id": "20261012-222900-E3-ff49_confirmatory-c6fdd6"
+}

@@ -1,0 +1,47 @@
+# E2, confirmatory (RQ2, H2, H2b): cell C4 of ANALYSIS_PLAN §3: boot (S&P 500 point-in-time, top-200 by dollar
+# turnover on a month end of 2013-2025, 756 days resampled, Ledoit-Wolf), u = 1, l = 0, lambda from the C4 rule
+# (configs/E2/pilot/c4_lambda.json), K = floor(s_cont / 2), configurations of N = 200. If the rule found no
+# lambda, C4 is descriptive: it runs at the largest candidate (lam_used) and leaves the pooled estimate (the report's
+# `admissible` is false; the eligibility report says so too). TEST seeds: solvers 20000-29999. The instances are the
+# NON-TRIVIAL ones (§12 A1) that the finished test scan of C4 selected (elig_test.yaml: from seed 2000, n by the n rule,
+# 20-40, at most 400 seeds). Same methods and seeds as bench_factor.yaml. Clean tree, after the pilot.
+#
+# python -m cif.experiments.launch run --config configs/E2/bench_boot.yaml --cores 0-31 --pin --out-dir $OUT/...
+stream: E2
+name: bench_boot
+experiment: cif.experiments.e2_benchmark
+inputs:
+  tuned: configs/E2/pilot/tuned.json
+  eligibility_test: configs/E2/pilot/eligibility_test.json
+  c4_lambda: configs/E2/pilot/c4_lambda.json
+  sp500_pit: data/processed/sp500_pit/provenance.json
+launch: {timing: true, jobs: 16, shards: 128}
+params:
+  stage: bench
+  seed_role: test
+  budget_s: 60.0
+  warm_up: true
+  overrun_tol_rel: 0.05
+  skip_nonbinding: true
+  fixed: {lam: 5.0, fraction: 0.5, boot_data_dir: data/processed/sp500_pit, boot_n: 200}
+  solver: {mip_gap: 1.0e-6, abs_gap_rel: 1.0e-6, abs_gap_safety: 0.5, trajectory_tol: 1.0e-9}
+  solver_seeds:
+    exact: [20000, 20001, 20002]
+    heuristic: [20000, 20001, 20002, 20003, 20004, 20005, 20006, 20007, 20008, 20009]
+  instances:
+    - {cell: C4, family: boot, n: 200, config_size: 200, eligible: {report: eligibility_test, cell: C4}}
+  methods: {source: tuned, roles: [exact_rep, qubo_rep, ls, sa, tabu, swap_sa]}
+smoke:  # calibration seeds only, 30 tickers, 0.5 s: a check of the machinery, not a run
+  inputs:
+    tuned: configs/E2/smoke/tuned.json
+    eligibility_test: configs/E2/smoke/eligibility_test.json
+    c4_lambda: configs/E2/smoke/c4_lambda.json
+  launch: {jobs: 2, shards: 3}
+  params:
+    seed_role: calibration
+    budget_s: 0.5
+    warm_up: false
+    fixed: {boot_n: 30}
+    solver_seeds: {exact: [10010], heuristic: [10010]}
+    instances:
+      - {cell: C4, family: boot, n: 30, config_size: 20, eligible: {report: eligibility_test, cell: C4}}

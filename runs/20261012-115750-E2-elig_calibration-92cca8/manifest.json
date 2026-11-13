@@ -1,0 +1,140 @@
+{
+ "run_id": "20261012-115750-E2-elig_calibration-92cca8",
+ "stream": "E2",
+ "name": "elig_calibration",
+ "config_hash": "92cca86dffbd",
+ "git_sha": "4238f3bd26433a09c6044be58e6d0892e9536c7c",
+ "git_branch": "stream/E0-engine",
+ "git_available": true,
+ "git_dirty": false,
+ "git_status": [
+  "?? runs/20261012-115750-E2-elig_calibration-92cca8/config.json"
+ ],
+ "untracked_code": [],
+ "untracked_code_sha256": {},
+ "code_state_files": [],
+ "code_parts": "",
+ "host": "konstantin-laptop",
+ "cpu": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
+ "threads": {
+  "env": {
+   "OMP_NUM_THREADS": null,
+   "MKL_NUM_THREADS": null,
+   "OPENBLAS_NUM_THREADS": null,
+   "NUMEXPR_NUM_THREADS": null
+  },
+  "cpu_count": 8,
+  "pools": [
+   {
+    "user_api": "blas",
+    "internal_api": "openblas",
+    "num_threads": 8,
+    "version": "0.3.32"
+   },
+   {
+    "user_api": "openmp",
+    "internal_api": "openmp",
+    "num_threads": 8,
+    "version": null
+   }
+  ]
+ },
+ "cpu_governor": "powersave",
+ "machine": {
+  "cpu": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
+  "n_cpus": 8,
+  "affinity": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "governors": {
+   "powersave": 8
+  },
+  "loadavg": [
+   0.9404296875,
+   0.7666015625,
+   1.02685546875
+  ]
+ },
+ "python": "3.11.15",
+ "packages": {
+  "numpy": "2.1.3",
+  "pandas": "2.2.3",
+  "scipy": "1.14.1",
+  "cvxpy": "1.6.7",
+  "clarabel": "0.11.1",
+  "pyscipopt": "6.1.0",
+  "highspy": "1.13.1",
+  "dwave-samplers": "1.7.0",
+  "dimod": "0.12.21",
+  "qiskit": "2.3.1",
+  "qiskit-aer": "0.17.2",
+  "scikit-learn": "1.5.2",
+  "statsmodels": "0.14.6",
+  "yfinance": "1.2.2",
+  "apimoex": "1.4.0"
+ },
+ "seeds": [],
+ "inputs": {
+  "eligibility_calibration": {
+   "path": "configs/E2/pilot/eligibility_calibration.json",
+   "sha256": "4866925db93a2932e5ffb2dc4e4dfefe2c48e481c5f9ce313f2ad7ca1c6804f0",
+   "bytes": 115474
+  },
+  "c4_lambda": {
+   "path": "configs/E2/pilot/c4_lambda.json",
+   "sha256": "6251cb596b187260e89bee269fb51f57c5fcb5332a43d1ab1f680345ce17f62d",
+   "bytes": 1299
+  },
+  "sp500_pit": {
+   "path": "data/processed/sp500_pit/provenance.json",
+   "sha256": "d602d31364a252d39f597a7d0e8cf4da3bce8174874c876ace5ca576751fa5ae",
+   "bytes": 223396
+  }
+ },
+ "notes": "ingested from 6 shard(s)",
+ "started_at": "2026-10-12T08:57:50+00:00",
+ "status": "completed",
+ "mode": "ingested",
+ "bundle_sha": "4238f3bd26433a09c6044be58e6d0892e9536c7c",
+ "hosts": [
+  "gpu-07"
+ ],
+ "sessions_unfinished": 0,
+ "cpu_models": [
+  "Intel(R) Xeon(R) Silver 4216 CPU @ 2.10GHz"
+ ],
+ "cpu_governors": [
+  "schedutil"
+ ],
+ "loadavg_start_max": 2.11328125,
+ "loadavg_end_max": 7.3798828125,
+ "n_sessions": 6,
+ "n_cells": 6,
+ "n_rows_in_shards": 6,
+ "n_duplicates": 0,
+ "n_missing": 0,
+ "n_errors": 0,
+ "shard_inputs_match": true,
+ "shard_files": [
+  "elig_calibration_shard0000.jsonl",
+  "elig_calibration_shard0001.jsonl",
+  "elig_calibration_shard0002.jsonl",
+  "elig_calibration_shard0003.jsonl",
+  "elig_calibration_shard0004.jsonl",
+  "elig_calibration_shard0005.jsonl"
+ ],
+ "finished_at": "2026-10-12T08:57:50+00:00",
+ "loadavg_end": [
+  0.9404296875,
+  0.7666015625,
+  1.02685546875
+ ],
+ "n_rows": 6
+}

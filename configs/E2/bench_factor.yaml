@@ -1,0 +1,49 @@
+# E2, confirmatory (RQ2, H2, H2b): cells C1-C3 of ANALYSIS_PLAN §3: factor, N = 100, 200, 400, lambda = 5,
+# l = 0, u = 1, K = floor(s_cont / 2) (binding by construction). TEST seeds: instances 2000-2999, solvers 20000-29999.
+# The instances are the NON-TRIVIAL ones (§12 A1: the common start is not within tau of the optimum) that the finished
+# test scan selected (elig_test.yaml: from seed 2000 in increasing order until n of them, n by the n rule of the pilot,
+# 20-40; configs/E2/pilot/eligibility_test.json); a cell with fewer than 20 is descriptive and leaves the pooled
+# estimate, the analysis reads that from the report. The configurations are the tuned ones
+# (configs/E2/pilot/tuned.json): the exact representative (3 permutation seeds), the QUBO representative, LS, and the
+# other tuned heuristics (10 seeds each; SA, tabu, swap-SA, LS: the "4 heuristics x 10 seeds" of §8), 60 s end-to-end,
+# the common start counted. The measure is PI+ = PI - t0/T (§12 A2), computed from the rows. One thread per job, at
+# most 16 jobs. Run only from a clean tree, after the pilot values are in §12 and the plan carries its public stamp.
+# The references (certified optima) are in the screening rows (certificate: full) or in ref_bench.yaml.
+#
+# python -m cif.experiments.launch run --config configs/E2/bench_factor.yaml --cores 0-31 --pin --out-dir $OUT/...
+stream: E2
+name: bench_factor
+experiment: cif.experiments.e2_benchmark
+inputs:
+  tuned: configs/E2/pilot/tuned.json
+  eligibility_test: configs/E2/pilot/eligibility_test.json
+launch: {timing: true, jobs: 16, shards: 256}
+params:
+  stage: bench
+  seed_role: test
+  budget_s: 60.0
+  warm_up: true
+  overrun_tol_rel: 0.05
+  skip_nonbinding: true
+  fixed: {lam: 5.0, fraction: 0.5}
+  solver: {mip_gap: 1.0e-6, abs_gap_rel: 1.0e-6, abs_gap_safety: 0.5, trajectory_tol: 1.0e-9}
+  solver_seeds:
+    exact: [20000, 20001, 20002]
+    heuristic: [20000, 20001, 20002, 20003, 20004, 20005, 20006, 20007, 20008, 20009]
+  instances:
+    - {cell: C1, family: factor, n: 100, config_size: 100, eligible: {report: eligibility_test, cell: C1}}
+    - {cell: C2, family: factor, n: 200, config_size: 200, eligible: {report: eligibility_test, cell: C2}}
+    - {cell: C3, family: factor, n: 400, config_size: 400, eligible: {report: eligibility_test, cell: C3}}
+  methods: {source: tuned, roles: [exact_rep, qubo_rep, ls, sa, tabu, swap_sa]}
+smoke:  # calibration seeds only, a 20-asset instance, 0.5 s: a check of the machinery, not a run
+  inputs:
+    tuned: configs/E2/smoke/tuned.json
+    eligibility_test: configs/E2/smoke/eligibility_test.json
+  launch: {jobs: 2, shards: 4}
+  params:
+    seed_role: calibration
+    budget_s: 0.5
+    warm_up: false
+    solver_seeds: {exact: [10010], heuristic: [10010, 10011]}
+    instances:
+      - {cell: C1, family: factor, n: 20, config_size: 20, eligible: {report: eligibility_test, cell: C1}}

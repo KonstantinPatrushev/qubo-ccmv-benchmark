@@ -1,0 +1,16 @@
+{
+ "kind": "e2-screen",
+ "smoke": true,
+ "note": "Hand-written stand-in for the screen report of the pilot, for --smoke runs of the machinery only. Not tuned, not a result.",
+ "sizes": {
+  "20": {
+   "recheck": [
+    {"spec": {"name": "sa", "id": "smoke-sa", "num_reads_b": 20, "num_sweeps": 50, "beta": "default", "penalty": 10.0, "m_b": 20}, "why": ["smoke"]},
+    {"spec": {"name": "tabu", "id": "smoke-tabu", "num_restarts_b": 2, "tenure": 5, "num_reads_b": 4, "penalty": 10.0, "m_b": 20}, "why": ["smoke"]},
+    {"spec": {"name": "swap_sa", "id": "smoke-swap", "num_reads_b": 10, "num_sweeps": 20, "m_b": 20}, "why": ["smoke"]},
+    {"spec": {"name": "ls", "id": "smoke-ls", "num_restarts": 3, "improvement": "first", "rcl_size": 3}, "why": ["smoke"]},
+    {"spec": {"name": "scip", "id": "smoke-scip", "formulation": "perspective", "diag": "mineig", "usesymmetry": "default"}, "why": ["smoke"]}
+   ]
+  }
+ }
+}

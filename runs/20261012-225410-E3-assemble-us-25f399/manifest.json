@@ -1,0 +1,102 @@
+{
+ "run_id": "20261012-225410-E3-assemble-us-25f399",
+ "stream": "E3",
+ "name": "assemble-us",
+ "config_hash": "25f399703e06",
+ "git_sha": "be21b73e0093727f28e28ddeb579fad12bbf0006",
+ "git_branch": "stream/E0-engine",
+ "git_available": true,
+ "git_dirty": false,
+ "git_status": [
+  "?? runs/20261012-225410-E3-assemble-us-25f399/config.json"
+ ],
+ "untracked_code": [],
+ "untracked_code_sha256": {},
+ "code_state_files": [],
+ "code_parts": "",
+ "host": "konstantin-laptop",
+ "cpu": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
+ "threads": {
+  "env": {
+   "OMP_NUM_THREADS": null,
+   "MKL_NUM_THREADS": null,
+   "OPENBLAS_NUM_THREADS": null,
+   "NUMEXPR_NUM_THREADS": null
+  },
+  "cpu_count": 8,
+  "pools": [
+   {
+    "user_api": "blas",
+    "internal_api": "openblas",
+    "num_threads": 8,
+    "version": "0.3.32"
+   },
+   {
+    "user_api": "openmp",
+    "internal_api": "openmp",
+    "num_threads": 8,
+    "version": null
+   }
+  ]
+ },
+ "cpu_governor": "powersave",
+ "machine": {
+  "cpu": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
+  "n_cpus": 8,
+  "affinity": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "governors": {
+   "powersave": 8
+  },
+  "loadavg": [
+   12.3232421875,
+   19.07373046875,
+   16.58447265625
+  ]
+ },
+ "python": "3.11.15",
+ "packages": {
+  "numpy": "2.1.3",
+  "pandas": "2.2.3",
+  "scipy": "1.14.1",
+  "cvxpy": "1.6.7",
+  "clarabel": "0.11.1",
+  "pyscipopt": "6.1.0",
+  "highspy": "1.13.1",
+  "dwave-samplers": "1.7.0",
+  "dimod": "0.12.21",
+  "qiskit": "2.3.1",
+  "qiskit-aer": "0.17.2",
+  "scikit-learn": "1.5.2",
+  "statsmodels": "0.14.6",
+  "yfinance": "1.2.2",
+  "apimoex": "1.4.0"
+ },
+ "seeds": [],
+ "inputs": {
+  "rows": {
+   "path": "runs/20261012-223519-E3-us_confirmatory-0b0bdf/results.jsonl",
+   "sha256": "3903232c9ca78dfa46f8904ab5d47e42be8b87a6da261d8babfa326c0064ddd2",
+   "bytes": 628321
+  }
+ },
+ "notes": "",
+ "started_at": "2026-10-12T19:54:10+00:00",
+ "status": "completed",
+ "mode": "assembly",
+ "finished_at": "2026-10-12T19:54:28+00:00",
+ "loadavg_end": [
+  12.0859375,
+  18.6796875,
+  16.4951171875
+ ],
+ "n_rows": 0
+}

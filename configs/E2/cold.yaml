@@ -1,0 +1,69 @@
+# E2, sensitivity (ANALYSIS_PLAN §12 A4): the COLD runs. The honest variant of the primal integral, "gamma = 1 until the
+# method's OWN first solution", cannot be computed from the runs with a common start (SCIP's addSol reports only
+# improvements, LS starts from the start, the QUBO pipeline holds the start in its pool, and a row keeps only the
+# improvements over the start), so the three representatives run again WITHOUT a common start: one seed per method and
+# instance, 60 s, on the NON-TRIVIAL test instances of C1-C5 that the finished test scan selected (configs/E2/pilot/
+# eligibility_test.json; D1 is left out, it is descriptive). The clock starts at the build of the method, the
+# trajectory begins with its first solution, and `e2_pilot.row_pi(row, ref, variant="own")` is the primal integral of
+# that variant (no t0 to subtract: nothing is shared). The (also sensitivity) variant "gamma = 1 until the first
+# improvement of the common start" needs no extra runs: `variant="first_improvement"` on the rows of bench_*.yaml.
+# TEST seeds (solver seed 20000). Timing stage: at most 16 jobs. Clean tree, after the pilot.
+#
+# python -m cif.experiments.launch run --config configs/E2/cold.yaml --cores 0-31 --pin --out-dir $OUT/...
+stream: E2
+name: cold
+experiment: cif.experiments.e2_benchmark
+inputs:
+  tuned: configs/E2/pilot/tuned.json
+  eligibility_test: configs/E2/pilot/eligibility_test.json
+  c4_lambda: configs/E2/pilot/c4_lambda.json
+  sp500_pit: data/processed/sp500_pit/provenance.json
+  orlib: data/raw/orlib/provenance.json
+launch: {timing: true, jobs: 16, shards: 128}
+params:
+  stage: cold
+  seed_role: test
+  budget_s: 60.0
+  warm_up: true
+  overrun_tol_rel: 0.05
+  skip_nonbinding: true
+  fixed:
+    lam: 5.0
+    fraction: 0.5
+    boot_data_dir: data/processed/sp500_pit
+    boot_n: 200
+    orlib_dir: data/raw/orlib
+    orlib_k: 10
+    orlib_w_min: 0.01
+    orlib_w_max: 1.0
+    orlib_m: 25
+  solver: {mip_gap: 1.0e-6, abs_gap_rel: 1.0e-6, abs_gap_safety: 0.5, trajectory_tol: 1.0e-9}
+  solver_seeds: {exact: [20000], heuristic: [20000]}
+  instances:
+    - {cell: C1, family: factor, n: 100, config_size: 100, eligible: {report: eligibility_test, cell: C1}}
+    - {cell: C2, family: factor, n: 200, config_size: 200, eligible: {report: eligibility_test, cell: C2}}
+    - {cell: C3, family: factor, n: 400, config_size: 400, eligible: {report: eligibility_test, cell: C3}}
+    - {cell: C4, family: boot, n: 200, config_size: 200, eligible: {report: eligibility_test, cell: C4}}
+    - cell: C5
+      family: orlib
+      ports: [1, 2, 3, 4, 5]
+      lam_indices: 25
+      config_size: [{max_n: 100, size: 100}, {size: 200}]
+      eligible: {report: eligibility_test, cell: C5}
+  methods: {source: tuned, roles: [exact_rep, qubo_rep, ls]}
+smoke:  # calibration seeds only, small instances, 0.5 s: a check of the machinery, not a run
+  inputs:
+    tuned: configs/E2/smoke/tuned.json
+    eligibility_test: configs/E2/smoke/eligibility_test.json
+    c4_lambda: configs/E2/smoke/c4_lambda.json
+  launch: {jobs: 2, shards: 4}
+  params:
+    seed_role: calibration
+    budget_s: 0.5
+    warm_up: false
+    fixed: {boot_n: 30}
+    solver_seeds: {exact: [10010], heuristic: [10010]}
+    instances:
+      - {cell: C1, family: factor, n: 20, config_size: 20, eligible: {report: eligibility_test, cell: C1}}
+      - {cell: C5, family: orlib, ports: [1], lam_indices: [10, 20], config_size: 20,
+         eligible: {report: eligibility_test, cell: C5}}

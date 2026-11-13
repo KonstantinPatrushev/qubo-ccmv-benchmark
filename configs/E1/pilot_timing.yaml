@@ -1,0 +1,111 @@
+# E1 pilot, part 2 of 2: the work of one sampler call (ANALYSIS_PLAN §6 "RQ1 (атрибуция)", [пилот]).
+# CALIBRATION seeds only (the same 20 pairs per N as the floor part; solver seeds 10000-10002 are the
+# repeats, R10: at least 3).
+#
+# The call of the confirmatory run has a FIXED work (reads x sweeps for SA and swap-SA, reads for tabu:
+# ANALYSIS_PLAN §12 B1, each read one plain tabu search); it is chosen per sampler and N so that the
+# MEDIAN time of one call on the calibration instances of that N is about 1 s. A cell of this run is one
+# candidate work: 3 calls on each of the 40 calibration instances of the N (20 pairs x 2 levels of h); the
+# statistic is the median over the instances of the median over the repeats of `solve_s`, the time that the
+# attribution itself records.
+# The whole grid is measured; `python -m cif.experiments.e1_pilot report` picks the candidate whose
+# median is closest to 1 s on the log scale and says whether the target is bracketed.
+#
+# What is timed is the sampler's REFERENCE configuration (plan §12 B3; it must be cif.experiments.e1_attribution.
+# REFERENCE, the code refuses another); the other levels of the nested factors (plan §7.3) run the same work and
+# their call times are reported by the attribution:
+#   sa       penalty multiplier 100 (the builder default, cif.qubo.builder) and the dwave β range
+#   tabu     penalty multiplier 100
+#   swap_sa  T_cold = 0.01 x T_hot (hot temperature by the 80 % acceptance calibration)
+# The parameters that the pilot does not size are the reference configuration of §12 B3: SA 1000 sweeps
+# (dwave), swap-SA 200 sweeps (cif.heuristics.swap_sa), tabu without restarts (num_restarts 0: a read is
+# one plain tabu search of the default length of dwave-samplers) with tenure max(5, N // 4) (dwave's
+# default N // 4 floored at the lower end of the tuning range of Appendix B). So the scaled parameter is
+# the number of independent reads for all three samplers: a call returns one state per read, and the
+# pool of a call is bounded by the sampler, not by a constant of the implementation (§12 B1).
+#
+# The grids are geometric (ratio 1.26 = 2^(1/3): a chosen median is within about 12 % of the target)
+# and span a factor of about 30 in time. They were set on a laptop (measured 2026-10-11, load 2-8 on 4
+# cores): SA 0.43 ms/read at N = 16 and 0.91 ms/read at N = 24 (1 s is about 2300 and 1100 reads), swap-SA
+# 0.15 s + 0.42 ms/read and 0.15 s + 0.86 ms/read (about 2000 and 990), tabu 2.8 ms and 0.06 s + 2.0 ms per
+# plain search (about 350 and 480 reads). The speed of gpu-07 per core is not known; the span is meant to
+# take a machine 2-3 times slower or faster. If the report says edge_low / edge_high, move the grid and
+# rerun THIS part only.
+#
+# Cost: the sum of the call times over the grid x 121 calls (1 warm-up + 40 instances x 3 repeats) per
+# candidate, in 92 cells (estimates in configs/E1/README.md). Run it with the same number of concurrent
+# jobs as the confirmatory grid (16, plan §12): the call times are then those of the main run.
+stream: E1
+name: pilot_timing
+experiment: cif.experiments.e1_pilot
+seeds: [
+    1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012, 1013, 1014, 1015,
+    1016, 1017, 1018, 1019, 1020, 1021, 1022, 1023, 1024, 1025, 1026, 1027, 1028, 1029, 1030, 1031,
+    1032, 1033, 1034, 1035, 1036, 1037, 1038, 1039, 10000, 10001, 10002]
+inputs: {}                          # synthetic instances: no market data is read
+threads: 1                          # BLAS / OpenMP threads of a job (plan §6: one thread per solver)
+launch: {timing: true, jobs: 16, shards: 92}    # one cell per shard; 16 jobs = half of the 32 physical cores (§12)
+params:
+  seed_role: calibration
+  parts: [timing]
+  instances:
+    - n: 16
+      pair_seeds: [
+          1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012, 1013, 1014,
+          1015, 1016, 1017, 1018, 1019]
+    - n: 24
+      pair_seeds: [
+          1020, 1021, 1022, 1023, 1024, 1025, 1026, 1027, 1028, 1029, 1030, 1031, 1032, 1033, 1034,
+          1035, 1036, 1037, 1038, 1039]
+  h_levels: [0.15, 0.45]
+  lam: 5.0
+  w_min: 0.0
+  w_max: 1.0
+  ms: [1, 5, 20, 50, 200]           # not used by the timing part; the config schema of E1 asks for it
+  scip: {formulation: perspective, diag: mineig, mip_gap: 1.0e-6, time_limit_s: 600.0, seed: 0}
+  timing:
+    target_s: 1.0
+    tolerance: 0.2                  # |median / target - 1| within this: status ok
+    solver_seeds: [10000, 10001, 10002]
+    warmup_calls: 1                 # untimed calls before the measurement of a cell
+    samplers:
+      - name: sa
+        reference: {penalty: 100, beta: default}
+        grid:
+          - {n: 16, scale: num_reads, start: 400, ratio: 1.26, count: 15, fixed: {num_sweeps: 1000}}
+          - {n: 24, scale: num_reads, start: 250, ratio: 1.26, count: 15, fixed: {num_sweeps: 1000}}
+      - name: tabu                      # §12 B1: reads are the work, num_restarts 0, tenure max(5, N // 4)
+        reference: {penalty: 100}
+        grid:
+          - {n: 16, scale: num_reads, start: 60, ratio: 1.26, count: 16, fixed: {num_restarts: 0, tenure: 5}}
+          - {n: 24, scale: num_reads, start: 60, ratio: 1.26, count: 16, fixed: {num_restarts: 0, tenure: 6}}
+      - name: swap_sa
+        reference: {cold_ratio: 0.01}   # T_cold = 0.01 x T_hot (§12 B3); the exploratory 0.2 runs the same work
+        grid:
+          - {n: 16, scale: num_reads, start: 500, ratio: 1.26, count: 15, fixed: {num_sweeps: 200}}
+          - {n: 24, scale: num_reads, start: 300, ratio: 1.26, count: 15, fixed: {num_sweeps: 200}}
+smoke:                              # the machinery: one calibration pair per N, tiny works, 1 repeat
+  seeds: [1000, 1020, 10000]
+  params:
+    instances:
+      - {n: 16, pair_seeds: [1000]}
+      - {n: 24, pair_seeds: [1020]}
+    timing:
+      solver_seeds: [10000]
+      warmup_calls: 0
+      samplers:
+        - name: sa
+          reference: {penalty: 100, beta: default}
+          grid:
+            - {n: 16, scale: num_reads, values: [20, 40], fixed: {num_sweeps: 100}}
+            - {n: 24, scale: num_reads, values: [20, 40], fixed: {num_sweeps: 100}}
+        - name: tabu
+          reference: {penalty: 100}
+          grid:
+            - {n: 16, scale: num_reads, values: [3, 6], fixed: {num_restarts: 0, tenure: 5}}
+            - {n: 24, scale: num_reads, values: [3, 6], fixed: {num_restarts: 0, tenure: 6}}
+        - name: swap_sa
+          reference: {cold_ratio: 0.01}
+          grid:
+            - {n: 16, scale: num_reads, values: [10, 20], fixed: {num_sweeps: 20}}
+            - {n: 24, scale: num_reads, values: [10, 20], fixed: {num_sweeps: 20}}

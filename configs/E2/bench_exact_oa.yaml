@@ -1,0 +1,60 @@
+# E2, post hoc sensitivity of H2 to the exact baseline (review r1 of the manuscript, M4; ANALYSIS_PLAN §12, entry of
+# 2026-10-19 "Чувствительность H2 к точному бейзлайну", recorded before this run): (b) outer approximation with a HiGHS
+# master problem (oa-highs, the configuration of the exact representative at N = 400) on the non-trivial TEST
+# instances of the cells where SCIP was the representative: C1, C2, C4, C5 (configs/E2/pilot/eligibility_test.json).
+# In C3 OA is the representative and its rows of bench_factor are used. The instances, solver seeds, budget, common
+# start and solver settings are those of bench_factor / bench_boot / bench_orlib. Not confirmatory: the analysis puts
+# oa-highs in the place of the exact representative in every cell (e2_analysis h2 --exact-config oa-highs).
+#
+# python -m cif.experiments.launch run --config configs/E2/bench_exact_oa.yaml --cores 0-31 --pin --out-dir ...
+stream: E2
+name: bench_exact_oa
+experiment: cif.experiments.e2_benchmark
+inputs:
+  eligibility_test: configs/E2/pilot/eligibility_test.json
+  c4_lambda: configs/E2/pilot/c4_lambda.json
+  sp500_pit: data/processed/sp500_pit/provenance.json
+  orlib: data/raw/orlib/provenance.json
+launch: {timing: true, jobs: 16, shards: 256}
+params:
+  stage: bench
+  seed_role: test
+  budget_s: 60.0
+  warm_up: true
+  overrun_tol_rel: 0.05
+  skip_nonbinding: true
+  fixed: {lam: 5.0, fraction: 0.5, boot_data_dir: data/processed/sp500_pit, boot_n: 200, orlib_dir: data/raw/orlib,
+          orlib_k: 10, orlib_w_min: 0.01, orlib_w_max: 1.0, orlib_m: 25}
+  solver: {mip_gap: 1.0e-6, abs_gap_rel: 1.0e-6, abs_gap_safety: 0.5, trajectory_tol: 1.0e-9}
+  solver_seeds:
+    exact: [20000, 20001, 20002]
+  instances:
+    - {cell: C1, family: factor, n: 100, config_size: 100, eligible: {report: eligibility_test, cell: C1}}
+    - {cell: C2, family: factor, n: 200, config_size: 200, eligible: {report: eligibility_test, cell: C2}}
+    - {cell: C4, family: boot, n: 200, config_size: 200, eligible: {report: eligibility_test, cell: C4}}
+    - cell: C5
+      family: orlib
+      ports: [1, 2, 3, 4, 5]
+      lam_indices: 25
+      config_size: [{max_n: 100, size: 100}, {size: 200}]
+      eligible: {report: eligibility_test, cell: C5}
+  methods:
+    source: explicit
+    specs:
+      - {name: oa, id: oa-highs, diag: mineig}
+smoke:  # calibration seeds only, small instances of the three families, 0.5 s: a check of the machinery, not a run
+  inputs:
+    eligibility_test: configs/E2/smoke/eligibility_test.json
+    c4_lambda: configs/E2/smoke/c4_lambda.json
+  launch: {jobs: 2, shards: 4}
+  params:
+    seed_role: calibration
+    budget_s: 0.5
+    warm_up: false
+    fixed: {boot_n: 30}
+    solver_seeds: {exact: [10010]}
+    instances:
+      - {cell: C1, family: factor, n: 20, config_size: 20, eligible: {report: eligibility_test, cell: C1}}
+      - {cell: C4, family: boot, n: 30, config_size: 20, eligible: {report: eligibility_test, cell: C4}}
+      - {cell: C5, family: orlib, ports: [1], lam_indices: [10, 20], config_size: 20,
+         eligible: {report: eligibility_test, cell: C5}}

@@ -1,0 +1,65 @@
+{
+ "analysis_config": "configs/E3/analysis.yaml",
+ "assemblies": {
+  "ff49": "/home/konstantin/Documents/research/computing_in_finance/runs/20261012-222933-E3-assemble-ff49-afc094",
+  "us": "/home/konstantin/Documents/research/computing_in_finance/runs/20261012-225410-E3-assemble-us-25f399",
+  "us_irregular": "/home/konstantin/Documents/research/computing_in_finance/runs/20261012-225430-E3-assemble-us_irregular-6318ec"
+ },
+ "assembly_meta_sha256": {
+  "ff49": "d3429dfa3bb93be3bd8b5178e2d949d146031dfb423cdf854b133e2c7ab094b2",
+  "us": "7616f1050c15312a0445181cac79ce30fe8d7d25b0c4426a449b5957da69c87e",
+  "us_irregular": "71880a1f079678fd0d5f153dedb7107bf00ff03b35a0e2d1daaa2b203453066b"
+ },
+ "margins": {
+  "delta_sr": 0.020794439827411894,
+  "delta_var": 0.040799110353205444,
+  "sesoi": 0.0025
+ },
+ "stats": {
+  "alpha": 0.05,
+  "calibration": {
+   "grid": [
+    1,
+    5,
+    10,
+    21,
+    42,
+    63,
+    126
+   ],
+   "n_boot": 499,
+   "n_pseudo": 1000
+  },
+  "coverage_min": 0.9,
+  "delta_sr_alt": [
+   0.02,
+   0.05
+  ],
+  "fixed_blocks": [
+   21,
+   63
+  ],
+  "g_star_bp": 10.0,
+  "gamma": "lambda_f",
+  "h3c_solvers": [
+   "tabu",
+   "sa",
+   "ls"
+  ],
+  "n_boot": 4999,
+  "net_bootstrap": {
+   "n_boot": 4999
+  },
+  "net_passes": {
+   "cost_0": "gross",
+   "cost_10": "net",
+   "cost_30": "net30"
+  },
+  "seed": 20261011,
+  "sensitivity_passes": {
+   "lag1": "gross_lag1",
+   "term100": "gross_term100",
+   "term30": "gross_term30"
+  }
+ }
+}

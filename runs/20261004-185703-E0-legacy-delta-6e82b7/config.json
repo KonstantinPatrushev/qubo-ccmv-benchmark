@@ -1,0 +1,26 @@
+{
+ "code_variant": "legacy solvers (main) + corrected engine (E0)",
+ "common": {
+  "risk_aversion": 5.0,
+  "test_days": 21,
+  "train_days": 756,
+  "w_min": 0.0
+ },
+ "data": "legacy data/processed/{sp500,moex}_prices.parquet",
+ "settings": {
+  "moex": {
+   "K": 8,
+   "tc_bps": 30.0,
+   "w_max": 0.2
+  },
+  "sp500": {
+   "K": 15,
+   "tc_bps": 10.0,
+   "w_max": 0.1
+  }
+ },
+ "universes": [
+  "moex",
+  "sp500"
+ ]
+}

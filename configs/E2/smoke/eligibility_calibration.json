@@ -1,0 +1,10 @@
+{
+ "kind": "e2-eligibility",
+ "smoke": true,
+ "role": "calibration",
+ "note": "Hand-written stand-in for the eligibility report of the calibration scan, for --smoke runs of the machinery only: 20-asset instances with calibration seeds, not the result of a scan.",
+ "cells": {
+  "T20": {"done": true, "enough": true, "prefix": 1, "found": 1, "min_nontrivial": 1, "selected": [1000], "needs_reference": [1000]},
+  "CB30": {"done": true, "enough": true, "prefix": 1, "found": 1, "min_nontrivial": 1, "selected": [1100], "needs_reference": [1100]}
+ }
+}

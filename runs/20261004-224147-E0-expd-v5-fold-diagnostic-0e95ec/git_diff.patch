@@ -1,0 +1,9 @@
+diff --git a/runs/registry.jsonl b/runs/registry.jsonl
+index 36aade6..28fdbb3 100644
+--- a/runs/registry.jsonl
++++ b/runs/registry.jsonl
+@@ -8,3 +8,4 @@
+ {"run_id": "20261004-204317-E0-legacy-significance-d6137e", "stream": "E0", "name": "legacy-significance", "status": "completed", "config_hash": "d6137eb67577", "git_sha": "f375bd7f336448cbf0ee9d5a40fb71f4b4753914", "git_dirty": true, "started_at": "2026-10-04T17:43:18+00:00", "finished_at": "2026-10-04T18:01:49+00:00", "n_rows": 8}
+ {"run_id": "20261004-212204-E0-expd-v5-turnover_aware-0a6fca", "stream": "E0", "name": "expd-v5-turnover_aware", "status": "completed", "config_hash": "0a6fcaa31a3f", "git_sha": "c3f5121a5a352a9d9f60d62daad206a251efb9cd", "git_dirty": true, "started_at": "2026-10-04T18:22:04+00:00", "finished_at": "2026-10-04T19:01:46+00:00", "n_rows": 14}
+ {"run_id": "20261004-220253-E0-expd-v5-fold-diagnostic-0e95ec", "stream": "E0", "name": "expd-v5-fold-diagnostic", "status": "aborted", "config_hash": "0e95ec9b4660", "git_sha": "aed82470dde2808b911a40407cd8552a3ea059b6", "git_dirty": true, "started_at": "2026-10-04T19:02:53+00:00", "finished_at": "2026-10-04T19:27:01+00:00", "n_rows": 3}
++{"run_id": "20261004-222712-E0-expd-v5-fold-diagnostic-0e95ec", "stream": "E0", "name": "expd-v5-fold-diagnostic", "status": "completed", "config_hash": "0e95ec9b4660", "git_sha": "2fbb1749cd7de55a5b829723a128e3740e8fd826", "git_dirty": true, "started_at": "2026-10-04T19:27:12+00:00", "finished_at": "2026-10-04T19:41:43+00:00", "n_rows": 5}

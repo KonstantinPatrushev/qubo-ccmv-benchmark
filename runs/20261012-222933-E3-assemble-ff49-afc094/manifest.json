@@ -1,0 +1,107 @@
+{
+ "run_id": "20261012-222933-E3-assemble-ff49-afc094",
+ "stream": "E3",
+ "name": "assemble-ff49",
+ "config_hash": "afc094585da9",
+ "git_sha": "759d05a5504b93fa3a0de61722de3f2bb04213a6",
+ "git_branch": "stream/E0-engine",
+ "git_available": true,
+ "git_dirty": false,
+ "git_status": [
+  "?? runs/20261012-222933-E3-assemble-ff49-afc094/config.json"
+ ],
+ "untracked_code": [],
+ "untracked_code_sha256": {},
+ "code_state_files": [],
+ "code_parts": "",
+ "host": "konstantin-laptop",
+ "cpu": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
+ "threads": {
+  "env": {
+   "OMP_NUM_THREADS": null,
+   "MKL_NUM_THREADS": null,
+   "OPENBLAS_NUM_THREADS": null,
+   "NUMEXPR_NUM_THREADS": null
+  },
+  "cpu_count": 8,
+  "pools": [
+   {
+    "user_api": "blas",
+    "internal_api": "openblas",
+    "num_threads": 8,
+    "version": "0.3.32"
+   },
+   {
+    "user_api": "openmp",
+    "internal_api": "openmp",
+    "num_threads": 8,
+    "version": null
+   }
+  ]
+ },
+ "cpu_governor": "powersave",
+ "machine": {
+  "cpu": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
+  "n_cpus": 8,
+  "affinity": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "governors": {
+   "powersave": 8
+  },
+  "loadavg": [
+   0.76611328125,
+   1.67578125,
+   2.55810546875
+  ]
+ },
+ "python": "3.11.15",
+ "packages": {
+  "numpy": "2.1.3",
+  "pandas": "2.2.3",
+  "scipy": "1.14.1",
+  "cvxpy": "1.6.7",
+  "clarabel": "0.11.1",
+  "pyscipopt": "6.1.0",
+  "highspy": "1.13.1",
+  "dwave-samplers": "1.7.0",
+  "dimod": "0.12.21",
+  "qiskit": "2.3.1",
+  "qiskit-aer": "0.17.2",
+  "scikit-learn": "1.5.2",
+  "statsmodels": "0.14.6",
+  "yfinance": "1.2.2",
+  "apimoex": "1.4.0"
+ },
+ "seeds": [],
+ "inputs": {
+  "rows": {
+   "path": "runs/20261012-222900-E3-ff49_confirmatory-c6fdd6/results.jsonl",
+   "sha256": "f79a9ac24a66883f3fa9eb20994b82a05069396b78a0ed6ac4be6bb37095817a",
+   "bytes": 109506593
+  },
+  "pilot_operator_rows": {
+   "path": "runs/20261012-012232-E3-ff49_pilot_operators-171464/results.jsonl",
+   "sha256": "79d5e3f3799ecef3807028cdbdcd6e3f82c4bd555ca782f36205856a89ae17fc",
+   "bytes": 15339038
+  }
+ },
+ "notes": "",
+ "started_at": "2026-10-12T19:29:33+00:00",
+ "status": "completed",
+ "mode": "assembly",
+ "finished_at": "2026-10-12T19:53:51+00:00",
+ "loadavg_end": [
+  16.59814453125,
+  20.29150390625,
+  16.91455078125
+ ],
+ "n_rows": 0
+}

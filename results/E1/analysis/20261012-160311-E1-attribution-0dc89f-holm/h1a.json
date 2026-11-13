@@ -1,0 +1,74 @@
+{
+ "hypothesis": "H1a",
+ "m0": 1,
+ "tau": 0.001,
+ "alternative": "greater",
+ "test": "stratified (by N) Wilcoxon signed-rank on the pair differences E_form(m0; hi) - E_form(m0; lo)",
+ "method": "exact",
+ "statistic": 607.0,
+ "p_value": 2.9491979909423982e-05,
+ "n_pairs": 80,
+ "n_nonzero": 54,
+ "n_zero": 26,
+ "zero_tol": 1e-08,
+ "strata": {
+  "16": {
+   "n": 40,
+   "n_zero": 12,
+   "n_nonzero": 28,
+   "n_pos": 18,
+   "n_neg": 10,
+   "median_d": 0.0,
+   "t": 287.0
+  },
+  "24": {
+   "n": 40,
+   "n_zero": 14,
+   "n_nonzero": 26,
+   "n_pos": 21,
+   "n_neg": 5,
+   "median_d": 0.0008103472336299702,
+   "t": 320.0
+  }
+ },
+ "share_positive": 0.4875,
+ "difference": {
+  "mean": {
+   "estimate": 0.0022858411077950292,
+   "ci": [
+    0.0012361136833948026,
+    0.003411051551563446
+   ]
+  },
+  "median": {
+   "estimate": 1.4289707675830247e-16,
+   "ci": [
+    0.0,
+    0.0014900740062644994
+   ]
+  },
+  "level": 0.95,
+  "n_boot": 9999,
+  "clusters": "pairs",
+  "strata": "N"
+ },
+ "holm": {
+  "complete": true,
+  "adjusted": {
+   "H1a": 2.9491979909423982e-05,
+   "H1c": 1.0842021724855044e-19
+  },
+  "reject": {
+   "H1a": true,
+   "H1c": true
+  },
+  "upper_bound": {
+   "H1a": 5.8983959818847964e-05,
+   "H1c": 1.0842021724855044e-19
+  },
+  "alpha": 0.05,
+  "note": ""
+ },
+ "alpha": 0.05,
+ "outcome": "confirmed"
+}

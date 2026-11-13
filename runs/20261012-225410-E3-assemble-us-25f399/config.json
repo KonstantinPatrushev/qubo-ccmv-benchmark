@@ -1,0 +1,44 @@
+{
+ "analysis_config": "configs/E3/analysis.yaml",
+ "assembly": {
+  "allow_incomplete": false,
+  "passes": {
+   "gross": {
+    "paths": "all",
+    "tc_bps": 0.0
+   },
+   "gross_lag1": {
+    "execution_lag": 1,
+    "paths": "core",
+    "tc_bps": 0.0
+   },
+   "gross_term100": {
+    "paths": "core",
+    "tc_bps": 0.0,
+    "terminal_return": -1.0
+   },
+   "gross_term30": {
+    "paths": "core",
+    "tc_bps": 0.0,
+    "terminal_return": -0.3
+   },
+   "net": {
+    "paths": "all",
+    "tc_bps": 10.0
+   },
+   "net30": {
+    "paths": "core",
+    "tc_bps": 30.0
+   }
+  },
+  "workers": 16
+ },
+ "lam": null,
+ "pilot_operators": null,
+ "rows_sha256": "3903232c9ca78dfa46f8904ab5d47e42be8b87a6da261d8babfa326c0064ddd2",
+ "source": "us",
+ "source_config": "configs/E3/us.yaml",
+ "source_config_hash": "0b0bdfaebfd1",
+ "source_git_sha": "6154cdbd816ff8dc8eebd0fa53133cb66e210447",
+ "source_run_id": "20261012-223519-E3-us_confirmatory-0b0bdf"
+}

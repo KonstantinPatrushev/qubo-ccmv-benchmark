@@ -1,0 +1,75 @@
+# E2: the reference values of the NON-TRIVIAL TEST instances without a full certificate (ANALYSIS_PLAN §5, §12 A1): the
+# certified optimum where SCIP closes the gap (limits/absgap = 1e-6·s_ref, limit 2 h), the best incumbent otherwise
+# ("best known", which the primal integral and the time-to-target then take together with the values of all methods).
+# Needed only if the screening ran at the level `tau` (elig_test.yaml: certificate: tau); with `certificate: full` (the
+# default there) every selected instance is certified by the screening and this config has no cells. One cell per
+# instance: the `needs_reference` units of the finished test scans (C1-C5; D1 has its own report and is not certified
+# here: it is descriptive). TEST seeds (solver seed 20000). Not a timing stage, but the server is shared and §12 of the
+# plan caps our simultaneous single-thread jobs at 16 (half of the 32 physical cores): launch.jobs = 16; never next to
+# a timing stage. It can run before or after the benchmark stages (the references are inputs of the analysis, not of the
+# runs). Clean tree, after the pilot. Worst case 2 h per instance: lower methods.time_limit_s only as a recorded
+# deviation (§12).
+#
+# python -m cif.experiments.launch run --config configs/E2/ref_bench.yaml --cores 0-31 --pin --out-dir $OUT/...
+stream: E2
+name: ref_bench
+experiment: cif.experiments.e2_benchmark
+inputs:
+  eligibility_test: configs/E2/pilot/eligibility_test.json
+  c4_lambda: configs/E2/pilot/c4_lambda.json
+  sp500_pit: data/processed/sp500_pit/provenance.json
+  orlib: data/raw/orlib/provenance.json
+launch: {timing: false, jobs: 16, shards: 256}
+params:
+  stage: reference
+  seed_role: test
+  budget_s: null
+  warm_up: true
+  skip_nonbinding: true
+  fixed:
+    lam: 5.0
+    fraction: 0.5
+    boot_data_dir: data/processed/sp500_pit
+    boot_n: 200
+    orlib_dir: data/raw/orlib
+    orlib_k: 10
+    orlib_w_min: 0.01
+    orlib_w_max: 1.0
+    orlib_m: 25
+  solver: {mip_gap: 1.0e-6, abs_gap_rel: 1.0e-6, abs_gap_safety: 0.5, trajectory_tol: 1.0e-9}
+  solver_seeds: {exact: [20000], heuristic: [20000]}
+  instances:
+    - {cell: C1, family: factor, n: 100, config_size: 100,
+       eligible: {report: eligibility_test, cell: C1, field: needs_reference}}
+    - {cell: C2, family: factor, n: 200, config_size: 200,
+       eligible: {report: eligibility_test, cell: C2, field: needs_reference}}
+    - {cell: C3, family: factor, n: 400, config_size: 400,
+       eligible: {report: eligibility_test, cell: C3, field: needs_reference}}
+    - {cell: C4, family: boot, n: 200, config_size: 200,
+       eligible: {report: eligibility_test, cell: C4, field: needs_reference}}
+    - cell: C5
+      family: orlib
+      ports: [1, 2, 3, 4, 5]
+      lam_indices: 25
+      config_size: [{max_n: 100, size: 100}, {size: 200}]
+      eligible: {report: eligibility_test, cell: C5, field: needs_reference}
+  methods:
+    source: reference
+    time_limit_s: 7200.0
+    spec: {name: scip, id: ref-scip-persp-mineig, formulation: perspective, diag: mineig, usesymmetry: default}
+smoke:  # calibration seeds only, small instances, 30 s limit: a check of the machinery, not a run
+  inputs:
+    eligibility_test: configs/E2/smoke/eligibility_test.json
+    c4_lambda: configs/E2/smoke/c4_lambda.json
+  launch: {jobs: 2, shards: 4}
+  params:
+    seed_role: calibration
+    solver_seeds: {exact: [10010], heuristic: [10010]}
+    fixed: {boot_n: 30}
+    instances:
+      - {cell: C1, family: factor, n: 20, config_size: 20,
+         eligible: {report: eligibility_test, cell: C1, field: needs_reference}}
+      - {cell: C5, family: orlib, ports: [1], lam_indices: [10, 20], config_size: 20,
+         eligible: {report: eligibility_test, cell: C5, field: needs_reference}}
+    methods:
+      time_limit_s: 30.0

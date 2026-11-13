@@ -1,0 +1,103 @@
+{
+ "kind": "e2-ttt-instances",
+ "plan_version": "v2.4",
+ "label": "T200",
+ "config_size": 200,
+ "exact_rep": "scip-persp-mineig-sym0",
+ "budget_s": 60.0,
+ "median_pi": 0.00026121828536300907,
+ "instances": [
+  1014,
+  1043,
+  1049
+ ],
+ "difficulty": [
+  {
+   "seed": 1014,
+   "instance_id": "factor/200/1014",
+   "pi": 0.000289848318702559
+  },
+  {
+   "seed": 1028,
+   "instance_id": "factor/200/1028",
+   "pi": 0.00040307240358506763
+  },
+  {
+   "seed": 1033,
+   "instance_id": "factor/200/1033",
+   "pi": 0.00017107012014374337
+  },
+  {
+   "seed": 1042,
+   "instance_id": "factor/200/1042",
+   "pi": 0.0005018258004148817
+  },
+  {
+   "seed": 1043,
+   "instance_id": "factor/200/1043",
+   "pi": 0.0002310258246369367
+  },
+  {
+   "seed": 1049,
+   "instance_id": "factor/200/1049",
+   "pi": 0.00023258825202345917
+  },
+  {
+   "seed": 1053,
+   "instance_id": "factor/200/1053",
+   "pi": 0.00018462664307536197
+  },
+  {
+   "seed": 1054,
+   "instance_id": "factor/200/1054",
+   "pi": 0.0002999154743837263
+  }
+ ],
+ "inputs": [
+  {
+   "source": "runs/20261012-144451-E2-tune_recheck-625658",
+   "sha256": "7e553f399df45bf27a6eeeef52f1af05bb4f236e8ead356e79896ddb147d3caa",
+   "n_rows": 936,
+   "run_id": "20261012-144451-E2-tune_recheck-625658",
+   "git_sha": "6624871e4d239277c075ee28f01606138000defb",
+   "git_dirty": false,
+   "config_hash": "625658cb689f",
+   "mode": "ingested"
+  },
+  {
+   "source": "runs/20261011-211545-E2-ref_calibration-936867",
+   "sha256": "1a3d09ca9a050fb0db252bd2272e7156c5b2959844da62b77d0f07a26f3b4a04",
+   "n_rows": 24,
+   "run_id": "20261011-211545-E2-ref_calibration-936867",
+   "git_sha": "3f4f035857db9bf196ebd9602c79dd88c21535de",
+   "git_dirty": false,
+   "config_hash": "936867cefbab",
+   "mode": "ingested"
+  },
+  {
+   "source": "runs/20261012-104016-E2-elig_calibration-92cca8",
+   "sha256": "b2d6c2da11d29e1ea17e82602803483ae990df11e1ae3b79c7038b01bbb5488f",
+   "n_rows": 194,
+   "run_id": "20261012-104016-E2-elig_calibration-92cca8",
+   "git_sha": "ea86c67acc97f740aae16106f51005d86605268c",
+   "git_dirty": false,
+   "config_hash": "92cca86dffbd",
+   "mode": "ingested"
+  },
+  {
+   "source": "runs/20261012-115750-E2-elig_calibration-92cca8",
+   "sha256": "a77a2af3ee28690339a8c4150ded5bce3640bca9d6a337fe7b22a750ee741f3f",
+   "n_rows": 6,
+   "run_id": "20261012-115750-E2-elig_calibration-92cca8",
+   "git_sha": "4238f3bd26433a09c6044be58e6d0892e9536c7c",
+   "git_dirty": false,
+   "config_hash": "92cca86dffbd",
+   "mode": "ingested"
+  },
+  {
+   "source": "configs/E2/pilot/tuned.json",
+   "sha256": "af6fbb7f3c5e353ea0efba5e37f37296f2cf0b2b4ffea1c51726b2efc358e58a"
+  }
+ ],
+ "section12": "2026-10-12 — [пилот E2] инстансы для TTT-кривых (N = 200): сиды 1014, 1043, 1049 — по правилу §6 (minor 10): три калибровочных инстанса с медианной трудностью (PI точного представителя scip-persp-mineig-sym0 за 60 с, медиана 0.000261) — TTT-кривые (описательно) — кто согласовал: —"
+}

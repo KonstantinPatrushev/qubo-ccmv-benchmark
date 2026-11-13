@@ -1,0 +1,8 @@
+market,set,n_folds,n_included,n_excluded,share_excluded,n_excluded_optimum,n_excluded_degenerate,n_excluded_rank,n_missing_cells
+ff49,MV,636,636,0,0.0,0,0,0,0
+ff49,GMV,636,636,0,0.0,0,0,0,0
+ff49,common,636,636,0,0.0,0,0,0,0
+us,MV,155,155,0,0.0,0,0,0,0
+us,common,155,155,0,0.0,0,0,0,0
+us_irregular,MV,155,155,0,0.0,0,0,0,0
+us_irregular,common,155,155,0,0.0,0,0,0,0

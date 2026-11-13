@@ -1,0 +1,45 @@
+# E2, pilot (ANALYSIS_PLAN §5, §12 A1): the REFERENCE run of the non-trivial calibration instances that the screening did
+# not certify: certified optima where SCIP closes the gap (limits/absgap = 1e-6·s_ref, limit 2 h, §5), the best
+# incumbent otherwise. Needed only if the screening ran at the level `tau` (elig_calibration.yaml: certificate: tau);
+# with `certificate: full` (the default there) every selected instance is certified by the screening and this config has
+# no cells. The instances are `needs_reference` of the finished calibration scan (the 24 plan instances were certified by
+# the registered run 20261011-211545-E2-ref_calibration-936867, whose rows enter the reference table of the tuning). One
+# cell per instance. Not a timing stage: only the certificate matters, but the server is shared and §12 of the plan caps
+# our simultaneous single-thread jobs at 16 (half of the 32 physical cores): launch.jobs = 16; do not run it next to a
+# timing stage.
+#
+# python -m cif.experiments.launch run --config configs/E2/ref_calibration.yaml --cores 0-31 --pin --out-dir $OUT/...
+stream: E2
+name: ref_calibration
+experiment: cif.experiments.e2_benchmark
+inputs:
+  eligibility_calibration: configs/E2/pilot/eligibility_calibration.json
+launch: {timing: false, jobs: 16, shards: 24}
+params:
+  stage: reference
+  seed_role: calibration
+  budget_s: null
+  warm_up: true
+  skip_nonbinding: false
+  fixed: {lam: 5.0, fraction: 0.5}
+  solver: {mip_gap: 1.0e-6, abs_gap_rel: 1.0e-6, abs_gap_safety: 0.5, trajectory_tol: 1.0e-9}
+  solver_seeds: {exact: [10000], heuristic: [10000]}
+  instances:
+    - {cell: T100, family: factor, n: 100, config_size: 100,
+       eligible: {report: eligibility_calibration, cell: T100, field: needs_reference, require_enough: true}}
+    - {cell: T200, family: factor, n: 200, config_size: 200,
+       eligible: {report: eligibility_calibration, cell: T200, field: needs_reference, require_enough: true}}
+    - {cell: T400, family: factor, n: 400, config_size: 400,
+       eligible: {report: eligibility_calibration, cell: T400, field: needs_reference, require_enough: true}}
+  methods:
+    source: reference
+    time_limit_s: 7200.0
+    spec: {name: scip, id: ref-scip-persp-mineig, formulation: perspective, diag: mineig, usesymmetry: default}
+smoke:
+  seeds: [1000, 10000]
+  launch: {jobs: 2, shards: 2}
+  params:
+    instances:
+      - {cell: T20, family: factor, n: 20, seeds: [1000], config_size: 20}
+    methods:
+      time_limit_s: 30.0

@@ -1,0 +1,9 @@
+{
+ "kind": "e2-eligibility",
+ "smoke": true,
+ "role": "test",
+ "note": "Hand-written stand-in for the eligibility report of the D1 scan, for --smoke runs of the machinery only: 20-asset instances with calibration seeds, not the result of a scan.",
+ "cells": {
+  "D1_20": {"done": true, "enough": true, "prefix": 2, "found": 2, "min_nontrivial": 1, "selected": [1000, 1001], "needs_reference": [1000, 1001]}
+ }
+}

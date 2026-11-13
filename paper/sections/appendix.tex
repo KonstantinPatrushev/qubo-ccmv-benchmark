@@ -1,0 +1,124 @@
+% sections/appendix.tex — the deviations from the pre-registered plan that bear on the results (the full dated log is
+% section 12 of the analysis plan in the code archive) and the relation to the earlier study. Draft for the author's
+% review; revised after the review r1 (missing entries of the log, entries recorded after the analysis marked); no
+% explicit list of corrections of the earlier study (authors' decision 2026-11-04).
+\appendix
+
+\section{Deviations from the pre-registered plan}\label{app:deviations}
+
+Table~\ref{tab:deviations} lists the entries of the deviation log that bear on the results, in the order of their
+dates (October 2026). Each entry was recorded with its reason before the rows it affects were analysed, except those
+marked $^{\ast}$: these were recorded after an audit or a review had seen the affected rows, and they interpret or
+correct, but do not change, the estimates.
+
+% a longtable: the log does not fit on one page
+{\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.07\textwidth}>{\raggedright\arraybackslash}p{0.4\textwidth}>{\raggedright\arraybackslash}p{0.29\textwidth}>{\raggedright\arraybackslash}p{0.17\textwidth}} % num-ok: column widths
+\caption{Deviations from the pre-registered plan.}\label{tab:deviations}\\
+\toprule
+Date & Change & Reason & Affects \\
+\midrule
+\endfirsthead
+\multicolumn{4}{l}{Table~\ref{tab:deviations} (continued)}\\
+\toprule
+Date & Change & Reason & Affects \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+11 Oct & Runs on a shared server: at most 16 single-threaded jobs pinned to physical cores, load recorded, instead of
+an exclusive machine & no exclusive machine available & timings of RQ2, H1c \\
+11 Oct & Public timestamp by an RFC~3161 service instead of an archive deposit & practical & none \\
+11 Oct & Methods are compared only on non-trivial instances, decided at the reference stage before any method runs
+& on the calibration instances the common start was within the target on most instances; the outcome
+``equivalent'' would have been fixed by the composition of the cells & H2, H2b, H1c, tuning \\
+11 Oct & Primary measure $\mathrm{PI}^{+}$, the integral after the common start & the common term $t_0/T$ bounds every
+ratio & H2, H2b, tuning \\
+11 Oct & New estimate: the share of trivial instances per cell (A3) & a direct answer to when solver quality matters &
+RQ2 (wording) \\
+11 Oct & Sensitivities: the integral from the first improvement of the start and cold runs without the start; the
+confined primal integral dropped & the planned variant is not computable from warm runs & H2, H2b (sensitivities) \\
+11 Oct & H1c on non-trivial instances; differences below $10^{-8}s$ are zeros & on trivial instances both pipelines sit
+at the start or the optimum & H1c \\
+11 Oct & RQ1: the work of a tabu call is counted in reads; the residual of the sampler is reported with the size of
+its pool and split into precision and the cost of a short pool; reference configurations at $N \le 24$, where nothing
+was tuned & one call of a sampler returns few distinct subsets & RQ1 estimates (not H1a, H1c) \\
+11 Oct & C4 descriptive (the $\lambda$ rule admitted no value) and run at $\lambda = 20$ & rule of the plan & composition
+of the pooled estimate \\
+12 Oct & D1 screened on its 40 planned seeds with a 600~s limit & SCIP barely progresses on dense instances & D1 only \\
+12 Oct & H1c reads narrowly: in the frozen grid, single-flip annealing is held by the penalty barrier and never improved
+the start on calibration & audit of the first checkpoint & H1c (interpretation) \\
+12 Oct & The real solvers of RQ3 receive the common start, so the path of annealing in H3c is the path of the start &
+comparable solvers at one start & H3c \\
+12 Oct & A batch of tabu search in RQ2 has 10 reads, a constant outside the tuning space; one tabu configuration of H1c
+was chosen by its number from an exact tie & disclosure (audit of the first checkpoint) & H1c \\
+12 Oct & The regime of nearly fixed weights on FF49 ($K u$ close to one) is reported & seen on the pilot & RQ3
+(interpretation) \\
+12 Oct & Readings of the estimators of H2, H2b and the secondary analyses fixed in code before the bench runs & the
+plan left them open & H2, H2b, secondary \\
+12 Oct & US sensitivity without irregular adjustment days excludes a stock only from the folds whose windows contain
+such a day & the earlier reading selected on a future event & H3a sensitivity \\
+17 Oct$^{\ast}$ & A warning and a post-hoc estimate without the cell for pooled cells with fewer than five clusters
+(C5) & audit of the confirmatory stages & H2b (interpretation) \\
+17 Oct$^{\ast}$ & A certificate of any screening round counts; the analyses were recomputed & a merge of two rounds
+lost one certificate; no ratio changed & reference type of one instance \\
+17 Oct & Time-to-target curves, the delay to the first own solution and the validation of the exact stack, with their
+readings fixed before the rows were read & outputs of the plan not yet reported & secondary analyses of RQ2 \\
+17 Oct & The delay of local search is read from its trajectory, not from a field that marked the first refinement of a
+partial subset & audit of the confirmatory stages & delay (secondary) \\
+18 Oct & The verdict of the validation reads the times of SCIP, the representative at these sizes; recorded before
+the run, after exploratory runs outside the registry in which outer approximation was faster & the rule judges the
+baseline of H2 & validation of the exact stack \\
+18 Oct & The Russian market (exploratory) is left out of this paper & scope of the journal paper & RQ3 (exploratory) \\
+19 Oct & Post hoc descriptions: the distribution of $R$ and $R_b$ over the instances$^{\ast}$; the penalty samplers in
+the place of the representative; the first own portfolio against the common start (the last two recorded before
+they were computed) & review of the manuscript & RQ2 (description) \\
+19 Oct & Post hoc sensitivity of H2 to the exact baseline: new runs of SCIP with aggressive primal heuristics (C1--C5)
+and of outer approximation (C1, C2, C4, C5) on the same instances, recorded before the runs & review of the
+manuscript & RQ2 (sensitivity) \\
+\end{longtable}}
+
+\section{Relation to the earlier study}\label{app:prior}
+
+Table~\ref{tab:prior} compares the present design with that of our earlier study of the same
+pipeline~\cite{avdoshin2026discrete}. The results of the earlier study are not reused: where the present design answers one of its questions,
+the answer comes from the new runs.
+
+% a longtable, so that the table stays in this appendix and does not float behind the references
+{\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.16\textwidth}>{\raggedright\arraybackslash}p{0.38\textwidth}>{\raggedright\arraybackslash}p{0.38\textwidth}} % num-ok: column widths
+\caption{The earlier study and this paper.}\label{tab:prior}\\
+\toprule
+Aspect & Earlier study & This paper \\
+\midrule
+\endfirsthead
+\multicolumn{3}{l}{Table~\ref{tab:prior} (continued)}\\
+\toprule
+Aspect & Earlier study & This paper \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Sources of the gap & three candidate sources (formulation, sampler, penalty calibration) named, not separated &
+the ceiling of the surrogate and the residual of the sampler, against certified optima (RQ1) \\
+Instances & synthetic covariance whose volatilities grow with $N$, with near-zero correlations; on the S\&P~500
+walk-forward the cardinality constraint did not bind & factor family with a controlled dispersion and a binding $K$ by
+construction, S\&P~500 bootstrap, OR-Library; screening of trivial instances \\
+Reference & best solution found & certified optimum where SCIP closes the gap, the best known value otherwise, with its
+type reported \\
+Exact baseline & SCIP and ECOS\_BB through CVXPY, at default settings & native SCIP with the perspective
+reformulation and outer approximation, tuned and validated against published times \\
+QUBO heuristics & simulated annealing, described as quantum-inspired & simulated annealing, tabu search and swap-SA,
+tuned with one protocol and described as QUBO-based heuristics \\
+Local search & none & greedy construction and swaps on the true objective \\
+Time & median wall time of a run & anytime: primal integral after a common start, time to target, delay to the first
+solution \\
+Statistics & medians over three seeds, no tests & pre-registered hypotheses, bootstrap intervals, equivalence bands,
+Holm's adjustment \\
+Out of sample & returns as if rebalanced daily to the target weights, costs once per fold, turnover between target weights,
+Sortino ratio from a step equity curve; the heuristic ranked candidates with a turnover cost that the exact solver did
+not see & buy-and-hold with drift inside the test window; all paths solve the same problem; exactly enumerated
+alternative supports and equivalence tests \\
+US universe & the first 100 constituents of the current S\&P~500 list in alphabetical order of company names &
+constituents at the formation date, ranked by median dollar volume \\
+\end{longtable}}

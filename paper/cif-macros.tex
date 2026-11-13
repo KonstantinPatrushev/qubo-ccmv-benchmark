@@ -1,0 +1,11 @@
+% cif-macros.tex — project macros for the manuscript (load in the preamble after xcolor).
+% Result numbers come ONLY from \res{<key>} defined in generated/numbers.tex, which is written by
+% code (stats-analyst). An undefined key prints ??key?? and emits a LaTeX warning.
+\makeatletter
+\providecommand{\res}[1]{%
+  \ifcsname res@#1\endcsname\csname res@#1\endcsname
+  \else\textbf{??#1??}\@latex@warning{cif: undefined result key `#1'}\fi}
+\makeatother
+\providecommand{\ver}[1]{#1}  % software versions; ignored by the number-check hook
+\providecommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}
+\IfFileExists{generated/numbers.tex}{\input{generated/numbers.tex}}{}

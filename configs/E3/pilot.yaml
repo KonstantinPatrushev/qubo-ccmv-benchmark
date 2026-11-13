@@ -1,0 +1,54 @@
+# E3, the PILOT of the plan (docs/ANALYSIS_PLAN.md v2.4): FF49, test windows in 1963-07-01 ... 1972-12-31.
+#
+# What it feeds (python -m cif.experiments.e3_pilot, see configs/E3/README.md):
+#   * lambda_f - the smallest of {5, 10, 20} at which s_cont,f > ceil(1/u) + 1 on at least 70 % of the
+#     pilot folds, else 20 (plan §3 "Рычаг связывания");
+#   * sigma*, Delta_SR = 0.0025/sigma* (MV optimum before costs) and sigma2*, delta = (0.005/lambda_f)/sigma2*
+#     (GMV optimum) - the margins of H3a (plan §2);
+#   * the power pilot: rho of the rank-2 path and the optimum, the 90 % half-width rescaled to the length of
+#     the confirmation (plan §7.4).
+# The values go to §12 of the plan BEFORE the first confirmatory run.
+#
+# A cell is (arm in {MV, GMV}, lambda in {5, 10, 20}, fold): the continuous relaxation (s_cont, K_f), the
+# certified optimum and rank 2 (n_ranks: 1 - the pilot needs nothing else). Calibration seeds (10000-19999).
+# 2 arms x 3 lambdas x 112 folds = 672 cells (by the calendar of the FF49 dataset of 2026-10-08).
+#
+# Run server: certification only (no real solver is timed), so launch.timing is false; the cap of the shared
+# server (plan §12) is 16 single-thread jobs all the same. 96 shards of 7 cells.
+stream: E3
+name: ff49_pilot
+experiment: cif.experiments.e3_walkforward
+seeds: [10000]
+inputs:
+  ff49: data/processed/ff49/provenance.json
+launch: {jobs: 16, shards: 96, timing: false}
+params:
+  seed_role: calibration
+  solver_seed: 10000
+  market:
+    name: ff49
+    source: ff49
+    data_dir: data/processed/ff49
+    u: 0.20
+    train_days: 756
+    test_days: 21
+  period: {name: pilot, start: "1963-07-01", end: "1972-12-31"}
+  arms: [MV, GMV]
+  lambda_f: null
+  lambdas: [5.0, 10.0, 20.0]
+  n_ranks: 1
+  optimum: {time_limit_s: 7200.0, mip_gap: 1.0e-6, formulation: perspective, diag: mineig}
+  kbest: {time_limit_s: 600.0, card_mode: eq, abs_gap_rel: 1.0e-6, warm_start: true, boundary_check: false}
+  solvers: null
+  operators: null
+# --smoke: a synthetic factor-model market (no FF49 data is read), a few cells, a minute on a laptop
+smoke:
+  seeds: [10000]
+  launch: {jobs: 2, shards: 4, timing: false}
+  params:
+    market: {name: synthetic, source: synthetic, n_assets: 12, n_days: 300, seed: 1000, start: "2000-01-03",
+             u: 0.34, train_days: 60, test_days: 5, gap_fraction: 0.0}
+    period: {name: pilot, start: "2000-06-01", end: "2000-07-15"}
+    lambdas: [5.0, 20.0]
+    optimum: {time_limit_s: 60.0}
+    kbest: {time_limit_s: 60.0}

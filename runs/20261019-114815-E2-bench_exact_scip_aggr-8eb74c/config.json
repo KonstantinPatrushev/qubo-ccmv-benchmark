@@ -1,0 +1,129 @@
+{
+ "experiment": "cif.experiments.e2_benchmark",
+ "inputs": {
+  "c4_lambda": "configs/E2/pilot/c4_lambda.json",
+  "eligibility_test": "configs/E2/pilot/eligibility_test.json",
+  "orlib": "data/raw/orlib/provenance.json",
+  "sp500_pit": "data/processed/sp500_pit/provenance.json"
+ },
+ "launch": {
+  "jobs": 16,
+  "shards": 256,
+  "timing": true
+ },
+ "mode": "full",
+ "name": "bench_exact_scip_aggr",
+ "params": {
+  "budget_s": 60.0,
+  "fixed": {
+   "boot_data_dir": "data/processed/sp500_pit",
+   "boot_n": 200,
+   "fraction": 0.5,
+   "lam": 5.0,
+   "orlib_dir": "data/raw/orlib",
+   "orlib_k": 10,
+   "orlib_m": 25,
+   "orlib_w_max": 1.0,
+   "orlib_w_min": 0.01
+  },
+  "instances": [
+   {
+    "cell": "C1",
+    "config_size": 100,
+    "eligible": {
+     "cell": "C1",
+     "report": "eligibility_test"
+    },
+    "family": "factor",
+    "n": 100
+   },
+   {
+    "cell": "C2",
+    "config_size": 200,
+    "eligible": {
+     "cell": "C2",
+     "report": "eligibility_test"
+    },
+    "family": "factor",
+    "n": 200
+   },
+   {
+    "cell": "C3",
+    "config_size": 400,
+    "eligible": {
+     "cell": "C3",
+     "report": "eligibility_test"
+    },
+    "family": "factor",
+    "n": 400
+   },
+   {
+    "cell": "C4",
+    "config_size": 200,
+    "eligible": {
+     "cell": "C4",
+     "report": "eligibility_test"
+    },
+    "family": "boot",
+    "n": 200
+   },
+   {
+    "cell": "C5",
+    "config_size": [
+     {
+      "max_n": 100,
+      "size": 100
+     },
+     {
+      "size": 200
+     }
+    ],
+    "eligible": {
+     "cell": "C5",
+     "report": "eligibility_test"
+    },
+    "family": "orlib",
+    "lam_indices": 25,
+    "ports": [
+     1,
+     2,
+     3,
+     4,
+     5
+    ]
+   }
+  ],
+  "methods": {
+   "source": "explicit",
+   "specs": [
+    {
+     "diag": "mineig",
+     "formulation": "perspective",
+     "heuristics": "aggressive",
+     "id": "scip-persp-mineig-sym0-heuraggr",
+     "name": "scip",
+     "usesymmetry": 0
+    }
+   ]
+  },
+  "overrun_tol_rel": 0.05,
+  "seed_role": "test",
+  "skip_nonbinding": true,
+  "solver": {
+   "abs_gap_rel": 1e-06,
+   "abs_gap_safety": 0.5,
+   "mip_gap": 1e-06,
+   "trajectory_tol": 1e-09
+  },
+  "solver_seeds": {
+   "exact": [
+    20000,
+    20001,
+    20002
+   ]
+  },
+  "stage": "bench",
+  "warm_up": true
+ },
+ "stream": "E2"
+}

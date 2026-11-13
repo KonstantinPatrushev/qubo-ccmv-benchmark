@@ -1,0 +1,60 @@
+# E3, US CONFIRMATORY (docs/ANALYSIS_PLAN.md v2.4 §2 RQ3, §3): the secondary market of RQ3, MV arm only, H3a only
+# (rank 2). S&P 500 on the date: on each fold the top 100 members by median dollar volume among those with at least
+# 95 % valid prices in the 756-day window (cif.data.sp500_pit.select_universe), Adj Close with the `adjcorr-2`
+# corrections, rf = DTB3. Test windows from 2013-01-04 to 2025-12-31: 155 folds. (The plan says 2013-01; the panel
+# starts on 2010-01-04 and a window of 756 days ends on 2013-01-03, so the first possible test day is 2013-01-04.)
+# Training 756 days, test 21, step 21, u = 0.10, K_f = max(11, floor(s_cont,f/2)).
+#
+# DO NOT RUN BEFORE the pilot is done and lambda_f (the same as FF49's, plan §3) is in §12 of the plan and below.
+#
+# A cell is (MV, fold): s_cont and K_f; the certified optimum (SCIP to limits/absgap ~ 1e-6*s_ref, up to 2 h; N = 100,
+# K >= 11); rank 2 (one MIQP, 600 s) and the MIQP that checks the tie at the boundary (rank 3). No real solvers and no
+# operators: H3c and the injection are FF49 statements. 155 cells.
+#
+# Run server (plan §12): launch.jobs 16; launch.timing false - nothing is timed (certification only), but the cap of
+# the shared server holds; launch.shards 155 = one cell per shard: a cell can take hours at N = 100, a shard of several
+# would hold a job slot for a day. Every shard process builds the fold table of the period (155 universes) first.
+stream: E3
+name: us_confirmatory
+experiment: cif.experiments.e3_walkforward
+seeds: [20000]
+inputs:
+  sp500_pit: data/processed/sp500_pit/provenance.json
+  riskfree_v2: data/processed/riskfree_v2/provenance.json
+launch: {jobs: 16, shards: 155, timing: false}
+params:
+  seed_role: test
+  solver_seed: 20000
+  market:
+    name: us
+    source: sp500_pit
+    data_dir: data/processed/sp500_pit
+    rf_path: data/processed/riskfree_v2/us_dtb3.parquet
+    variant: base
+    n_universe: 100
+    liquidity_window: 252
+    u: 0.10
+    train_days: 756
+    test_days: 21
+  period: {name: confirmatory, start: "2013-01-04", end: "2025-12-31"}
+  arms: [MV]
+  lambda_f: 20.0              # [пилот] the same as FF49's (plan §3), §12 2026-10-12
+  lambdas: null
+  n_ranks: 1                  # R = 1: rank 2 only
+  optimum: {time_limit_s: 7200.0, mip_gap: 1.0e-6, formulation: perspective, diag: mineig}
+  kbest: {time_limit_s: 600.0, card_mode: eq, abs_gap_rel: 1.0e-6, warm_start: true, boundary_check: true}
+  solvers: null
+  operators: null
+# --smoke: a synthetic factor-model market (no S&P data is read)
+smoke:
+  seeds: [10000]
+  launch: {jobs: 2, shards: 4, timing: false}
+  params:
+    seed_role: calibration
+    solver_seed: 10000
+    market: {name: us, source: synthetic, n_assets: 12, n_days: 300, seed: 1000, start: "2000-01-03",
+             u: 0.34, train_days: 60, test_days: 5, gap_fraction: 0.0}
+    period: {name: confirmatory, start: "2000-06-01", end: "2000-07-15"}
+    lambda_f: 5.0
+    optimum: {time_limit_s: 60.0}
+    kbest: {time_limit_s: 60.0}

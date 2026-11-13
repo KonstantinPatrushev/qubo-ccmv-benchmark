@@ -1,0 +1,8 @@
+{
+ "kind": "e2-c4-lambda",
+ "smoke": true,
+ "note": "Hand-written stand-in for the C4 lambda report of the pilot, for --smoke runs of the machinery only. NOT the result of the rule.",
+ "lam": 10.0,
+ "lam_used": 10.0,
+ "admissible": true
+}

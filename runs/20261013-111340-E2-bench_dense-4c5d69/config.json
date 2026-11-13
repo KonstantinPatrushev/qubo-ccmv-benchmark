@@ -1,0 +1,82 @@
+{
+ "experiment": "cif.experiments.e2_benchmark",
+ "inputs": {
+  "eligibility_dense": "configs/E2/pilot/eligibility_dense.json",
+  "tuned": "configs/E2/pilot/tuned.json"
+ },
+ "launch": {
+  "jobs": 16,
+  "shards": 64,
+  "timing": true
+ },
+ "mode": "full",
+ "name": "bench_dense",
+ "params": {
+  "budget_s": 60.0,
+  "fixed": {
+   "fraction": 0.5,
+   "lam": 5.0
+  },
+  "instances": [
+   {
+    "cell": "D1_100",
+    "config_size": 100,
+    "eligible": {
+     "cell": "D1_100",
+     "report": "eligibility_dense"
+    },
+    "family": "dense",
+    "n": 100
+   },
+   {
+    "cell": "D1_200",
+    "config_size": 200,
+    "eligible": {
+     "cell": "D1_200",
+     "report": "eligibility_dense"
+    },
+    "family": "dense",
+    "n": 200
+   }
+  ],
+  "methods": {
+   "roles": [
+    "exact_rep",
+    "qubo_rep",
+    "ls"
+   ],
+   "source": "tuned"
+  },
+  "overrun_tol_rel": 0.05,
+  "seed_role": "test",
+  "skip_nonbinding": false,
+  "solver": {
+   "abs_gap_rel": 1e-06,
+   "abs_gap_safety": 0.5,
+   "mip_gap": 1e-06,
+   "trajectory_tol": 1e-09
+  },
+  "solver_seeds": {
+   "exact": [
+    20000,
+    20001,
+    20002
+   ],
+   "heuristic": [
+    20000,
+    20001,
+    20002,
+    20003,
+    20004,
+    20005,
+    20006,
+    20007,
+    20008,
+    20009
+   ]
+  },
+  "stage": "bench",
+  "warm_up": true
+ },
+ "stream": "E2"
+}

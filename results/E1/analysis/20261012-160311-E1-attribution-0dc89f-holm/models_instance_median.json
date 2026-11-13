@@ -1,0 +1,82 @@
+{
+ "skipped": [],
+ "sa": {
+  "exploratory": true,
+  "exploratory_level": false,
+  "response": "E_samp",
+  "unit": "instance_median",
+  "formula": "y ~ C(n) + C(h) + C(penalty) * C(beta) * log_m",
+  "n_obs": 8000,
+  "n_groups": 160,
+  "n_missing": 0,
+  "converged": true,
+  "warnings": [],
+  "random_var": 0.5007480473283887,
+  "resid_var": 1.0622571377977015,
+  "icc": 0.3203751670778959,
+  "level": 0.95,
+  "reference": {
+   "penalty": 100,
+   "beta": "default"
+  }
+ },
+ "tabu": {
+  "exploratory": true,
+  "exploratory_level": false,
+  "response": "E_samp",
+  "unit": "instance_median",
+  "formula": "y ~ C(n) + C(h) + C(penalty) * log_m",
+  "n_obs": 4000,
+  "n_groups": 160,
+  "n_missing": 0,
+  "converged": true,
+  "warnings": [],
+  "random_var": 0.1669431397075034,
+  "resid_var": 0.12406508224780871,
+  "icc": 0.5736715567202757,
+  "level": 0.95,
+  "reference": {
+   "penalty": 100
+  }
+ },
+ "swap_sa": {
+  "exploratory": true,
+  "exploratory_level": false,
+  "response": "E_samp",
+  "unit": "instance_median",
+  "formula": "y ~ C(n) + C(h) + log_m",
+  "n_obs": 800,
+  "n_groups": 160,
+  "n_missing": 0,
+  "converged": true,
+  "warnings": [],
+  "random_var": 0.20088543313772037,
+  "resid_var": 0.16206214017422238,
+  "icc": 0.553483334534008,
+  "level": 0.95,
+  "reference": {
+   "cold_ratio": 0.01
+  }
+ },
+ "swap_sa[cold_ratio=0.2]": {
+  "exploratory": true,
+  "exploratory_level": true,
+  "response": "E_samp",
+  "unit": "instance_median",
+  "formula": "y ~ C(n) + C(h) + log_m",
+  "n_obs": 800,
+  "n_groups": 160,
+  "n_missing": 0,
+  "converged": true,
+  "warnings": [
+   "The MLE may be on the boundary of the parameter space."
+  ],
+  "random_var": 2.2167850088648713e-09,
+  "resid_var": 0.004434213309922881,
+  "icc": 4.9992721271956e-07,
+  "level": 0.95,
+  "reference": {
+   "cold_ratio": 0.01
+  }
+ }
+}

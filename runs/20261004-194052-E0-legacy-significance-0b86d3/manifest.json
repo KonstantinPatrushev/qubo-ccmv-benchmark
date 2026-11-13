@@ -1,0 +1,38 @@
+{
+ "run_id": "20261004-194052-E0-legacy-significance-0b86d3",
+ "stream": "E0",
+ "name": "legacy-significance",
+ "config_hash": "0b86d3c070cc",
+ "git_sha": "e3764770b3b1f3a32688c533ff7053cc21a1f906",
+ "git_branch": "stream/E0-engine",
+ "git_dirty": true,
+ "host": "konstantin-laptop",
+ "cpu": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
+ "python": "3.11.15",
+ "packages": {
+  "numpy": "2.1.3",
+  "pandas": "2.2.3",
+  "scipy": "1.14.1",
+  "cvxpy": "1.6.7",
+  "clarabel": "0.11.1",
+  "pyscipopt": "6.1.0",
+  "highspy": "1.13.1",
+  "dwave-samplers": "1.7.0",
+  "dimod": "0.12.21",
+  "qiskit": "2.3.1",
+  "qiskit-aer": "0.17.2",
+  "scikit-learn": "1.5.2",
+  "statsmodels": "0.14.6",
+  "yfinance": "1.2.2",
+  "apimoex": "1.4.0"
+ },
+ "seeds": [
+  20261004
+ ],
+ "notes": "",
+ "started_at": "2026-10-04T16:40:52+00:00",
+ "status": "failed",
+ "error": "TypeError: cif.stats.sharpe.calibrate_block_size() got multiple values for keyword argument 'seed'",
+ "finished_at": "2026-10-04T16:40:52+00:00",
+ "n_rows": 0
+}

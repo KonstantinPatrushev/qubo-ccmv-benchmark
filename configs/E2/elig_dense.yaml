@@ -1,0 +1,54 @@
+# E2, descriptive (ANALYSIS_PLAN §12 A1: D1 "descriptive with the same rule"): the SCREENING of the TEST instances of D1,
+# the legacy dense generator Σ = 0.005·AAᵀ + 0.01·I, lambda = 5, l = 0, u = 1, K = ceil(N / 4), N = 100 and 200,
+# DECIDED (§12, 2026-10-12, user): no scan beyond the planned instances — seeds 2000-2019 per N (cap 20), screening
+# limit 600 s instead of 2 h; undecided instances are counted separately. A STRESS TEST, NOT PART OF THE POOLED
+# ESTIMATE.
+#
+# COST WARNING (a decision for the orchestrator before this is run). On these instances SCIP (perspective, mineig) does
+# not get far: at N = 100, K = 25 it processed 1-4 nodes in 30 s on three calibration seeds (1000-1002) and decided
+# none of them (the dual bound was still 1.1e-2 to 2.0e-2 of the scale below the start, and the best solution found was
+# better than the start by 0 / 0 / 2.5e-4 of the scale, below tau = 1e-3). With the limit of the plan, 2 h, an
+# undecided instance costs 2 CPU-hours: if most dense instances are
+# undecided, 20 non-trivial instances may need hundreds of seeds, i.e. hundreds of CPU-hours, and the share of
+# undecided is the main result for D1. Options, each a recorded decision in §12 and not made here: run this config as
+# it stands; shorten methods.time_limit_s (e.g. 600 s) and say so in §12; cap the scan (scan.cap) well below 400;
+# or leave D1 to the legacy descriptive run. The rows record `status` and the evidence, so nothing is lost by a limit.
+# Rounds, state and the report as in elig_test.yaml, with a report of its own (configs/E2/pilot/eligibility_dense.json:
+# D1 is decided separately from C1-C5); the A3 estimate groups D1_100 and D1_200 as D1.
+#
+# python -m cif.experiments.launch run --config configs/E2/elig_dense.yaml --cores 0-31 --pin --out-dir $OUT/...
+stream: E2
+name: elig_dense
+experiment: cif.experiments.e2_benchmark
+inputs:
+  eligibility_dense: configs/E2/pilot/eligibility_dense.json
+launch: {timing: true, jobs: 16, shards: 256}
+params:
+  stage: eligibility
+  seed_role: test
+  budget_s: null
+  warm_up: true
+  skip_nonbinding: false
+  fixed: {lam: 5.0, fraction: 0.5}
+  solver: {mip_gap: 1.0e-6, abs_gap_rel: 1.0e-6, abs_gap_safety: 0.5, trajectory_tol: 1.0e-9}
+  eligibility: {tau: 1.0e-3, certificate: full, margin: 1.0e-3}
+  solver_seeds: {exact: [20000], heuristic: [20000]}
+  instances:
+    - {cell: D1_100, family: dense, n: 100, config_size: 100,
+       scan: {first: 2000, cap: 20, target: 20, min_nontrivial: 20, state: eligibility_dense}}
+    - {cell: D1_200, family: dense, n: 200, config_size: 200,
+       scan: {first: 2000, cap: 20, target: 20, min_nontrivial: 20, state: eligibility_dense}}
+  methods:
+    source: reference
+    time_limit_s: 600.0         # §12 2026-10-12: D1 screening limit 10 min (plan: 2 h)
+    spec: {name: scip, id: ref-scip-persp-mineig, formulation: perspective, diag: mineig, usesymmetry: default}
+smoke:  # calibration seeds only, a 20-asset instance, 30 s limit: a check of the machinery, not a run
+  launch: {jobs: 2, shards: 2}
+  params:
+    seed_role: calibration
+    warm_up: false
+    solver_seeds: {exact: [10000], heuristic: [10000]}
+    instances:
+      - {cell: D1_20, family: dense, n: 20, seeds: [1000, 1001], config_size: 20}
+    methods:
+      time_limit_s: 30.0

@@ -1,0 +1,19 @@
+{
+ "kind": "e2-tuned",
+ "smoke": true,
+ "note": "Hand-written stand-in for the tuned report of the pilot, for --smoke runs of the machinery only. Not tuned, not a result.",
+ "sizes": {
+  "20": {
+   "roles": {
+    "exact_rep": {"name": "scip", "id": "smoke-scip", "formulation": "perspective", "diag": "mineig", "usesymmetry": "default"},
+    "qubo_rep": {"name": "sa", "id": "smoke-sa", "num_reads_b": 20, "num_sweeps": 50, "beta": "default", "penalty": 10.0, "m_b": 20},
+    "ls": {"name": "ls", "id": "smoke-ls", "num_restarts": 3, "improvement": "first", "rcl_size": 3},
+    "sa": {"name": "sa", "id": "smoke-sa", "num_reads_b": 20, "num_sweeps": 50, "beta": "default", "penalty": 10.0, "m_b": 20},
+    "tabu": {"name": "tabu", "id": "smoke-tabu", "num_restarts_b": 2, "tenure": 5, "num_reads_b": 4, "penalty": 10.0, "m_b": 20},
+    "swap_sa": {"name": "swap_sa", "id": "smoke-swap", "num_reads_b": 10, "num_sweeps": 20, "m_b": 20},
+    "h1c_sa": {"name": "sa", "id": "smoke-sa-obj", "num_reads_b": 20, "num_sweeps": 50, "beta": "objective", "penalty": 10.0, "m_b": 20},
+    "h1c_tabu": {"name": "tabu", "id": "smoke-tabu", "num_restarts_b": 2, "tenure": 5, "num_reads_b": 4, "penalty": 10.0, "m_b": 20}
+   }
+  }
+ }
+}

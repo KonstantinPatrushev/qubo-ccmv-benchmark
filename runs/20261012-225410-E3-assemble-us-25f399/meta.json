@@ -1,0 +1,90 @@
+{
+ "market": {
+  "name": "us",
+  "source": "sp500_pit",
+  "data_dir": "data/processed/sp500_pit",
+  "rf_path": "data/processed/riskfree_v2/us_dtb3.parquet",
+  "variant": "base",
+  "n_universe": 100,
+  "liquidity_window": 252,
+  "u": 0.1,
+  "train_days": 756,
+  "test_days": 21
+ },
+ "period": {
+  "name": "confirmatory",
+  "start": "2013-01-04",
+  "end": "2025-12-31"
+ },
+ "arms": [
+  "MV"
+ ],
+ "lam": 20.0,
+ "n_ranks": 1,
+ "n_folds": 155,
+ "n_missing": 0,
+ "missing": [],
+ "passes": {
+  "gross": {
+   "tc_bps": 0.0,
+   "paths": "all"
+  },
+  "net": {
+   "tc_bps": 10.0,
+   "paths": "all"
+  },
+  "net30": {
+   "tc_bps": 30.0,
+   "paths": "core"
+  },
+  "gross_lag1": {
+   "tc_bps": 0.0,
+   "execution_lag": 1,
+   "paths": "core"
+  },
+  "gross_term30": {
+   "tc_bps": 0.0,
+   "terminal_return": -0.3,
+   "paths": "core"
+  },
+  "gross_term100": {
+   "tc_bps": 0.0,
+   "terminal_return": -1.0,
+   "paths": "core"
+  }
+ },
+ "solvers": {
+  "MV": []
+ },
+ "workers": 16,
+ "fold_sets": {
+  "MV": {
+   "n_included": 155,
+   "n_excluded": 0,
+   "n_excluded_optimum": 0,
+   "n_excluded_degenerate": 0,
+   "n_excluded_rank": 0
+  },
+  "common": {
+   "n_included": 155,
+   "n_excluded": 0,
+   "n_excluded_optimum": 0,
+   "n_excluded_degenerate": 0,
+   "n_excluded_rank": 0
+  }
+ },
+ "n_days": 3255,
+ "n_days_Fk": 3255,
+ "cell_seconds": {
+  "optimum_s": 860.2093939743936,
+  "kbest_s": 2139.9872965067625,
+  "cell_s": 4494.373253423721
+ },
+ "source_run_id": "20261012-223519-E3-us_confirmatory-0b0bdf",
+ "source": "us",
+ "rows_sha256": "3903232c9ca78dfa46f8904ab5d47e42be8b87a6da261d8babfa326c0064ddd2",
+ "pilot_operators_run_id": null,
+ "rank_ids": [
+  2
+ ]
+}

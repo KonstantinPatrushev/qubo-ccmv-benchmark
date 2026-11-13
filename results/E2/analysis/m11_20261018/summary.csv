@@ -1,0 +1,6 @@
+table,view,n_cells,n_ours_solved,n_pub_solved,n_excluded,n_ratio_cells,n_lower_bound,n_upper_bound,median_ratio,median_bound
+T3,scip,15,15,15,0,15,0,0,262.0457410812378,
+T3,oa,15,15,15,0,15,0,0,3.1256085261702538,
+T3,stack,15,15,15,0,15,0,0,3.1256085261702538,
+T4,scip,15,15,14,0,15,0,1,14.432258941233158,
+T4,stack,15,15,14,0,15,0,1,14.432258941233158,

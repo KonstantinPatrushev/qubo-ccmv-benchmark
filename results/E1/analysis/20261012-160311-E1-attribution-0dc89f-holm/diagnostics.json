@@ -1,0 +1,30 @@
+{
+ "frame": {
+  "n_rows": 27200,
+  "n_instances": 160,
+  "status_counts": {
+   "ok": 27200
+  },
+  "n_no_valid": 0,
+  "n_inconsistent": 0,
+  "n_not_certified": 0,
+  "n_missing": 0,
+  "oracle_spread_max": 0.0
+ },
+ "ms": [
+  1,
+  5,
+  20,
+  50,
+  200
+ ],
+ "n_boot": 9999,
+ "units": [
+  "instance_median",
+  "seed"
+ ],
+ "responses": [
+  "E_samp",
+  "E_prec"
+ ]
+}

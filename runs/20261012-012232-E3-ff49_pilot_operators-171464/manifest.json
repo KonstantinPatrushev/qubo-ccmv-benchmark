@@ -1,0 +1,182 @@
+{
+ "run_id": "20261012-012232-E3-ff49_pilot_operators-171464",
+ "stream": "E3",
+ "name": "ff49_pilot_operators",
+ "config_hash": "17146432d445",
+ "git_sha": "163aa3cf593225d5f5b3bf0795c47ea221b11afb",
+ "git_branch": "stream/E0-engine",
+ "git_available": true,
+ "git_dirty": false,
+ "git_status": [
+  "?? runs/20261012-012232-E3-ff49_pilot_operators-171464/config.json"
+ ],
+ "untracked_code": [],
+ "untracked_code_sha256": {},
+ "code_state_files": [],
+ "code_parts": "",
+ "host": "konstantin-laptop",
+ "cpu": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
+ "threads": {
+  "env": {
+   "OMP_NUM_THREADS": null,
+   "MKL_NUM_THREADS": null,
+   "OPENBLAS_NUM_THREADS": null,
+   "NUMEXPR_NUM_THREADS": null
+  },
+  "cpu_count": 8,
+  "pools": [
+   {
+    "user_api": "blas",
+    "internal_api": "openblas",
+    "num_threads": 8,
+    "version": "0.3.32"
+   },
+   {
+    "user_api": "openmp",
+    "internal_api": "openmp",
+    "num_threads": 8,
+    "version": null
+   }
+  ]
+ },
+ "cpu_governor": "powersave",
+ "machine": {
+  "cpu": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
+  "n_cpus": 8,
+  "affinity": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "governors": {
+   "powersave": 8
+  },
+  "loadavg": [
+   3.4580078125,
+   3.412109375,
+   3.255859375
+  ]
+ },
+ "python": "3.11.15",
+ "packages": {
+  "numpy": "2.1.3",
+  "pandas": "2.2.3",
+  "scipy": "1.14.1",
+  "cvxpy": "1.6.7",
+  "clarabel": "0.11.1",
+  "pyscipopt": "6.1.0",
+  "highspy": "1.13.1",
+  "dwave-samplers": "1.7.0",
+  "dimod": "0.12.21",
+  "qiskit": "2.3.1",
+  "qiskit-aer": "0.17.2",
+  "scikit-learn": "1.5.2",
+  "statsmodels": "0.14.6",
+  "yfinance": "1.2.2",
+  "apimoex": "1.4.0"
+ },
+ "seeds": [
+  10001
+ ],
+ "inputs": {
+  "ff49": {
+   "path": "data/processed/ff49/provenance.json",
+   "sha256": "302e9b46e44f5386077a8a616759ce336bb42db0e32ef9225b0c61a46f16a59f",
+   "bytes": 5347
+  }
+ },
+ "notes": "ingested from 56 shard(s)",
+ "started_at": "2026-10-11T22:22:32+00:00",
+ "status": "completed",
+ "mode": "ingested",
+ "bundle_sha": "163aa3cf593225d5f5b3bf0795c47ea221b11afb",
+ "hosts": [
+  "gpu-07"
+ ],
+ "sessions_unfinished": 0,
+ "cpu_models": [
+  "Intel(R) Xeon(R) Silver 4216 CPU @ 2.10GHz"
+ ],
+ "cpu_governors": [
+  "schedutil"
+ ],
+ "loadavg_start_max": 14.82373046875,
+ "loadavg_end_max": 14.82373046875,
+ "n_sessions": 56,
+ "n_cells": 224,
+ "n_rows_in_shards": 224,
+ "n_duplicates": 0,
+ "n_missing": 0,
+ "n_errors": 0,
+ "shard_inputs_match": true,
+ "shard_files": [
+  "ff49_pilot_operators_shard0000.jsonl",
+  "ff49_pilot_operators_shard0001.jsonl",
+  "ff49_pilot_operators_shard0002.jsonl",
+  "ff49_pilot_operators_shard0003.jsonl",
+  "ff49_pilot_operators_shard0004.jsonl",
+  "ff49_pilot_operators_shard0005.jsonl",
+  "ff49_pilot_operators_shard0006.jsonl",
+  "ff49_pilot_operators_shard0007.jsonl",
+  "ff49_pilot_operators_shard0008.jsonl",
+  "ff49_pilot_operators_shard0009.jsonl",
+  "ff49_pilot_operators_shard0010.jsonl",
+  "ff49_pilot_operators_shard0011.jsonl",
+  "ff49_pilot_operators_shard0012.jsonl",
+  "ff49_pilot_operators_shard0013.jsonl",
+  "ff49_pilot_operators_shard0014.jsonl",
+  "ff49_pilot_operators_shard0015.jsonl",
+  "ff49_pilot_operators_shard0016.jsonl",
+  "ff49_pilot_operators_shard0017.jsonl",
+  "ff49_pilot_operators_shard0018.jsonl",
+  "ff49_pilot_operators_shard0019.jsonl",
+  "ff49_pilot_operators_shard0020.jsonl",
+  "ff49_pilot_operators_shard0021.jsonl",
+  "ff49_pilot_operators_shard0022.jsonl",
+  "ff49_pilot_operators_shard0023.jsonl",
+  "ff49_pilot_operators_shard0024.jsonl",
+  "ff49_pilot_operators_shard0025.jsonl",
+  "ff49_pilot_operators_shard0026.jsonl",
+  "ff49_pilot_operators_shard0027.jsonl",
+  "ff49_pilot_operators_shard0028.jsonl",
+  "ff49_pilot_operators_shard0029.jsonl",
+  "ff49_pilot_operators_shard0030.jsonl",
+  "ff49_pilot_operators_shard0031.jsonl",
+  "ff49_pilot_operators_shard0032.jsonl",
+  "ff49_pilot_operators_shard0033.jsonl",
+  "ff49_pilot_operators_shard0034.jsonl",
+  "ff49_pilot_operators_shard0035.jsonl",
+  "ff49_pilot_operators_shard0036.jsonl",
+  "ff49_pilot_operators_shard0037.jsonl",
+  "ff49_pilot_operators_shard0038.jsonl",
+  "ff49_pilot_operators_shard0039.jsonl",
+  "ff49_pilot_operators_shard0040.jsonl",
+  "ff49_pilot_operators_shard0041.jsonl",
+  "ff49_pilot_operators_shard0042.jsonl",
+  "ff49_pilot_operators_shard0043.jsonl",
+  "ff49_pilot_operators_shard0044.jsonl",
+  "ff49_pilot_operators_shard0045.jsonl",
+  "ff49_pilot_operators_shard0046.jsonl",
+  "ff49_pilot_operators_shard0047.jsonl",
+  "ff49_pilot_operators_shard0048.jsonl",
+  "ff49_pilot_operators_shard0049.jsonl",
+  "ff49_pilot_operators_shard0050.jsonl",
+  "ff49_pilot_operators_shard0051.jsonl",
+  "ff49_pilot_operators_shard0052.jsonl",
+  "ff49_pilot_operators_shard0053.jsonl",
+  "ff49_pilot_operators_shard0054.jsonl",
+  "ff49_pilot_operators_shard0055.jsonl"
+ ],
+ "finished_at": "2026-10-11T22:22:33+00:00",
+ "loadavg_end": [
+  3.4580078125,
+  3.412109375,
+  3.255859375
+ ],
+ "n_rows": 224
+}

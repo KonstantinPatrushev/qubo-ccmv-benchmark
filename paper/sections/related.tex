@@ -1,0 +1,56 @@
+% sections/related.tex — every citation from paper/refs.bib (verified); every statement about a cited work rests on the
+% literature reviews docs/lit/*.md. Draft for the author's review (plan of sections approved 2026-10-18, PLAN §6).
+\section{Related work}\label{sec:related}
+
+\paragraph{Exact methods} The CCMV problem is NP-hard~\cite{gao2013optimal}. Early exact methods branched on subsets of
+assets or on specialised relaxations~\cite{bienstock1996computational,bertsimas2007algorithm}. The state of the art
+strengthens the continuous relaxation by the perspective reformulation of a diagonal part of $\Sigma$, written as
+cuts~\cite{frangioni2005perspective,frangioni2009computational} or as second-order cones~\cite{gunluk2010perspective,akturk2009strong},
+with the diagonal chosen by semidefinite programming~\cite{frangioni2007sdp,zheng2014improving}, and solves the resulting
+convex binary problem by outer approximation with cutting planes~\cite{bertsimas2022scalable,wei2023outer}; Lagrangian
+approaches~\cite{shaw2008lagrangian,gao2013optimal} and dual bounds with a depth-first branch and
+bound~\cite{xu2024efficient} complete the picture. Most of these studies run on commercial solvers. Among open-source
+tools, SCIP separates perspective cuts~\cite{bestuzheva2023computational,bolusani2024scip} and HiGHS can serve as the
+master problem of a multi-tree outer approximation~\cite{huangfu2017parallelizing}, but we found no complete open-source
+implementation of the single-tree outer approximation.
+
+\paragraph{Heuristics and local search} Genetic algorithms, tabu search and simulated annealing on the OR-Library
+problems~\cite{chang2000heuristics} and local search with hill climbing, annealing and tabu
+search~\cite{schaerf2002local} established the heuristic tradition, followed by heuristics for the cardinality-constrained
+frontier~\cite{woodsideoriakhi2011heuristic}, hybrids that search over subsets and compute the weights by quadratic
+programming~\cite{digaspero2011hybrid,akbay2020parallel}, relaxation-and-rounding schemes~\cite{fu2023comparative} and Boolean
+relaxations~\cite{moka2025scalable}. In much of this literature the quality of a heuristic is measured against the
+unconstrained efficient frontier rather than a certified optimum of the CCMV problem~\cite{chang2000heuristics,mansouri2021markowitz}.
+Gilli and Schumann discuss heuristic optimisation in finance and its precision~\cite{gilli2012heuristic,gilli2011optimal}.
+Local search with swaps of one variable is also the core of fast methods for best-subset
+selection~\cite{hazimeh2020fast}.
+
+\paragraph{QUBO formulations and annealing} Ising and QUBO formulations of combinatorial problems~\cite{lucas2014ising,glover2019quantum}
+lead to three families for portfolios: binary inclusion with equal
+weights~\cite{brandhofer2022benchmarking,kilic2026reproducible,lozano2026where}, weights encoded in
+bits~\cite{mugel2022dynamic,stopfer2025quantum}, and binary selection followed by convex weights~\cite{morapakula2025endtoend}.
+There is no standard for the calibration of the cardinality penalty~\cite{hodson2019portfolio,verma2022penalty,lozano2026penalty}.
+Demonstrations on quantum and hybrid annealers~\cite{venturelli2019reverse,grant2021benchmarking,mugel2022dynamic,lang2022strategic,morapakula2025endtoend}
+are mostly feasibility studies without a strong exact baseline; where an exact solution is computed, it is computed
+classically~\cite{sakuler2025real}. Independent benchmarks and
+audits~\cite{kim2025quantum,stopfer2025quantum,chen2025benchmarking,lozano2026where,lozano2026penalty} disagree on whether
+hybrid annealing has an advantage, and the disagreement traces to the measure of time and to the strength and tuning of
+the classical baselines. The classical QUBO heuristics used as baselines are simulated
+annealing~\cite{kirkpatrick1983optimization} and tabu search, of which the multistart variant of
+Palubeckis~\cite{palubeckis2004multistart} is implemented in \texttt{dwave-samplers} and diversification-driven tabu
+search~\cite{glover2010diversification} is a strong reference for unconstrained binary quadratic problems; no heuristic
+dominates across instance families~\cite{dunning2018what}. In the studies we reviewed, the optimum used as reference is
+the optimum of the binary surrogate itself, so the gap between the refined best subset of the surrogate and the optimum
+of the mixed-integer problem with continuous weights has not been measured.
+
+\paragraph{Benchmarking methodology} Guidelines for computational experiments with heuristics~\cite{barr1995designing}
+and standards for comparing quantum and QUBO methods ask for the best classical algorithms, equal stopping criteria and
+budgets, equal tuning effort and open code~\cite{ronnow2014defining,dunning2018what,bucher2024towards,koch2026quantum}.
+Anytime comparisons of heuristics with exact solvers use the primal integral~\cite{berthold2013measuring,berthold2020confined},
+time-to-target plots~\cite{aiex2006ttt}, which have been used on portfolio problems with a target from the continuous
+relaxation~\cite{rubiogarcia2022portfolio}, and performance profiles~\cite{dolan2002benchmarking}, whose interpretation
+depends on the set of solvers~\cite{gould2016note}; exact solvers vary with the random seed and the order of the
+model~\cite{lodi2013performance}. Out of sample, differences of Sharpe ratios are tested with the studentised bootstrap of
+Ledoit and Wolf~\cite{ledoit2008robust} and equivalence with two one-sided tests~\cite{schuirmann1987comparison,lakens2017equivalence}.
+We found no study that combines certified optima, controlled in-sample gaps and formal equivalence tests to ask whether
+the accuracy of a cardinality-constrained portfolio matters out of sample.

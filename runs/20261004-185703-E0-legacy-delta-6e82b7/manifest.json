@@ -1,0 +1,38 @@
+{
+ "run_id": "20261004-185703-E0-legacy-delta-6e82b7",
+ "stream": "E0",
+ "name": "legacy-delta",
+ "config_hash": "6e82b75f2ecc",
+ "git_sha": "0a4a2f3b4a19c800b9b51ab3f52ae0ece7faaca7",
+ "git_branch": "stream/E0-engine",
+ "git_dirty": false,
+ "host": "konstantin-laptop",
+ "cpu": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
+ "python": "3.11.15",
+ "packages": {
+  "numpy": "2.1.3",
+  "pandas": "2.2.3",
+  "scipy": "1.14.1",
+  "cvxpy": "1.6.7",
+  "clarabel": "0.11.1",
+  "pyscipopt": "6.1.0",
+  "highspy": "1.13.1",
+  "dwave-samplers": "1.7.0",
+  "dimod": "0.12.21",
+  "qiskit": "2.3.1",
+  "qiskit-aer": "0.17.2",
+  "scikit-learn": "1.5.2",
+  "statsmodels": "0.14.6",
+  "yfinance": "1.2.2",
+  "apimoex": "1.4.0"
+ },
+ "seeds": [],
+ "notes": "legacy solvers (main) + corrected engine (E0)",
+ "started_at": "2026-10-04T15:57:03+00:00",
+ "status": "completed",
+ "artifacts": [
+  "summary.csv"
+ ],
+ "finished_at": "2026-10-04T16:29:43+00:00",
+ "n_rows": 24
+}

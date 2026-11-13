@@ -1,0 +1,118 @@
+% sections/discussion.tex — numbers only through \res{}; every claim has a row in paper/CLAIMS.md.
+% Draft for the author's review (plan of sections approved 2026-10-18, PLAN §6); revised after the review r1.
+\section{Discussion}\label{sec:discussion}
+
+\subsection{When does a QUBO pipeline pay?}\label{sec:disc-when}
+
+The answer depends on the instance, on the sampler and on what a method starts from. With a cheap classical start ---
+the continuous relaxation rounded to its $K$ largest weights and refined --- most of our factor and OR-Library
+instances and a substantial share of the S\&P instances need no combinatorial search at all, and on the factor
+instances the gaps that remain are a few basis points of certainty equivalent per year (Section~\ref{sec:res-a3}).
+On the remaining instances, a pipeline whose sampler preserves the cardinality approached the optimum faster than the
+open-source exact solvers, while the pipelines with the tuned penalty samplers did not (Section~\ref{sec:res-rq2}).
+Against a local search on the true objective, the pipeline was faster on the typical factor instance but failed to
+reach the target within the budget on a minority of them and on most of the S\&P instances; local search never
+failed, and on average it was faster (the direction of H2b is established, its size relative to the band is not).
+The pipeline therefore offers speed on many instances without reliability, and local search offers both on average.
+
+A niche for a fast first portfolio is not supported either. Without the common start the pipeline holds its first
+portfolio sooner than local search and the exact methods, which reverses the order of H2b (Table~\ref{tab:exact}), but
+the common start itself is ready earlier on every instance, and the first portfolio of the pipeline is at least as
+good as it on most, but not all, instances. For the CCMV problem, where the continuous relaxation is always available and cheap, a QUBO pipeline
+did not deliver a portfolio sooner than the classical start.
+
+The results of RQ1 suggest a mechanism, which we did not test at the sizes of RQ2. At $N \le 24$ the ceiling of the
+equal-weight surrogate rises with the dispersion of volatilities, an oracle pool of the best subsets of the surrogate
+recovers most of the loss, and the real samplers either miss the minimum of the surrogate (penalty annealing) or
+find it but return few distinct subsets per call (tabu search and swap-SA), so that their pools recover less of the
+loss than the oracle pool (Table~\ref{tab:samplers-rq1}). A pipeline that ranks subsets by the surrogate inherits its
+ceiling unless its pool is diverse; local search ranks supports by the true objective at every step.
+
+These findings bear on how QUBO approaches to portfolio selection are usually evaluated. Positive results in the
+literature rest mostly on closed hybrid services and on weak or untuned classical
+baselines~\cite{mugel2022dynamic,lang2022strategic,kim2025quantum}, while strong classical solvers, where they are
+present, solve the portfolio problems considered~\cite{lozano2026where,stopfer2025quantum,chen2025benchmarking}. Our
+benchmark differs from these studies in three respects: an anytime measure under equal budgets and one tuning
+protocol for all methods~\cite{barr1995designing,bucher2024towards}, a local search on the true objective as a
+classical baseline of the same kind as the pipeline, and a screening of trivial instances. On the calibration
+instances the common start was already within the target on most instances, so without the screening the outcome
+``equivalent'' could have been fixed by the composition of the cells rather than by the methods.
+
+\subsection{What the exact baseline means for H2}\label{sec:disc-baseline}
+
+On the problems of Bertsimas and Cory-Wright~\cite{bertsimas2022scalable}, our open-source exact representative was more
+than an order of magnitude slower than the best published methods, while outer approximation with an open-source master
+problem stayed within an order of magnitude on BCW-T3, and on the hardest instances of BCW-T4 SCIP was competitive
+(Section~\ref{sec:res-m11}). The validation measures the time to a certificate, and H2 measures the speed of improving
+an incumbent; the two need not agree, and the representative was chosen on the second. Its tuning space was small
+--- the formulation and the symmetry handling, \res{e2.tune.exact.n100.nconfigs} and \res{e2.tune.exact.n200.nconfigs}
+configurations searched completely, against \res{e2.tune.heur.nconfigs} random configurations of each heuristic.
+Two post hoc runs probed this choice: with SCIP's aggressive primal heuristics, and with outer approximation as the
+representative in every cell, the outcome of H2 was unchanged, and the aggressive heuristics did not speed up the
+improvement of SCIP's incumbent (Section~\ref{sec:res-m11}). H2 therefore states that the QUBO pipeline with a
+cardinality-preserving sampler outpaces open-source exact solvers, which matters where commercial solvers are not
+available; it does not state that the pipeline outpaces the best exact methods. Studies that include
+strong commercial solvers find them solving their portfolio problems quickly, but those problems differ from ours (a
+binary surrogate, or no cardinality constraint)~\cite{lozano2026where,stopfer2025quantum}; whether H2 would hold against
+such solvers is not tested here.
+
+\subsection{Does optimisation accuracy matter out of sample?}\label{sec:disc-oos}
+
+For minimum-variance portfolios, the best non-optimal support is equivalent to the optimum out of sample, and the
+out-of-sample variance grows with the in-sample dose along the series of the best alternatives; for mean--variance
+portfolios the comparison is inconclusive, and no dose--response is detected at this power
+(Section~\ref{sec:res-rq3}). Both statements are about small and specific errors: the best alternatives are a few basis
+points of certainty equivalent per year worse than the optimum in sample, and on almost all folds the lower bound of
+$K$ holds the weights nearly fixed, so that the alternatives differ mainly in which assets they hold. The difference between the
+arms may reflect that the objective of the minimum-variance arm is the variance itself, while the mean--variance
+objective also carries the estimated means, whose error is known to dominate out of
+sample~\cite{michaud1989markowitz,kan2007optimal,demiguel2009optimal}; with the mean--variance outcome inconclusive,
+this is a hypothesis, not a finding. Gilli and Schumann found that beyond some point better solutions of a portfolio
+problem do not give better portfolios~\cite{gilli2011optimal,gilli2012heuristic}; constraints and sparsity act as
+regularisers~\cite{jagannathan2003risk,brodie2009sparse}. Our design adds certified optima, exactly enumerated
+alternatives with measured doses and pre-registered equivalence tests. It confirms equivalence for the minimum-variance
+arm and leaves the mean--variance arm open, as the power analysis of the pilot anticipated. On FF49 the real solvers left
+almost no in-sample gap, so their own out-of-sample losses could not be calibrated against the curve.
+
+The two parts of the paper meet here. The anytime race of RQ2 on the factor instances is run for start gaps of at
+most \res{e2.a3.c2.gstart.max.bp}~bp of certainty equivalent per year, below the smallest effect of interest of RQ3
+(25~bp); such in-sample differences between good methods are smaller than the out-of-sample differences that the % num-ok: smallest effect of interest of the plan
+mean--variance arm of RQ3 could resolve.
+
+\subsection{Practical guidance}\label{sec:disc-guidance}
+
+For cardinality-constrained mean--variance problems of the sizes studied here, the evidence supports the following
+order of work.
+\begin{enumerate}
+\item Build the common start: solve the continuous relaxation, keep its $K$ largest weights and refine them. It takes a
+fraction of a second in the median, and on most of our factor and OR-Library instances it is already within the
+target.
+\item If a certificate matters, give the start to an exact solver; on the trivial instances the bound closes the
+question, at a cost that ranged from seconds at $N = 100$ to more than an hour on some instances
+(Section~\ref{sec:res-a3}).
+\item To improve on the start, run a local search on the true objective with refinement of the weights; in our
+benchmark its median time to the target was within the budget on every instance, and it was the more reliable anytime
+method.
+\item If a QUBO pipeline is used, for example as the classical counterpart of a quantum sampler, give it a sampler that
+preserves the cardinality and a diverse pool: with the penalty samplers of our tuning space it did not improve on
+open-source exact solvers (Section~\ref{sec:res-rq2}).
+\end{enumerate}
+
+\subsection{Limitations}\label{sec:disc-limits}
+
+The exact baseline is open-source and runs on one thread, its tuning space was small (two post hoc alternatives left
+H2 unchanged), and the validation against published times measures certificates and is not normalised for the
+hardware; the conclusions of RQ2 are about open-source exact methods. All timings come from one shared
+server, with at most 16 pinned single-threaded jobs and the load recorded with each run. The confirmatory cells C1--C3
+are synthetic, and their share of trivial instances depends on the design ($K$ half the support of the continuous
+optimum, $\lambda = 5$, $\tau = 10^{-3}$); the S\&P cell is descriptive because its pre-registered rule found no
+admissible risk aversion, the OR-Library cell has only three port clusters, and the band outcome of H2b depends on it.
+References are best known values, not certificates, on \res{e2.n.uncertified} of the \res{e2.n.instances} non-trivial
+instances, and most dense instances were left undetermined by the screening. The tuning spaces were frozen before the
+pilot: at their penalty levels single-flip annealing could not leave the start, so H1c reads narrowly, and the penalty
+samplers were not given smaller penalties; other QUBO samplers, such as parallel tempering or simulated bifurcation,
+were not tested. RQ1 is limited to $N \le 24$. The samplers are classical. The ceiling of the surrogate, however, is
+the limit that a pipeline with any sampler of the same surrogate approaches as the minimisation improves, quantum
+annealers and QAOA included; it is not a bound, since a diverse pool can do better than the exact minimiser of the
+surrogate. Out of sample, the primary tests use 49 industry portfolios in a regime of nearly fixed weights; the US
+universe is secondary, its calibrated block length was one day, and the power for the mean--variance arm was low.

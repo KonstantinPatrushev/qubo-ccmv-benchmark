@@ -1,0 +1,169 @@
+{
+ "dataset": "ff49",
+ "built_at": "2026-10-08T10:38:54+00:00",
+ "git": {
+  "sha": "6762444df1b9a247a2be0e3c3aea776d3c05b3d0",
+  "branch": "stream/E0-engine",
+  "dirty": false
+ },
+ "config": {
+  "raw_dir": "data/raw/ff49",
+  "processed_dir": "data/processed/ff49",
+  "base_url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/",
+  "files": [
+   "49_Industry_Portfolios_daily_CSV.zip",
+   "F-F_Research_Data_Factors_daily_CSV.zip"
+  ],
+  "optional_files": [
+   "F-F_Research_Data_Factors_CSV.zip"
+  ]
+ },
+ "code_sha256": {
+  "src/cif/data/ff49.py": "e21afb08108c16d6c881ebaa07e494dfda1b3d81d27358966a94e98f70af74a9",
+  "scripts/data/build_ff49.py": "951bb481567ca235ec671f91ff7a12abd2ae463fa44f1a7c023c2a91c92eec30"
+ },
+ "sources": {
+  "library": "Kenneth R. French Data Library (Tuck School of Business, Dartmouth)",
+  "fetched": {
+   "49_Industry_Portfolios_daily_CSV.zip": {
+    "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/49_Industry_Portfolios_daily_CSV.zip",
+    "fetched_at": "2026-10-07T14:06:47+00:00",
+    "bytes": 4173817,
+    "sha256": "8f394fe34bea54d41b9aafed410425ee8f8e252ede3c71a7c1cd20bab83040de"
+   },
+   "F-F_Research_Data_Factors_daily_CSV.zip": {
+    "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_daily_CSV.zip",
+    "fetched_at": "2026-10-07T14:06:49+00:00",
+    "bytes": 178184,
+    "sha256": "2f29e22546069914890a712680a6f81f3680ebc3543b52864484d209ca13a7db"
+   },
+   "F-F_Research_Data_Factors_CSV.zip": {
+    "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip",
+    "fetched_at": "2026-10-08T10:38:50+00:00",
+    "bytes": 13065,
+    "sha256": "593f4fbef03181bc0b22ff6292f217689dd1fb79355049ca905d95b262040a66"
+   }
+  },
+  "vintage": "202608 CRSP database",
+  "missing_codes": [
+   -99.99,
+   -999.0
+  ],
+  "units": "files in percent; processed files in decimals"
+ },
+ "summary": {
+  "vintage": "202608 CRSP database",
+  "factors_vintage": "202608 CRSP database",
+  "first_date": "1926-07-01",
+  "last_date": "2026-08-31",
+  "n_days": 26317,
+  "n_industries": 49,
+  "first_valid": {
+   "Agric": "1926-07-01",
+   "Food": "1926-07-01",
+   "Soda": "1963-07-01",
+   "Beer": "1926-07-01",
+   "Smoke": "1926-07-01",
+   "Toys": "1926-07-01",
+   "Fun": "1926-07-01",
+   "Books": "1926-07-01",
+   "Hshld": "1926-07-01",
+   "Clths": "1926-07-01",
+   "Hlth": "1969-07-01",
+   "MedEq": "1926-07-01",
+   "Drugs": "1926-07-01",
+   "Chems": "1926-07-01",
+   "Rubbr": "1930-07-01",
+   "Txtls": "1926-07-01",
+   "BldMt": "1926-07-01",
+   "Cnstr": "1926-07-01",
+   "Steel": "1926-07-01",
+   "FabPr": "1963-07-01",
+   "Mach": "1926-07-01",
+   "ElcEq": "1926-07-01",
+   "Autos": "1926-07-01",
+   "Aero": "1926-07-01",
+   "Ships": "1926-07-01",
+   "Guns": "1963-07-01",
+   "Gold": "1963-07-01",
+   "Mines": "1926-07-01",
+   "Coal": "1926-07-01",
+   "Oil": "1926-07-01",
+   "Util": "1926-07-01",
+   "Telcm": "1926-07-01",
+   "PerSv": "1927-07-01",
+   "BusSv": "1926-07-01",
+   "Hardw": "1926-07-01",
+   "Softw": "1965-07-01",
+   "Chips": "1926-07-01",
+   "LabEq": "1926-07-01",
+   "Paper": "1929-07-01",
+   "Boxes": "1926-07-01",
+   "Trans": "1926-07-01",
+   "Whlsl": "1926-07-01",
+   "Rtail": "1926-07-01",
+   "Meals": "1926-07-01",
+   "Banks": "1926-07-01",
+   "Insur": "1926-07-01",
+   "RlEst": "1926-07-01",
+   "Fin": "1926-07-01",
+   "Other": "1926-07-01"
+  },
+  "missing_after_first_valid_since_1960": {
+   "Softw": 1
+  },
+  "rf_annualised_mean": 0.0315106067495432,
+  "rf_dates_match_returns": true,
+  "rf_source": "monthly factors file: one-month T-bill return compounded over the trading days of the month"
+ },
+ "files": {
+  "raw": {
+   "49_Industry_Portfolios_daily_CSV.zip": {
+    "sha256": "8f394fe34bea54d41b9aafed410425ee8f8e252ede3c71a7c1cd20bab83040de",
+    "bytes": 4173817
+   },
+   "49_Industry_Portfolios_daily_CSV.zip.fetched_at.json": {
+    "sha256": "f004df143d52f9f9191d6f4b0c51a46bdd5a5cdd8d4af9c8d3451504930bfa41",
+    "bytes": 252
+   },
+   "F-F_Research_Data_Factors_CSV.zip": {
+    "sha256": "593f4fbef03181bc0b22ff6292f217689dd1fb79355049ca905d95b262040a66",
+    "bytes": 13065
+   },
+   "F-F_Research_Data_Factors_CSV.zip.fetched_at.json": {
+    "sha256": "61006c93929b3411ba6062b09227214dbad33278be5137971e182a12619a7bdc",
+    "bytes": 247
+   },
+   "F-F_Research_Data_Factors_daily_CSV.zip": {
+    "sha256": "2f29e22546069914890a712680a6f81f3680ebc3543b52864484d209ca13a7db",
+    "bytes": 178184
+   },
+   "F-F_Research_Data_Factors_daily_CSV.zip.fetched_at.json": {
+    "sha256": "19b2eec2c2dc8c460749221d1894096c10a2b34b4d33fa077926f3e39de5833e",
+    "bytes": 254
+   }
+  },
+  "processed": {
+   "factors_daily.parquet": {
+    "sha256": "3a6a7e458d33a6472b106748afbcf2c055bb3cd7defcc8a26966023bdc148a9c",
+    "bytes": 357509
+   },
+   "prices_vw.parquet": {
+    "sha256": "c0c1bd7afffbdddba193a917a921f844a5ae973101f041f35fe930ff5d7413b8",
+    "bytes": 12248252
+   },
+   "returns_ew.parquet": {
+    "sha256": "079b541033998ecbbb758129c68828552275f7c0db0255163aba91e5d7852d09",
+    "bytes": 2261807
+   },
+   "returns_vw.parquet": {
+    "sha256": "b388d5e3ac3d30b316458772bcac4d412c7ae235b60a7c1ce20d341364d76892",
+    "bytes": 2231581
+   },
+   "rf_daily.parquet": {
+    "sha256": "dde84bd1c85d3714859fdc8a7c68ce0e2e7ff1efe290ec04dd892f2c1423cd2a",
+    "bytes": 251325
+   }
+  }
+ }
+}
