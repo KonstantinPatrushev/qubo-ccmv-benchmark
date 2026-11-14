@@ -12,4 +12,5 @@ authors:
     affiliation: "National Research University Higher School of Economics"
 license: MIT
 repository-code: "https://github.com/KonstantinPatrushev/qubo-ccmv-benchmark"
-version: 1.0.0
+doi: 10.5281/zenodo.24218405
+version: 1.0.1
